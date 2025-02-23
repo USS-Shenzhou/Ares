@@ -55,7 +55,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 ### 额外许可和附加条款 | Exceptions and Additional terms
 
-- a) 在Minecraft游戏客户端内游玩时使用本程序的内容，或将前述过程制作为图片、视频或其他多媒体内容并以公开渠道展示时，不适用关于非商业性使用和禁止演绎的限制；
+- a) 在Minecraft游戏客户端内游玩时使用本程序的内容，并将前述过程制作为图片、视频或其他多媒体内容并以公开渠道展示时，不适用关于非商业性使用和禁止演绎的限制；
 - b) 在Minecraft游戏服务端内加载本程序的内容时，在遵守Minecraft EULA的前提下，不适用关于非商业性使用的限制；
 - c) 当你作为游戏玩家，加载本程序于Minecraft并游玩时，本许可证自动地授予你一切为正常加载本程序于Minecraft并游玩所必要的、不在GPL-3.0许可证内容中、或是GPL-3.0许可证所不允许的权利。如果GPL-3.0许可证内容与Minecraft EULA或其他Mojang/微软条款产生冲突，以后者为准；
 - d) 根据GNU GPL版本3第7节的附加条款：如果你对本软件进行了修改，你在转发修改后的版本时，应当明确说明其修改自本软件，并说明本软件开发者不对修改后的版本提供任何保证。不得使用本软件任一开发者或本软件的的名义来宣传修改后的版本。
@@ -69,8 +69,8 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 ## 其他开源/版权信息 | Other Open-Source/Copyright Information
 
-1. 模组的部分代码受[Timeless and Classics Guns Zero](https://github.com/MCModderAnchor/TACZ)启发、从其复制和由其演绎，按GPLv3获得许可；
-2. 模组在开发环境中使用了[Timeless and Classics Guns Zero](https://github.com/MCModderAnchor/TACZ)的部分美术资源以用于测试，已获得单独许可；
+1. 模组的部分代码受[Timeless and Classics Guns Zero](https://github.com/MCModderAnchor/TACZ)启发、从其复制和由其演绎，按GPLv3获得许可；在开发环境中使用了TACZ的部分美术资源以用于测试，已获得单独许可；
+2. 模组的部分代码受[TouhouLittleMaid](https://github.com/TartaricAcid/TouhouLittleMaid)启发、从其复制和由其演绎，按MIT获得许可。
 
 *这是一个粉丝项目，非《彩虹六号：围攻》官方产品。未获育碧许可，亦与育碧无任何关联。*
 
