@@ -61,7 +61,6 @@ public class BedrockPart {
     public void render(PoseStack poseStack, ItemDisplayContext transformType, VertexConsumer consumer, int light, int overlay, float red, float green, float blue, float alpha) {
         int cubePackedLight = light;
         if (illuminated) {
-            // 最大亮度
             cubePackedLight = LightTexture.pack(15, 15);
         }
         if (this.visible) {
@@ -96,8 +95,8 @@ public class BedrockPart {
     }
 
     public void compile(PoseStack.Pose pose, VertexConsumer consumer, int light, int overlay, float red, float green, float blue, float alpha) {
-        for (IBedRockRenderable IBedRockRenderable : this.cubes) {
-            IBedRockRenderable.compile(pose, consumer, light, overlay, red, green, blue, alpha);
+        for (IBedRockRenderable bedRockRenderable : this.cubes) {
+            bedRockRenderable.compile(pose, consumer, light, overlay, red, green, blue, alpha);
         }
     }
 

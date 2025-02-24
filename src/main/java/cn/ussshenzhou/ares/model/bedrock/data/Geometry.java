@@ -10,7 +10,7 @@ import java.util.List;
  * <p></p>
  * This file is intergrated from <a href="https://github.com/TartaricAcid/TouhouLittleMaid">TouhouLittleMaid</a> under MIT license.
  */
-public class GeometryModel {
+public class Geometry {
     @SerializedName("description")
     private Description description;
 
@@ -27,7 +27,7 @@ public class GeometryModel {
         return bones;
     }
 
-    public GeometryModel deco() {
+    public Geometry deco() {
         if (bones != null) {
             this.bones.forEach(bonesItem -> {
                 if (bonesItem.getCubes() != null) {

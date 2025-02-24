@@ -10,23 +10,23 @@ import java.util.List;
  * <p></p>
  * This file is intergrated from <a href="https://github.com/TartaricAcid/TouhouLittleMaid">TouhouLittleMaid</a> under MIT license.
  */
-public class BedrockModelPOJO {
+public class Model {
     @SerializedName("format_version")
     private String formatVersion;
 
     @SerializedName("minecraft:geometry")
     @Nullable
-    private List<GeometryModel> geometryModelNew;
+    private List<Geometry> geometryNew;
 
     public String getFormatVersion() {
         return formatVersion;
     }
 
     @Nullable
-    public GeometryModel getGeometryModel() {
-        if (geometryModelNew == null) {
+    public Geometry getGeometryModel() {
+        if (geometryNew == null) {
             return null;
         }
-        return geometryModelNew.getFirst();
+        return geometryNew.getFirst();
     }
 }
