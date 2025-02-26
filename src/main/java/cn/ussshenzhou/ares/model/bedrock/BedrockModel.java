@@ -1,7 +1,6 @@
 package cn.ussshenzhou.ares.model.bedrock;
 
 import cn.ussshenzhou.ares.model.bedrock.data.*;
-import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
@@ -10,10 +9,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec2;
-import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -23,7 +18,6 @@ import java.util.*;
  * <p></p>
  * This file is intergrated from <a href="https://github.com/TartaricAcid/TouhouLittleMaid">TouhouLittleMaid</a> under MIT license.
  */
-@OnlyIn(Dist.CLIENT)
 public class BedrockModel<T extends EntityRenderState> {
     /**
      * 存储 ModelRender 子模型的 HashMap
@@ -44,11 +38,11 @@ public class BedrockModel<T extends EntityRenderState> {
         renderBoundingBox = new AABB(-1, 0, -1, 1, 2, 1);
     }
 
-    public BedrockModel(Model pojo) {
+    public BedrockModel(ModelFile pojo) {
         loadNewModel(pojo);
     }
 
-    protected void loadNewModel(Model pojo) {
+    protected void loadNewModel(ModelFile pojo) {
         assert pojo.getGeometryModel() != null;
         pojo.getGeometryModel().deco();
 

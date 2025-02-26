@@ -10,7 +10,7 @@ import java.util.List;
  * <p></p>
  * This file is intergrated from <a href="https://github.com/TartaricAcid/TouhouLittleMaid">TouhouLittleMaid</a> under MIT license.
  */
-public class Model {
+public class ModelFile {
     @SerializedName("format_version")
     private String formatVersion;
 
