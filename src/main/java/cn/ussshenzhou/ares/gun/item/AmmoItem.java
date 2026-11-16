@@ -1,7 +1,7 @@
 package cn.ussshenzhou.ares.gun.item;
 
 /* FIXME rendering
-import cn.ussshenzhou.ares.gun.client.renderer.item.AmmoItemRenderer;
+import cn.ussshenzhou.ares.client.renderer.item.AmmoItemRenderer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 */

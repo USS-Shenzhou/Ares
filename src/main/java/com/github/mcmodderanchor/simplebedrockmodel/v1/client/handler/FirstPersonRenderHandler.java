@@ -1,7 +1,7 @@
 package com.github.mcmodderanchor.simplebedrockmodel.v1.client.handler;
 
 import cn.ussshenzhou.ares.gun.TimelessHelperC;
-import cn.ussshenzhou.ares.gun.client.renderer.animation.GunAnimationInstance;
+import cn.ussshenzhou.ares.client.renderer.animation.GunAnimationInstance;
 import cn.ussshenzhou.ares.gun.item.GunItem;
 import com.github.mcmodderanchor.simplebedrockmodel.SimpleBedrockModel;
 import com.github.mcmodderanchor.simplebedrockmodel.v1.common.time.AnimationClock;

@@ -1,8 +1,8 @@
 package cn.ussshenzhou.ares.gun.config;
 
-import cn.ussshenzhou.ares.gun.client.renderer.crosshair.CrosshairMode;
-import cn.ussshenzhou.ares.gun.client.renderer.crosshair.CrosshairType;
-import cn.ussshenzhou.ares.gun.client.resource.display.AmmoCountStyle;
+import cn.ussshenzhou.ares.client.renderer.crosshair.CrosshairMode;
+import cn.ussshenzhou.ares.client.renderer.crosshair.CrosshairType;
+import cn.ussshenzhou.ares.client.resource.display.AmmoCountStyle;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 /// @author TACZ, USS_Shenzhou

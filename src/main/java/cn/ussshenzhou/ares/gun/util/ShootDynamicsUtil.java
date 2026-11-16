@@ -1,9 +1,8 @@
 package cn.ussshenzhou.ares.gun.util;
 
 import com.github.mcmodderanchor.simplebedrockmodel.v2.common.model.runtime.BoneState;
-import com.maydaymemory.mae.util.Easing;
 import com.mojang.math.Axis;
-import cn.ussshenzhou.ares.gun.client.model.BedrockGunModel;
+import cn.ussshenzhou.ares.client.model.BedrockGunModel;
 import cn.ussshenzhou.ares.gun.util.math.PerlinNoise;
 
 /// > 第一人称后座动效工具

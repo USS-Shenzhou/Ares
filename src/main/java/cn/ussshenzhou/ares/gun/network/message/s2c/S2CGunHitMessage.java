@@ -6,7 +6,7 @@ import cn.ussshenzhou.t88.network.annotation.Codec;
 import cn.ussshenzhou.t88.network.annotation.NetPacket;
 import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import cn.ussshenzhou.ares.gun.client.handler.RenderCrosshairHandler;
+import cn.ussshenzhou.ares.client.handler.RenderCrosshairHandler;
 import net.minecraft.network.FriendlyByteBuf;
 
 /// > 服务端权威命中反馈（命中/爆头/击杀），定向发给射手本人，驱动客户端命中标记。

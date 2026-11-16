@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.gun.item.IGun;
-import cn.ussshenzhou.ares.gun.client.util.AimFovHelper;
+import cn.ussshenzhou.ares.client.util.AimFovHelper;
 import cn.ussshenzhou.ares.gun.util.math.MathUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;

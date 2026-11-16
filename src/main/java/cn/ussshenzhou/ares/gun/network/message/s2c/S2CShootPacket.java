@@ -7,7 +7,7 @@ import cn.ussshenzhou.t88.network.annotation.NetPacket;
 import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import cn.ussshenzhou.ares.gun.gameplay.MuzzleReference;
-import cn.ussshenzhou.ares.gun.client.event.ClientShootEventHandler;
+import cn.ussshenzhou.ares.client.event.ClientShootEventHandler;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
 

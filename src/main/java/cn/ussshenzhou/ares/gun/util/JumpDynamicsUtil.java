@@ -1,7 +1,7 @@
 package cn.ussshenzhou.ares.gun.util;
 
 import com.github.mcmodderanchor.simplebedrockmodel.v2.common.model.runtime.BoneState;
-import cn.ussshenzhou.ares.gun.client.model.BedrockGunModel;
+import cn.ussshenzhou.ares.client.model.BedrockGunModel;
 import cn.ussshenzhou.ares.gun.util.math.SecondOrderDynamics;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;

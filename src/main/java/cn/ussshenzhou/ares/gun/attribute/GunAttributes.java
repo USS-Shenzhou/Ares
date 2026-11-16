@@ -5,7 +5,6 @@ import net.minecraft.resources.Identifier;
 
 /// > 内置默认属性id
 /// @author TACZ, USS_Shenzhou
-// FIXME REVIEW removed the two explosion attributes.
 public class GunAttributes {
     public static final Identifier ADS                  = Ares.modLoc("ads");
     public static final Identifier AMMO_SPEED           = Ares.modLoc("ammo_speed");

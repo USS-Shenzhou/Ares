@@ -55,8 +55,6 @@ public enum InaccuracyType {
     }
 
     private static boolean isMove(LivingEntity livingEntity) {
-        // FIXME REVIEW 26.x Entity has no walkDist/walkDistO (moved to the client-only ClientAvatarState); uses the horizontal
-        // getKnownMovement() * 0.6, the factor vanilla used when adding to walkDist every tick.
         double distance = livingEntity.getKnownMovement().horizontalDistance() * 0.6;
         /// > todo
 /// >        if (livingEntity instanceof Player player) {
