@@ -8,7 +8,7 @@ import cn.ussshenzhou.ares.gun.client.util.AimFovHelper;
 import cn.ussshenzhou.ares.gun.client.util.AimView;
 import cn.ussshenzhou.ares.gun.client.util.AimViewHelper;
 import cn.ussshenzhou.ares.gun.network.message.c2s.C2SAimStanceMessage;
-import cn.ussshenzhou.ares.gun.util.HeldGunHelper;
+import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
 import cn.ussshenzhou.ares.gun.util.ZoomHelper;
 import cn.ussshenzhou.t88.network.NetworkHelper;
 import net.minecraft.util.Mth;
@@ -49,7 +49,7 @@ public class LocalGunOperator extends AbstractGunOperator<Player, ClientHandGunS
     @Override
     protected boolean matches(ClientHandGunSession session, ItemStack live, GunOperationSessionKind expectedKind) {
         /// > 值启发式：客户端无稳定实例可比
-        return HeldGunHelper.sameHeldGun(session.stack(), live) && session.kind() == expectedKind;
+        return DualWieldHelper.sameHeldGun(session.stack(), live) && session.kind() == expectedKind;
     }
 
     /// > 客户端会话<b>跨切枪持久存活</b>，不按枪 id 销毁重建。

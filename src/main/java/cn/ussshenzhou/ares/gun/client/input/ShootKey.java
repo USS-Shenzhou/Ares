@@ -5,7 +5,7 @@ import cn.ussshenzhou.ares.Ares;
 import net.neoforged.fml.common.EventBusSubscriber;
 import com.mojang.blaze3d.platform.InputConstants;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
-import cn.ussshenzhou.ares.gun.util.HeldGunHelper;
+import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
 import cn.ussshenzhou.ares.gun.util.FireModeHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -31,6 +31,9 @@ public class ShootKey {
     /// > 左键（射击键）边沿/全自动按住态。
     private static boolean leftWasDown = false;
     private static boolean leftHoldingAuto = false;
+    /// > 右键（瞄准键）边沿/全自动按住态——仅双持时复用为「开火右手」。
+    private static boolean rightWasDown = false;
+    private static boolean rightHoldingAuto = false;
 
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent.Post event) {
@@ -46,22 +49,46 @@ public class ShootKey {
         boolean leftFalling = !leftDown && leftWasDown;
         leftWasDown = leftDown;
 
+        boolean rightDown = AimKey.AIM_KEY.isDown();
+        boolean rightRising = rightDown && !rightWasDown;
+        boolean rightFalling = !rightDown && rightWasDown;
+        rightWasDown = rightDown;
+
         if (!leftDown) {
             leftHoldingAuto = false;
+        }
+        if (!rightDown) {
+            rightHoldingAuto = false;
         }
 
         IGunOperator.asGunHolder(player).ifPresent(op -> {
             /// > 玩家正在使用物品（如举盾格挡、吃东西）时禁止开火。
             if (player.isUsingItem()) {
                 leftHoldingAuto = false;
+                rightHoldingAuto = false;
                 return;
             }
-            /// > 单枪：仅左键开火当前手，右键交由 AimKey 处理瞄准。
-            InteractionHand hand = HeldGunHelper.getPreferredHand(player);
-            if (leftDown) {
-                leftHoldingAuto = fireSingle(op, hand, leftRising);
-            } else if (leftFalling) {
-                fireReleaseIfNeeded(op, hand);
+            if (DualWieldHelper.isDualWielding(player)) {
+                /// > 双持：左键开火左手（OFF_HAND），右键开火右手（MAIN_HAND）。两手互不影响。
+                if (leftDown) {
+                    leftHoldingAuto = fireSingle(op, InteractionHand.OFF_HAND, leftRising);
+                } else if (leftFalling) {
+                    fireReleaseIfNeeded(op, InteractionHand.OFF_HAND);
+                }
+                if (rightDown) {
+                    rightHoldingAuto = fireSingle(op, InteractionHand.MAIN_HAND, rightRising);
+                } else if (rightFalling) {
+                    fireReleaseIfNeeded(op, InteractionHand.MAIN_HAND);
+                }
+            } else {
+                /// > 单枪：仅左键开火当前手，右键交由 AimKey 处理瞄准。
+                rightHoldingAuto = false;
+                InteractionHand hand = DualWieldHelper.getPreferredHand(player);
+                if (leftDown) {
+                    leftHoldingAuto = fireSingle(op, hand, leftRising);
+                } else if (leftFalling) {
+                    fireReleaseIfNeeded(op, hand);
+                }
             }
         });
     }
@@ -87,12 +114,14 @@ public class ShootKey {
     private static void resetState() {
         leftWasDown = false;
         leftHoldingAuto = false;
+        rightWasDown = false;
+        rightHoldingAuto = false;
     }
 
     // FIXME REVIEW auto fire is driven by RenderFrameEvent.Pre in place of the Forge RenderTickEvent.
     @SubscribeEvent
     public static void onRenderTick(RenderFrameEvent.Pre event) {
-        if (!leftHoldingAuto) {
+        if (!leftHoldingAuto && !rightHoldingAuto) {
             return;
         }
 
@@ -107,8 +136,18 @@ public class ShootKey {
             if (player.isUsingItem()) {
                 return;
             }
-            /// > 单枪：仅全自动持续请求开火（RPM 冷却在会话侧节流）。
-            op.fire(HeldGunHelper.getPreferredHand(player));
+            if (DualWieldHelper.isDualWielding(player)) {
+                /// > 双持全自动：各手按各自按住态持续请求开火，RPM 冷却在会话侧节流。
+                if (leftHoldingAuto) {
+                    op.fire(InteractionHand.OFF_HAND);
+                }
+                if (rightHoldingAuto) {
+                    op.fire(InteractionHand.MAIN_HAND);
+                }
+            } else if (leftHoldingAuto) {
+                /// > 单枪：仅全自动持续请求开火（RPM 冷却在会话侧节流）。
+                op.fire(DualWieldHelper.getPreferredHand(player));
+            }
         });
     }
 }

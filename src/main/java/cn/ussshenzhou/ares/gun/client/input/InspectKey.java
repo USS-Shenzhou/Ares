@@ -5,7 +5,7 @@ import cn.ussshenzhou.ares.Ares;
 import net.neoforged.fml.common.EventBusSubscriber;
 import com.mojang.blaze3d.platform.InputConstants;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
-import cn.ussshenzhou.ares.gun.util.HeldGunHelper;
+import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +32,7 @@ public class InspectKey {
             if (player == null || player.isSpectator()) {
                 return;
             }
-            IGunOperator.asGunHolder(player).ifPresent(op -> op.inspect(HeldGunHelper.getPreferredHand(player)));
+            IGunOperator.asGunHolder(player).ifPresent(op -> op.inspect(DualWieldHelper.getPreferredHand(player)));
         }
     }
 }

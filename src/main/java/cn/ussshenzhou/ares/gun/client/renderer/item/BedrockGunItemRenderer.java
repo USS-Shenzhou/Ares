@@ -53,7 +53,7 @@ import cn.ussshenzhou.ares.gun.client.resource.display.SlotAdapterDisplayInstanc
 import cn.ussshenzhou.ares.gun.client.resource.display.AttachmentSlotDisplay;
 import cn.ussshenzhou.ares.gun.util.AdapterLookupHelper;
 import cn.ussshenzhou.ares.gun.util.CustomItemDataHelper;
-import cn.ussshenzhou.ares.gun.util.HeldGunHelper;
+import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
 import cn.ussshenzhou.ares.gun.util.SlotAdapterHelper;
 import cn.ussshenzhou.ares.gun.util.ToggleHelper;
 import cn.ussshenzhou.ares.gun.util.math.MathUtil;
@@ -1369,7 +1369,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /// > 不同 ID 的枪」误判为同一把而不重建（渲染旧枪）；此处按 customId 比较修正。
     @Override
     public boolean isSameItem(ItemStack oldStack, ItemStack newStack) {
-        return HeldGunHelper.sameHeldGun(oldStack, newStack);
+        return DualWieldHelper.sameHeldGun(oldStack, newStack);
     }
 
     @Nullable
@@ -1399,13 +1399,16 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
         /// > 粗判兜底：双手长枪霸占视野。注意主手「是否霸占副手」的权威判定已移至
         /// > GunAnimationInstance.occupiesView()（绑定实例固定渲染形态，过渡期稳定）；
         /// > 此方法仅作 SBM 接口的物品级兜底，不参与双持核心逻辑。
-        return true;
+        return !DualWieldHelper.isOneHandedGun(stack);
     }
 
     @Override
     public boolean canRenderInHand(ItemStack stack, InteractionHand hand) {
         /// > 副手只渲染单手枪：双手枪放副手不在副手呈现（避免套用双手骨架）。
-        return hand != InteractionHand.OFF_HAND;
+        if (hand == InteractionHand.OFF_HAND) {
+            return DualWieldHelper.isOneHandedGun(stack);
+        }
+        return true;
     }
 
     /// > 渲染变体键：当前生效 display 对象本身。双持⇄单持切换会令同一把枪在双手 base 与按手单手
@@ -1421,6 +1424,9 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
         GunDisplayInstance base = getDisplay(stack);
         if (base == null) {
             return null;
+        }
+        if (base.hasOneHandVariants() && DualWieldHelper.isOneHandedForm(player, hand)) {
+            return base.forHand(hand);
         }
         return base;
     }

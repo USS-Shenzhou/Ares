@@ -12,7 +12,7 @@ import cn.ussshenzhou.ares.gun.custom.gun.GunData;
 import cn.ussshenzhou.ares.gun.custom.gun.GunIndex;
 import cn.ussshenzhou.t88.network.NetworkHelper;
 import cn.ussshenzhou.ares.gun.network.message.c2s.C2SFireModeSwitchMessage;
-import cn.ussshenzhou.ares.gun.util.HeldGunHelper;
+import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
 import cn.ussshenzhou.ares.gun.util.FireModeHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -57,7 +57,7 @@ public class FireModeSwitchKey {
         if (!op.isIdle()) {
             return;
         }
-        InteractionHand hand = HeldGunHelper.getPreferredHand(player);
+        InteractionHand hand = DualWieldHelper.getPreferredHand(player);
         /// > 下挂模式下不响应快慢机切换（先用 B 切回主武器再切档）。
         if (op.getModuleMode(hand) == GunModuleMode.UNDER_BARREL) {
             return;

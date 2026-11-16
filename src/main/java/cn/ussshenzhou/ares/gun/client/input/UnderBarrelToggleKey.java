@@ -10,7 +10,7 @@ import cn.ussshenzhou.ares.gun.item.IGun;
 import cn.ussshenzhou.ares.attachment.entity.LocalGunOperator;
 import cn.ussshenzhou.t88.network.NetworkHelper;
 import cn.ussshenzhou.ares.gun.network.message.c2s.C2SFireModeSwitchMessage;
-import cn.ussshenzhou.ares.gun.util.HeldGunHelper;
+import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
 import cn.ussshenzhou.ares.gun.util.FireModeHelper;
 import cn.ussshenzhou.ares.gun.util.MountedWeaponHelper;
 import net.minecraft.client.KeyMapping;
@@ -57,7 +57,7 @@ public class UnderBarrelToggleKey {
             return;
         }
 
-        InteractionHand hand = HeldGunHelper.getPreferredHand(player);
+        InteractionHand hand = DualWieldHelper.getPreferredHand(player);
         GunModuleMode targetMode = op.getModuleMode(hand) == GunModuleMode.UNDER_BARREL ? GunModuleMode.PRIMARY : GunModuleMode.UNDER_BARREL;
         if (op instanceof LocalGunOperator localOp && !localOp.canSwitchWeaponMode(hand, targetMode)) {
             return;

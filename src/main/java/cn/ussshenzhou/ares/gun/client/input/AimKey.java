@@ -5,7 +5,7 @@ import cn.ussshenzhou.ares.Ares;
 import net.neoforged.fml.common.EventBusSubscriber;
 import com.mojang.blaze3d.platform.InputConstants;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
-import cn.ussshenzhou.ares.gun.util.HeldGunHelper;
+import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -32,8 +32,13 @@ public class AimKey {
         if (player == null || player.isSpectator()) {
             return;
         }
+        /// > 双持时右键被复用为「开火右手」（见 ShootKey），不再触发瞄准。
+        /// > 「主手单手枪 + 副手可用特殊物品」形态下右键让位原版使用副手物品（盾牌格挡等），同样不瞄准。
+        if (DualWieldHelper.isDualWielding(player) || DualWieldHelper.isMainOneHandWithOffhandItem(player)) {
+            return;
+        }
         IGunOperator.asGunHolder(player).ifPresent(cap -> {
-            InteractionHand hand = HeldGunHelper.getPreferredHand(player);
+            InteractionHand hand = DualWieldHelper.getPreferredHand(player);
             cap.aim(hand, AIM_KEY.isDown());
         });
     }

@@ -22,6 +22,7 @@ import cn.ussshenzhou.ares.gun.client.resource.display.Laser;
 import cn.ussshenzhou.ares.gun.client.resource.display.MuzzleFlash;
 import cn.ussshenzhou.ares.gun.client.resource.display.ShellEjection;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.InteractionHand;
 import javax.annotation.Nullable;
 import org.joml.Vector3f;
 
@@ -76,6 +77,12 @@ public class GunDisplayInstance {
     private AmmoCountStyle ammoCountStyle = AmmoCountStyle.NORMAL;
     private boolean showCrosshair = false;
 
+    /// > 单手双持按手变体：主手用 right，副手用 left。无声明时为 null（双持也回退本体）。
+    @Nullable
+    private GunDisplayInstance oneHandLeft;
+    @Nullable
+    private GunDisplayInstance oneHandRight;
+
     /// > 懒加载并缓存的 montage 编译结果。montage 编译依赖本 display 的动画表（绑定到本模型骨架），
     /// > 故按 display 维度缓存，跨该 display 派生的所有动画实例复用；随 display 随资源 reload 重建而失效。
     private final Map<Identifier, AnimationMontage<MontageContext>> montageCache = new HashMap<>();
@@ -97,8 +104,89 @@ public class GunDisplayInstance {
         buildAimFov(instance, pojo);
         buildTacticalStance(instance, pojo);
         buildHudConfig(instance, pojo);
+        buildOneHandVariants(instance, pojo);
 
         return instance;
+    }
+
+    /// > 构建单手双持按手变体。变体复用本体的 controller / slots / ICA / 抛壳 / 枪口火光等配置，
+    /// > 仅替换模型、贴图与动画集（绑定到各自模型骨架）。任一字段缺省则回退本体对应值。
+    public static void buildOneHandVariants(GunDisplayInstance instance, GunDisplay pojo) {
+        if (pojo.oneHand == null) {
+            return;
+        }
+        instance.oneHandLeft = buildVariant(instance, pojo, pojo.oneHand.left);
+        instance.oneHandRight = buildVariant(instance, pojo, pojo.oneHand.right);
+    }
+
+    @Nullable
+    private static GunDisplayInstance buildVariant(GunDisplayInstance base, GunDisplay basePojo,
+                                                   @Nullable GunDisplay.Variant variant) {
+        if (variant == null) {
+            return null;
+        }
+        /// > 用本体 pojo 作为模板，仅覆盖模型/贴图/动画字段后重新构建一个完整实例。
+        GunDisplay merged = new GunDisplay();
+        merged.modelLocation = variant.modelLocation != null ? variant.modelLocation : basePojo.modelLocation;
+        merged.modelTexture = variant.modelTexture != null ? variant.modelTexture : basePojo.modelTexture;
+        merged.animationLocation = variant.animationLocation != null ? variant.animationLocation : basePojo.animationLocation;
+        merged.defaultAnimation = variant.defaultAnimation != null ? variant.defaultAnimation : basePojo.defaultAnimation;
+        merged.animationPoseCompositions = resolveAnimationPoseCompositions(basePojo, variant);
+        merged.controller = basePojo.controller;
+        merged.attachmentSlotDisplay = basePojo.attachmentSlotDisplay;
+        merged.slotTexture = basePojo.slotTexture;
+        merged.ironZoom = basePojo.ironZoom;
+        merged.modelFov = basePojo.modelFov;
+        merged.zoomModelFov = basePojo.zoomModelFov;
+        merged.tacticalStance = basePojo.tacticalStance;
+        merged.icaControlBone = basePojo.icaControlBone;
+        merged.icaStrengthMultiplier = basePojo.icaStrengthMultiplier;
+        merged.icaBoneMultipliers = basePojo.icaBoneMultipliers;
+        merged.muzzleFlash = basePojo.muzzleFlash;
+        merged.muzzles = basePojo.muzzles;
+        merged.tracerColor = basePojo.tracerColor;
+        merged.laser = basePojo.laser;
+        merged.shell = basePojo.shell;
+        /// > 变体不再递归 one_hand，避免无限递归。
+        merged.oneHand = null;
+
+        GunDisplayInstance variantInstance = new GunDisplayInstance();
+        buildModelAndTexture(variantInstance, merged);
+        buildIcaConfig(variantInstance, merged);
+        buildAnimations(variantInstance, merged);
+        variantInstance.controllerId = merged.controller;
+        buildMuzzleFlash(variantInstance, merged);
+        buildMuzzles(variantInstance, merged);
+        buildTracerColor(variantInstance, merged);
+        buildLaser(variantInstance, merged);
+        buildFlashlight(variantInstance, merged);
+        buildShellEjection(variantInstance, merged);
+        buildAimFov(variantInstance, merged);
+        buildTacticalStance(variantInstance, merged);
+        buildHudConfig(variantInstance, merged);
+        return variantInstance;
+    }
+
+    @Nullable
+    static List<AnimationPoseComposition> resolveAnimationPoseCompositions(GunDisplay basePojo,
+                                                                           @Nullable GunDisplay.Variant variant) {
+        if (variant != null && variant.animationPoseCompositions != null) {
+            return variant.animationPoseCompositions;
+        }
+        return basePojo.animationPoseCompositions;
+    }
+
+    /// > 取单手双持按手变体：{@code MAIN_HAND} → right，{@code OFF_HAND} → left。
+    /// > 未声明对应变体时返回本体（回退到双手 display，验证期允许）。
+    public GunDisplayInstance forHand(InteractionHand hand) {
+        if (hand == InteractionHand.OFF_HAND) {
+            return oneHandLeft != null ? oneHandLeft : this;
+        }
+        return oneHandRight != null ? oneHandRight : this;
+    }
+
+    public boolean hasOneHandVariants() {
+        return oneHandLeft != null || oneHandRight != null;
     }
 
     /// > 加载模型和贴图

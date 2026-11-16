@@ -113,6 +113,45 @@ public class GunDisplay {
     @SerializedName("show_crosshair")
     public boolean showCrosshair = false;
 
+    /// > 单手双持形态的按手模型/动画/贴图变体。主手用 {@code right}，副手用 {@code left}。
+    /// > 任一字段缺省则回退顶层同名字段。
+    @Nullable
+    @SerializedName("one_hand")
+    public OneHandVariants oneHand = null;
+
+    /// > 单手双持按手变体。仅覆盖渲染相关字段（模型/贴图/动画），其余沿用顶层 display。
+    public static class OneHandVariants {
+        @Nullable
+        @SerializedName("left")
+        public Variant left = null;
+
+        @Nullable
+        @SerializedName("right")
+        public Variant right = null;
+    }
+
+    public static class Variant {
+        @Nullable
+        @SerializedName("model")
+        public Identifier modelLocation = null;
+
+        @Nullable
+        @SerializedName("texture")
+        public Identifier modelTexture = null;
+
+        @Nullable
+        @SerializedName("animation")
+        public Identifier animationLocation = null;
+
+        @Nullable
+        @SerializedName("default_animation")
+        public Identifier defaultAnimation = null;
+
+        @Nullable
+        @SerializedName("animation_pose_compositions")
+        public List<AnimationPoseComposition> animationPoseCompositions = null;
+    }
+
     /// > 战术拒枪姿态的 display 声明。各字段缺省时回退机瞄位对应值，包作者可以先只给骨骼。
     public static class TacticalStance {
         /// > 定位组骨骼名，缺省 {@code tactical_view}。

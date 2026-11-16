@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /// @author TACZ, USS_Shenzhou
-// FIXME REVIEW removed fields: projectile_type, explosion, laser, reload_plan_script, fire_plan_script, hooks, one_handed.
+// FIXME REVIEW removed fields: projectile_type, explosion, laser, reload_plan_script, fire_plan_script, hooks.
 public class GunData {
     @SerializedName("attributes")
     @JsonAdapter(AttributeIdMapDeserializer.class)
@@ -82,6 +82,9 @@ public class GunData {
 
     @SerializedName("allow_aim_while_reloading")
     private boolean allowAimWhileReloading = true;
+
+    @SerializedName("one_handed")
+    private boolean oneHanded = false;
 
     public Map<Identifier, Double> getBaseAttributes() {
         return baseAttributes;
@@ -179,6 +182,10 @@ public class GunData {
 
     public boolean isAllowAimWhileReloading() {
         return allowAimWhileReloading;
+    }
+
+    public boolean isOneHanded() {
+        return oneHanded;
     }
 
     public float getPutAwayTime() {

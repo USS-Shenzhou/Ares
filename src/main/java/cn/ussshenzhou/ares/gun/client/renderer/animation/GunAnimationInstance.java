@@ -16,6 +16,7 @@ import cn.ussshenzhou.ares.gun.client.resource.display.GunDisplayInstance;
 import cn.ussshenzhou.ares.gun.util.MountedWeaponHelper;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.Identifier;
+import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import javax.annotation.Nonnull;
@@ -73,10 +74,18 @@ public class GunAnimationInstance implements IFPAnimationInstance {
             this.animationRuntime = new AnimationRuntime(player, itemStack, currentDisplay, hand);
         }
         /// > 主手以双手形态持握（非单手形态）时霸占副手视野。仅主手实例此值有意义（SBM 只问主手）。
-        this.occupiesView = hand == InteractionHand.MAIN_HAND;
+        this.occupiesView = hand == InteractionHand.MAIN_HAND
+                && !DualWieldHelper.isOneHandedForm(player, hand);
     }
 
+    /// > 解析本实例当前生效的 display：本手为单手形态时按手选用单手变体（主手 right / 副手 left），
+    /// > 否则用顶层（双手）display。无变体声明时 {@code forHand} 自身会回退 base。
+    /// > <p>
+    /// > 单手形态判定见 {@link DualWieldHelper#isOneHandedForm}：副手始终单手，主手仅双持时单手。
     private GunDisplayInstance resolveEffectiveDisplay() {
+        if (baseDisplay.hasOneHandVariants() && DualWieldHelper.isOneHandedForm(player, hand)) {
+            return baseDisplay.forHand(hand);
+        }
         return baseDisplay;
     }
 

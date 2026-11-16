@@ -6,6 +6,8 @@ import cn.ussshenzhou.ares.Ares;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.attachment.entity.LocalGunOperator;
 import cn.ussshenzhou.ares.gun.item.ICustomItem;
+import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
+import cn.ussshenzhou.ares.gun.util.DualWieldSignature;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.player.LocalPlayer;
@@ -35,6 +37,7 @@ public class InventoryEventHandler {
     /// > 用于切枪逻辑
     private static int oldHotbarSelected = -1;
     private static ItemStack oldHotbarSelectItem = ItemStack.EMPTY;
+    private static DualWieldSignature oldDualWieldSignature = DualWieldSignature.inactive();
 
     @SubscribeEvent
     public static void onPlayerChangeSelect(ClientTickEvent.Post event) {
@@ -44,6 +47,13 @@ public class InventoryEventHandler {
         }
         Inventory inventory = player.getInventory();
         ItemStack currentItem = inventory.getItem(inventory.getSelectedSlot());
+        DualWieldSignature currentSignature = DualWieldHelper.signature(player);
+        if (!currentSignature.equals(oldDualWieldSignature)) {
+            /// > 持枪形态切换（单手双持 ↔ 双手）：全量重判双手会话并触发掏枪
+            resync(player);
+            updateSnapshot(player);
+            return;
+        }
         /// > 玩家切换选中框的情况
         if (oldHotbarSelected != inventory.getSelectedSlot()) {
             if (Minecraft.getInstance().gameMode != null) {
@@ -96,6 +106,15 @@ public class InventoryEventHandler {
         /// > 离开游戏时重置客户端 draw 状态
         oldHotbarSelected = -1;
         oldHotbarSelectItem = ItemStack.EMPTY;
+        oldDualWieldSignature = DualWieldSignature.inactive();
+    }
+
+    private static void resync(LocalPlayer player) {
+        IGunOperator.asGunHolder(player).ifPresent(cap -> {
+            if (cap instanceof LocalGunOperator localOp) {
+                localOp.resync();
+            }
+        });
     }
 
     private static void forceRebuildSessions(LocalPlayer player) {
@@ -110,6 +129,7 @@ public class InventoryEventHandler {
         Inventory inventory = player.getInventory();
         oldHotbarSelected = inventory.getSelectedSlot();
         oldHotbarSelectItem = inventory.getItem(inventory.getSelectedSlot()).copy();
+        oldDualWieldSignature = DualWieldHelper.signature(player);
     }
 
     /// > 主手强制切枪（切格子 / 同格子换枪）。客户端无稳定实例，外部检测器已确定切换发生，

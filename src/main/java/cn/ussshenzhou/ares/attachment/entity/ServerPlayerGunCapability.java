@@ -2,7 +2,7 @@ package cn.ussshenzhou.ares.attachment.entity;
 
 import cn.ussshenzhou.ares.gun.gameplay.ShootResult;
 import cn.ussshenzhou.ares.gun.item.IGun;
-import cn.ussshenzhou.ares.gun.util.HeldGunHelper;
+import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
@@ -50,7 +50,7 @@ public class ServerPlayerGunCapability extends AbstractGunOperator<ServerPlayer,
         }
         boolean sameSlot = session.hand() != InteractionHand.MAIN_HAND
                 || session.boundSlot() == player.getInventory().getSelectedSlot();
-        if (sameSlot && HeldGunHelper.sameHeldGun(session.stack(), live)) {
+        if (sameSlot && DualWieldHelper.sameHeldGun(session.stack(), live)) {
             session.rebindInstance(live);
             return true;
         }

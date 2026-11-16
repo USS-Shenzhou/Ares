@@ -6,7 +6,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import com.mojang.blaze3d.platform.InputConstants;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.attachment.entity.LocalGunOperator;
-import cn.ussshenzhou.ares.gun.util.HeldGunHelper;
+import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
@@ -40,7 +40,7 @@ public class SightSwitchKey {
         }
         IGunOperator.asGunHolder(player).ifPresent(op -> {
             if (op instanceof LocalGunOperator localOp) {
-                InteractionHand hand = HeldGunHelper.getPreferredHand(player);
+                InteractionHand hand = DualWieldHelper.getPreferredHand(player);
                 localOp.requestAimViewSwitch(hand);
             }
         });

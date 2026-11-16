@@ -1,6 +1,6 @@
 package cn.ussshenzhou.ares.attachment.entity;
 
-import cn.ussshenzhou.ares.gun.util.HeldGunHelper;
+import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -103,12 +103,14 @@ public abstract class AbstractGunOperator<P extends Player, S extends HandGunSes
         onSessionDrawn(oldStack, live);
     }
 
-    // FIXME REVIEW dual wield is removed: only the main hand opens a TWO_HAND session. Related removals are in the key inputs,
-    // ClientPreventGunClick, InventoryEventHandler and the one-handed display variants.
     @Nullable
     protected GunOperationSessionKind resolveSessionKind(InteractionHand hand, ItemStack stack) {
         if (!isOperable(stack)) {
             return null;
+        }
+        /// > 副手为单手形态 → ONE_HAND；非单手形态（双手枪放副手）副手不建立会话。
+        if (DualWieldHelper.isOneHandedForm(player, hand)) {
+            return GunOperationSessionKind.ONE_HAND;
         }
         return hand == InteractionHand.MAIN_HAND ? GunOperationSessionKind.TWO_HAND : null;
     }
@@ -146,7 +148,7 @@ public abstract class AbstractGunOperator<P extends Player, S extends HandGunSes
     }
 
     protected InteractionHand preferredHand() {
-        return HeldGunHelper.getPreferredHand(player);
+        return DualWieldHelper.getPreferredHand(player);
     }
 
     /// > —— IGunOperator 通用路由 ——
