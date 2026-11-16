@@ -2,10 +2,10 @@ package cn.ussshenzhou.ares.gun.network.message.c2s;
 
 import cn.ussshenzhou.ares.Ares;
 import cn.ussshenzhou.ares.util.GunModuleMode;
+import cn.ussshenzhou.t88.network.annotation.Codec;
 import cn.ussshenzhou.t88.network.annotation.ServerHandler;
-import cn.ussshenzhou.t88.network.annotation.Decoder;
-import cn.ussshenzhou.t88.network.annotation.Encoder;
 import cn.ussshenzhou.t88.network.annotation.NetPacket;
+import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.attachment.entity.ServerPlayerGunOperator;
@@ -18,29 +18,20 @@ import net.minecraft.world.InteractionHand;
 /// > modeIndex == UNDER_BARREL_MODE：切换到下挂武器模式。
 /// @author TACZ, USS_Shenzhou
 @NetPacket(modid = Ares.MOD_ID)
-public class C2SFireModeSwitchMessage {
-    private int modeIndex;
-    private InteractionHand hand;
+public record C2SFireModeSwitchMessage(int modeIndex, InteractionHand hand) {
+    public static final int UNDER_BARREL_MODE = -1;
 
-    public C2SFireModeSwitchMessage(int modeIndex, InteractionHand hand) {
-        this.modeIndex = modeIndex;
-        this.hand = hand;
-    }
+    @Codec
+    public static final StreamCodec<FriendlyByteBuf, C2SFireModeSwitchMessage> STREAM_CODEC = StreamCodec.ofMember(
+            (msg, buf) -> {
+                buf.writeVarInt(msg.modeIndex);
+                buf.writeEnum(msg.hand);
+            },
+            buf -> new C2SFireModeSwitchMessage(buf.readVarInt(), buf.readEnum(InteractionHand.class))
+    );
 
     public C2SFireModeSwitchMessage(int modeIndex) {
         this(modeIndex, InteractionHand.MAIN_HAND);
-    }
-    public static final int UNDER_BARREL_MODE = -1;
-
-    @Encoder
-    public void write(FriendlyByteBuf buf) {
-        buf.writeVarInt(modeIndex);
-        buf.writeEnum(hand);
-    }
-
-    @Decoder
-    public C2SFireModeSwitchMessage(FriendlyByteBuf buf) {
-        this(buf.readVarInt(), buf.readEnum(InteractionHand.class));
     }
 
     @ServerHandler

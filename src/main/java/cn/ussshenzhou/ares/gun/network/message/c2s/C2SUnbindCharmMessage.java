@@ -1,10 +1,10 @@
 package cn.ussshenzhou.ares.gun.network.message.c2s;
 
 import cn.ussshenzhou.ares.Ares;
+import cn.ussshenzhou.t88.network.annotation.Codec;
 import cn.ussshenzhou.t88.network.annotation.ServerHandler;
-import cn.ussshenzhou.t88.network.annotation.Decoder;
-import cn.ussshenzhou.t88.network.annotation.Encoder;
 import cn.ussshenzhou.t88.network.annotation.NetPacket;
+import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import cn.ussshenzhou.ares.gun.item.IGun;
 import cn.ussshenzhou.ares.gun.util.GunCharmDataHelper;
@@ -21,22 +21,12 @@ import net.minecraft.world.item.ItemStack;
 /// > @param gunSlotIndex 枪械所在背包槽位索引
 /// @author TACZ, USS_Shenzhou
 @NetPacket(modid = Ares.MOD_ID)
-public class C2SUnbindCharmMessage {
-    private int gunSlotIndex;
-
-    public C2SUnbindCharmMessage(int gunSlotIndex) {
-        this.gunSlotIndex = gunSlotIndex;
-    }
-
-    @Encoder
-    public void write(FriendlyByteBuf buf) {
-        buf.writeVarInt(gunSlotIndex);
-    }
-
-    @Decoder
-    public C2SUnbindCharmMessage(FriendlyByteBuf buf) {
-        this(buf.readVarInt());
-    }
+public record C2SUnbindCharmMessage(int gunSlotIndex) {
+    @Codec
+    public static final StreamCodec<FriendlyByteBuf, C2SUnbindCharmMessage> STREAM_CODEC = StreamCodec.ofMember(
+            (msg, buf) -> buf.writeVarInt(msg.gunSlotIndex),
+            buf -> new C2SUnbindCharmMessage(buf.readVarInt())
+    );
 
     @ServerHandler
     public void serverHandler(IPayloadContext context) {

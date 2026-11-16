@@ -1,81 +1,41 @@
 package cn.ussshenzhou.ares.gun.attribute;
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
 
-import javax.annotation.Nullable;
-
 /// @author TACZ, USS_Shenzhou
-// FIXME REVIEW merged with GunAttributePojo: changed from record to class and read from JSON directly. The record-style accessors
-// (id(), name(), ...) keep their names; id and display name are filled by bind(id, name) after reading.
-public class GunAttribute {
-    private transient Identifier id;
-    private transient Component name;
-
-    @Nullable
-    @SerializedName("name")
-    private String nameKey;
-
-    @SerializedName("default")
-    private double defaultValue;
-
-    @SerializedName("min")
-    private double minValue;
-
-    @SerializedName("max")
-    private double maxValue;
-
-    @SerializedName("reference")
-    private double referenceValue;
-
-    @SerializedName("positive")
-    private boolean positive;
-
-    @SerializedName("formatter")
-    private GunAttributeFormatter formatter = GunAttributeFormatter.NORMAL;
-
-    public void bind(Identifier id, Component name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Identifier id() {
-        return id;
-    }
-
-    public Component name() {
-        return name;
-    }
-
-    @Nullable
-    public String nameKey() {
-        return nameKey;
-    }
-
-    public double defaultValue() {
-        return defaultValue;
-    }
-
-    public double minValue() {
-        return minValue;
-    }
-
-    public double maxValue() {
-        return maxValue;
-    }
-
-    public double referenceValue() {
-        return referenceValue;
-    }
-
-    public boolean positive() {
-        return positive;
-    }
-
-    public GunAttributeFormatter formatter() {
-        return formatter;
+// FIXME REVIEW merged with GunAttributePojo: fromJson reads the index file into the record directly.
+public record GunAttribute(
+        Identifier id,
+        Component name,
+        double defaultValue,
+        double minValue,
+        double maxValue,
+        double referenceValue,
+        boolean positive,
+        GunAttributeFormatter formatter
+) {
+    /// > 由注册项构造属性定义。**id 来自注册路径**（注册项内不再声明 id），
+    /// > 展示名缺省按 `attribute.<namespace>.<path>` 推导。
+    public static GunAttribute fromJson(Identifier id, JsonObject json, Gson gson) {
+        String nameKey = GsonHelper.getAsString(json, "name", "attribute." + id.getNamespace() + "." + id.getPath());
+        GunAttributeFormatter formatter = json.has("formatter")
+                ? gson.fromJson(json.get("formatter"), GunAttributeFormatter.class)
+                : GunAttributeFormatter.NORMAL;
+        return new GunAttribute(
+                id,
+                Component.translatable(nameKey),
+                GsonHelper.getAsDouble(json, "default", 0),
+                GsonHelper.getAsDouble(json, "min", 0),
+                GsonHelper.getAsDouble(json, "max", 0),
+                GsonHelper.getAsDouble(json, "reference", 0),
+                GsonHelper.getAsBoolean(json, "positive", false),
+                formatter
+        );
     }
 
     public double clamp(double value) {

@@ -1,10 +1,10 @@
 package cn.ussshenzhou.ares.gun.network.message.c2s;
 
 import cn.ussshenzhou.ares.Ares;
+import cn.ussshenzhou.t88.network.annotation.Codec;
 import cn.ussshenzhou.t88.network.annotation.ServerHandler;
-import cn.ussshenzhou.t88.network.annotation.Decoder;
-import cn.ussshenzhou.t88.network.annotation.Encoder;
 import cn.ussshenzhou.t88.network.annotation.NetPacket;
+import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import cn.ussshenzhou.ares.gun.item.AttachmentPath;
 import cn.ussshenzhou.ares.gun.item.IGun;
@@ -27,27 +27,15 @@ import java.util.List;
 /// > @param effect    目标效果（laser / flashlight）
 /// @author TACZ, USS_Shenzhou
 @NetPacket(modid = Ares.MOD_ID)
-public class C2SToggleEffectMessage {
-    private int slotIndex;
-    private String effect;
-
-    public C2SToggleEffectMessage(int slotIndex, String effect) {
-        this.slotIndex = slotIndex;
-        this.effect = effect;
-    }
-
-    @Encoder
-    public void write(FriendlyByteBuf buf) {
-        buf.writeVarInt(slotIndex);
-        buf.writeUtf(effect);
-    }
-
-    @Decoder
-    public C2SToggleEffectMessage(FriendlyByteBuf buf) {
-        int slotIndex = buf.readVarInt();
-        String effect = buf.readUtf();
-        this(slotIndex, effect);
-    }
+public record C2SToggleEffectMessage(int slotIndex, String effect) {
+    @Codec
+    public static final StreamCodec<FriendlyByteBuf, C2SToggleEffectMessage> STREAM_CODEC = StreamCodec.ofMember(
+            (msg, buf) -> {
+                buf.writeVarInt(msg.slotIndex);
+                buf.writeUtf(msg.effect);
+            },
+            buf -> new C2SToggleEffectMessage(buf.readVarInt(), buf.readUtf())
+    );
 
     @ServerHandler
     public void serverHandler(IPayloadContext context) {

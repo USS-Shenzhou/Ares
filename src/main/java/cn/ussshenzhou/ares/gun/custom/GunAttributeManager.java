@@ -6,7 +6,6 @@ import com.google.gson.JsonElement;
 import cn.ussshenzhou.ares.gun.attribute.GunAttribute;
 import cn.ussshenzhou.ares.gun.resource.GunGsonHelper;
 import cn.ussshenzhou.ares.gun.resource.JsonDataManager;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -32,28 +31,18 @@ public class GunAttributeManager extends JsonDataManager<GunAttribute> {
             Identifier id = entry.getKey();
             JsonElement json = entry.getValue();
             try {
-                GunAttribute attribute = this.getGson().fromJson(json, GunAttribute.class);
-                if (attribute != null) {
-                    String error = validateDomain(attribute);
-                    if (error != null) {
-                        LogUtils.getLogger().error("Invalid GunAttribute {}: {}", id, error);
-                        continue;
-                    }
-                    toAttribute(id, attribute);
-                    builder.put(id, attribute);
+                GunAttribute attribute = GunAttribute.fromJson(id, json.getAsJsonObject(), this.getGson());
+                String error = validateDomain(attribute);
+                if (error != null) {
+                    LogUtils.getLogger().error("Invalid GunAttribute {}: {}", id, error);
+                    continue;
                 }
+                builder.put(id, attribute);
             } catch (Exception e) {
                 LogUtils.getLogger().error("Failed to load GunAttribute: {}", id, e);
             }
         }
         this.dataMap = builder.build();
-    }
-
-    /// > 由注册项构造属性定义。**id 来自注册路径**（注册项内不再声明 id），
-    /// > 展示名缺省按 `attribute.<namespace>.<path>` 推导。
-    private static void toAttribute(Identifier id, GunAttribute attribute) {
-        String name = attribute.nameKey() != null ? attribute.nameKey() : "attribute." + id.getNamespace() + "." + id.getPath();
-        attribute.bind(id, Component.translatable(name));
     }
 
     /// > 校验注册项数值域：`min <= max`，且 `default` 落在域内。

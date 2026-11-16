@@ -1,10 +1,10 @@
 package cn.ussshenzhou.ares.gun.network.message.c2s;
 
 import cn.ussshenzhou.ares.Ares;
+import cn.ussshenzhou.t88.network.annotation.Codec;
 import cn.ussshenzhou.t88.network.annotation.ServerHandler;
-import cn.ussshenzhou.t88.network.annotation.Decoder;
-import cn.ussshenzhou.t88.network.annotation.Encoder;
 import cn.ussshenzhou.t88.network.annotation.NetPacket;
+import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import cn.ussshenzhou.ares.gun.item.AttachmentPath;
 import cn.ussshenzhou.ares.gun.item.IGun;
@@ -22,31 +22,16 @@ import net.minecraft.world.item.ItemStack;
 /// > @param enabled   目标开关状态
 /// @author TACZ, USS_Shenzhou
 @NetPacket(modid = Ares.MOD_ID)
-public class C2SRefitSetToggleMessage {
-    private int slotIndex;
-    private AttachmentPath path;
-    private boolean enabled;
-
-    public C2SRefitSetToggleMessage(int slotIndex, AttachmentPath path, boolean enabled) {
-        this.slotIndex = slotIndex;
-        this.path = path;
-        this.enabled = enabled;
-    }
-
-    @Encoder
-    public void write(FriendlyByteBuf buf) {
-        buf.writeVarInt(slotIndex);
-        AttachmentPath.encode(path, buf);
-        buf.writeBoolean(enabled);
-    }
-
-    @Decoder
-    public C2SRefitSetToggleMessage(FriendlyByteBuf buf) {
-        int slotIndex = buf.readVarInt();
-        AttachmentPath path = AttachmentPath.decode(buf);
-        boolean enabled = buf.readBoolean();
-        this(slotIndex, path, enabled);
-    }
+public record C2SRefitSetToggleMessage(int slotIndex, AttachmentPath path, boolean enabled) {
+    @Codec
+    public static final StreamCodec<FriendlyByteBuf, C2SRefitSetToggleMessage> STREAM_CODEC = StreamCodec.ofMember(
+            (msg, buf) -> {
+                buf.writeVarInt(msg.slotIndex);
+                AttachmentPath.encode(msg.path, buf);
+                buf.writeBoolean(msg.enabled);
+            },
+            buf -> new C2SRefitSetToggleMessage(buf.readVarInt(), AttachmentPath.decode(buf), buf.readBoolean())
+    );
 
     @ServerHandler
     public void serverHandler(IPayloadContext context) {

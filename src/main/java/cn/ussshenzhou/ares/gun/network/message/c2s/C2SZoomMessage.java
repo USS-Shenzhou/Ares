@@ -1,10 +1,10 @@
 package cn.ussshenzhou.ares.gun.network.message.c2s;
 
 import cn.ussshenzhou.ares.Ares;
+import cn.ussshenzhou.t88.network.annotation.Codec;
 import cn.ussshenzhou.t88.network.annotation.ServerHandler;
-import cn.ussshenzhou.t88.network.annotation.Decoder;
-import cn.ussshenzhou.t88.network.annotation.Encoder;
 import cn.ussshenzhou.t88.network.annotation.NetPacket;
+import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import cn.ussshenzhou.ares.gun.item.AttachmentPath;
 import cn.ussshenzhou.ares.gun.item.IGun;
@@ -29,32 +29,18 @@ import net.minecraft.world.item.ItemStack;
 /// > @param zoomProgress 无级进度（0~1 生效；范围外清除）
 /// @author TACZ, USS_Shenzhou
 @NetPacket(modid = Ares.MOD_ID)
-public class C2SZoomMessage {
-    private InteractionHand hand;
-    private AttachmentPath path;
-    private int zoomIndex;
-    private float zoomProgress;
-
-    public C2SZoomMessage(InteractionHand hand, AttachmentPath path, int zoomIndex, float zoomProgress) {
-        this.hand = hand;
-        this.path = path;
-        this.zoomIndex = zoomIndex;
-        this.zoomProgress = zoomProgress;
-    }
-
-    @Encoder
-    public void write(FriendlyByteBuf buf) {
-        buf.writeEnum(hand);
-        AttachmentPath.encode(path, buf);
-        buf.writeVarInt(zoomIndex);
-        buf.writeFloat(zoomProgress);
-    }
-
-    @Decoder
-    public C2SZoomMessage(FriendlyByteBuf buf) {
-        this(buf.readEnum(InteractionHand.class), AttachmentPath.decode(buf),
-                buf.readVarInt(), buf.readFloat());
-    }
+public record C2SZoomMessage(InteractionHand hand, AttachmentPath path, int zoomIndex, float zoomProgress) {
+    @Codec
+    public static final StreamCodec<FriendlyByteBuf, C2SZoomMessage> STREAM_CODEC = StreamCodec.ofMember(
+            (msg, buf) -> {
+                buf.writeEnum(msg.hand);
+                AttachmentPath.encode(msg.path, buf);
+                buf.writeVarInt(msg.zoomIndex);
+                buf.writeFloat(msg.zoomProgress);
+            },
+            buf -> new C2SZoomMessage(buf.readEnum(InteractionHand.class), AttachmentPath.decode(buf),
+                    buf.readVarInt(), buf.readFloat())
+    );
 
     @ServerHandler
     public void serverHandler(IPayloadContext context) {

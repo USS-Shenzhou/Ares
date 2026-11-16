@@ -1,10 +1,10 @@
 package cn.ussshenzhou.ares.gun.network.message.c2s;
 
 import cn.ussshenzhou.ares.Ares;
+import cn.ussshenzhou.t88.network.annotation.Codec;
 import cn.ussshenzhou.t88.network.annotation.ServerHandler;
-import cn.ussshenzhou.t88.network.annotation.Decoder;
-import cn.ussshenzhou.t88.network.annotation.Encoder;
 import cn.ussshenzhou.t88.network.annotation.NetPacket;
+import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import cn.ussshenzhou.ares.gun.item.AttachmentPath;
 import cn.ussshenzhou.ares.gun.item.IGun;
@@ -24,34 +24,24 @@ import javax.annotation.Nullable;
 /// > @param adapterId 适配器 index id；为空表示清除适配器
 /// @author TACZ, USS_Shenzhou
 @NetPacket(modid = Ares.MOD_ID)
-public class C2SRefitSetAdapterMessage {
-    private int slotIndex;
-    private AttachmentPath path;
-    @Nullable
-    private Identifier adapterId;
+public record C2SRefitSetAdapterMessage(int slotIndex, AttachmentPath path, @Nullable Identifier adapterId) {
+    @Codec
+    public static final StreamCodec<FriendlyByteBuf, C2SRefitSetAdapterMessage> STREAM_CODEC = StreamCodec.ofMember(C2SRefitSetAdapterMessage::encode, C2SRefitSetAdapterMessage::decode);
 
-    public C2SRefitSetAdapterMessage(int slotIndex, AttachmentPath path, @Nullable Identifier adapterId) {
-        this.slotIndex = slotIndex;
-        this.path = path;
-        this.adapterId = adapterId;
-    }
-
-    @Encoder
-    public void write(FriendlyByteBuf buf) {
-        buf.writeVarInt(slotIndex);
-        AttachmentPath.encode(path, buf);
-        buf.writeBoolean(adapterId != null);
-        if (adapterId != null) {
-            buf.writeIdentifier(adapterId);
+    public static void encode(C2SRefitSetAdapterMessage msg, FriendlyByteBuf buf) {
+        buf.writeVarInt(msg.slotIndex);
+        AttachmentPath.encode(msg.path, buf);
+        buf.writeBoolean(msg.adapterId != null);
+        if (msg.adapterId != null) {
+            buf.writeIdentifier(msg.adapterId);
         }
     }
 
-    @Decoder
-    public C2SRefitSetAdapterMessage(FriendlyByteBuf buf) {
+    public static C2SRefitSetAdapterMessage decode(FriendlyByteBuf buf) {
         int slotIndex = buf.readVarInt();
         AttachmentPath path = AttachmentPath.decode(buf);
         Identifier adapterId = buf.readBoolean() ? buf.readIdentifier() : null;
-        this(slotIndex, path, adapterId);
+        return new C2SRefitSetAdapterMessage(slotIndex, path, adapterId);
     }
 
     @ServerHandler

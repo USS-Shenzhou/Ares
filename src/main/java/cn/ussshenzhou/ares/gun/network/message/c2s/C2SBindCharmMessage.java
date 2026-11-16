@@ -1,10 +1,10 @@
 package cn.ussshenzhou.ares.gun.network.message.c2s;
 
 import cn.ussshenzhou.ares.Ares;
+import cn.ussshenzhou.t88.network.annotation.Codec;
 import cn.ussshenzhou.t88.network.annotation.ServerHandler;
-import cn.ussshenzhou.t88.network.annotation.Decoder;
-import cn.ussshenzhou.t88.network.annotation.Encoder;
 import cn.ussshenzhou.t88.network.annotation.NetPacket;
+import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import cn.ussshenzhou.ares.gun.item.ICustomItem;
 import cn.ussshenzhou.ares.gun.item.IGun;
@@ -42,38 +42,22 @@ import org.joml.Vector3f;
 /// > @param localOffset  局部附加偏移（像素，沿法线离面）
 /// @author TACZ, USS_Shenzhou
 @NetPacket(modid = Ares.MOD_ID)
-public class C2SBindCharmMessage {
-    private int gunSlotIndex;
-    private int charmInvSlot;
-    private Identifier displayId;
-    private String boneName;
-    private Vector3f localHit;
-    private Vector3f localNormal;
-    private Vector3f localOffset;
+public record C2SBindCharmMessage(int gunSlotIndex, int charmInvSlot, Identifier displayId,
+                                  String boneName, Vector3f localHit, Vector3f localNormal, Vector3f localOffset) {
+    @Codec
+    public static final StreamCodec<FriendlyByteBuf, C2SBindCharmMessage> STREAM_CODEC = StreamCodec.ofMember(C2SBindCharmMessage::encode, C2SBindCharmMessage::decode);
 
-    public C2SBindCharmMessage(int gunSlotIndex, int charmInvSlot, Identifier displayId, String boneName, Vector3f localHit, Vector3f localNormal, Vector3f localOffset) {
-        this.gunSlotIndex = gunSlotIndex;
-        this.charmInvSlot = charmInvSlot;
-        this.displayId = displayId;
-        this.boneName = boneName;
-        this.localHit = localHit;
-        this.localNormal = localNormal;
-        this.localOffset = localOffset;
+    public static void encode(C2SBindCharmMessage msg, FriendlyByteBuf buf) {
+        buf.writeVarInt(msg.gunSlotIndex);
+        buf.writeVarInt(msg.charmInvSlot);
+        buf.writeIdentifier(msg.displayId);
+        buf.writeUtf(msg.boneName);
+        writeVec(buf, msg.localHit);
+        writeVec(buf, msg.localNormal);
+        writeVec(buf, msg.localOffset);
     }
 
-    @Encoder
-    public void write(FriendlyByteBuf buf) {
-        buf.writeVarInt(gunSlotIndex);
-        buf.writeVarInt(charmInvSlot);
-        buf.writeIdentifier(displayId);
-        buf.writeUtf(boneName);
-        writeVec(buf, localHit);
-        writeVec(buf, localNormal);
-        writeVec(buf, localOffset);
-    }
-
-    @Decoder
-    public C2SBindCharmMessage(FriendlyByteBuf buf) {
+    public static C2SBindCharmMessage decode(FriendlyByteBuf buf) {
         int gunSlotIndex = buf.readVarInt();
         int charmInvSlot = buf.readVarInt();
         Identifier displayId = buf.readIdentifier();
@@ -81,7 +65,7 @@ public class C2SBindCharmMessage {
         Vector3f localHit = readVec(buf);
         Vector3f localNormal = readVec(buf);
         Vector3f localOffset = readVec(buf);
-        this(gunSlotIndex, charmInvSlot, displayId, boneName, localHit, localNormal, localOffset);
+        return new C2SBindCharmMessage(gunSlotIndex, charmInvSlot, displayId, boneName, localHit, localNormal, localOffset);
     }
 
     @ServerHandler

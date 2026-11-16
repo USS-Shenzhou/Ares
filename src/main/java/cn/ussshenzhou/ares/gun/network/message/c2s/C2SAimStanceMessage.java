@@ -1,10 +1,10 @@
 package cn.ussshenzhou.ares.gun.network.message.c2s;
 
 import cn.ussshenzhou.ares.Ares;
+import cn.ussshenzhou.t88.network.annotation.Codec;
 import cn.ussshenzhou.t88.network.annotation.ServerHandler;
-import cn.ussshenzhou.t88.network.annotation.Decoder;
-import cn.ussshenzhou.t88.network.annotation.Encoder;
 import cn.ussshenzhou.t88.network.annotation.NetPacket;
+import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import net.minecraft.network.FriendlyByteBuf;
@@ -18,25 +18,15 @@ import net.minecraft.world.InteractionHand;
 /// > 拒枪散布属性的枪（否则该属性会取到默认值 0，造成完美精度）。
 /// @author TACZ, USS_Shenzhou
 @NetPacket(modid = Ares.MOD_ID)
-public class C2SAimStanceMessage {
-    private boolean tactical;
-    private InteractionHand hand;
-
-    public C2SAimStanceMessage(boolean tactical, InteractionHand hand) {
-        this.tactical = tactical;
-        this.hand = hand;
-    }
-
-    @Encoder
-    public void write(FriendlyByteBuf buf) {
-        buf.writeBoolean(tactical);
-        buf.writeEnum(hand);
-    }
-
-    @Decoder
-    public C2SAimStanceMessage(FriendlyByteBuf buf) {
-        this(buf.readBoolean(), buf.readEnum(InteractionHand.class));
-    }
+public record C2SAimStanceMessage(boolean tactical, InteractionHand hand) {
+    @Codec
+    public static final StreamCodec<FriendlyByteBuf, C2SAimStanceMessage> STREAM_CODEC = StreamCodec.ofMember(
+            (msg, buf) -> {
+                buf.writeBoolean(msg.tactical);
+                buf.writeEnum(msg.hand);
+            },
+            buf -> new C2SAimStanceMessage(buf.readBoolean(), buf.readEnum(InteractionHand.class))
+    );
 
     @ServerHandler
     public void serverHandler(IPayloadContext context) {

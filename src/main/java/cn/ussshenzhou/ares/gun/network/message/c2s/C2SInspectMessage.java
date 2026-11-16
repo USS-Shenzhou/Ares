@@ -1,10 +1,10 @@
 package cn.ussshenzhou.ares.gun.network.message.c2s;
 
 import cn.ussshenzhou.ares.Ares;
+import cn.ussshenzhou.t88.network.annotation.Codec;
 import cn.ussshenzhou.t88.network.annotation.ServerHandler;
-import cn.ussshenzhou.t88.network.annotation.Decoder;
-import cn.ussshenzhou.t88.network.annotation.Encoder;
 import cn.ussshenzhou.t88.network.annotation.NetPacket;
+import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,18 +12,13 @@ import net.minecraft.server.level.ServerPlayer;
 
 /// @author TACZ, USS_Shenzhou
 @NetPacket(modid = Ares.MOD_ID)
-public class C2SInspectMessage {
-    public C2SInspectMessage() {
-    }
-
-    @Encoder
-    public void write(FriendlyByteBuf buf) {
-    }
-
-    @Decoder
-    public C2SInspectMessage(FriendlyByteBuf buf) {
-        this();
-    }
+public record C2SInspectMessage() {
+    @Codec
+    public static final StreamCodec<FriendlyByteBuf, C2SInspectMessage> STREAM_CODEC = StreamCodec.ofMember(
+            (msg, buf) -> {
+            },
+            buf -> new C2SInspectMessage()
+    );
 
     @ServerHandler
     public void serverHandler(IPayloadContext context) {

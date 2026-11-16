@@ -1,10 +1,10 @@
 package cn.ussshenzhou.ares.gun.network.message.c2s;
 
 import cn.ussshenzhou.ares.Ares;
+import cn.ussshenzhou.t88.network.annotation.Codec;
 import cn.ussshenzhou.t88.network.annotation.ServerHandler;
-import cn.ussshenzhou.t88.network.annotation.Decoder;
-import cn.ussshenzhou.t88.network.annotation.Encoder;
 import cn.ussshenzhou.t88.network.annotation.NetPacket;
+import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import cn.ussshenzhou.ares.gun.item.AttachmentPath;
 import cn.ussshenzhou.ares.gun.item.IGun;
@@ -23,31 +23,16 @@ import net.minecraft.world.item.ItemStack;
 /// > @param attachmentId 要安装的配件注册 id
 /// @author TACZ, USS_Shenzhou
 @NetPacket(modid = Ares.MOD_ID)
-public class C2SRefitInstallMessage {
-    private int slotIndex;
-    private AttachmentPath path;
-    private Identifier attachmentId;
-
-    public C2SRefitInstallMessage(int slotIndex, AttachmentPath path, Identifier attachmentId) {
-        this.slotIndex = slotIndex;
-        this.path = path;
-        this.attachmentId = attachmentId;
-    }
-
-    @Encoder
-    public void write(FriendlyByteBuf buf) {
-        buf.writeVarInt(slotIndex);
-        AttachmentPath.encode(path, buf);
-        buf.writeIdentifier(attachmentId);
-    }
-
-    @Decoder
-    public C2SRefitInstallMessage(FriendlyByteBuf buf) {
-        int slotIndex = buf.readVarInt();
-        AttachmentPath path = AttachmentPath.decode(buf);
-        Identifier attachmentId = buf.readIdentifier();
-        this(slotIndex, path, attachmentId);
-    }
+public record C2SRefitInstallMessage(int slotIndex, AttachmentPath path, Identifier attachmentId) {
+    @Codec
+    public static final StreamCodec<FriendlyByteBuf, C2SRefitInstallMessage> STREAM_CODEC = StreamCodec.ofMember(
+            (msg, buf) -> {
+                buf.writeVarInt(msg.slotIndex);
+                AttachmentPath.encode(msg.path, buf);
+                buf.writeIdentifier(msg.attachmentId);
+            },
+            buf -> new C2SRefitInstallMessage(buf.readVarInt(), AttachmentPath.decode(buf), buf.readIdentifier())
+    );
 
     @ServerHandler
     public void serverHandler(IPayloadContext context) {
