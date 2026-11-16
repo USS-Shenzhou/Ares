@@ -7,7 +7,7 @@ import cn.ussshenzhou.t88.network.annotation.Encoder;
 import cn.ussshenzhou.t88.network.annotation.NetPacket;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
-import cn.ussshenzhou.ares.attachment.entity.ServerPlayerGunCapability;
+import cn.ussshenzhou.ares.attachment.entity.ServerPlayerGunOperator;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -48,7 +48,7 @@ public class C2SReloadMessage {
             if (action == ACTION_START) {
                 op.reload(hand);
             } else if (action == ACTION_CANCEL) {
-                if (op instanceof ServerPlayerGunCapability serverOp) {
+                if (op instanceof ServerPlayerGunOperator serverOp) {
                     serverOp.cancelReload(hand);
                 }
             }

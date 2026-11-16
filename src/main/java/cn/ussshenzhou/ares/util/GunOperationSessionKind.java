@@ -1,4 +1,4 @@
-package cn.ussshenzhou.ares.attachment.entity;
+package cn.ussshenzhou.ares.util;
 
 /// @author TACZ, USS_Shenzhou
 public enum GunOperationSessionKind {

@@ -5,7 +5,7 @@ import com.github.mcmodderanchor.simplebedrockmodel.v1.common.molang.MolangEngin
 import com.github.mcmodderanchor.simplebedrockmodel.v1.molang.MochaEngine;
 import com.github.mcmodderanchor.simplebedrockmodel.v1.molang.runtime.MolangContext;
 import com.github.mcmodderanchor.simplebedrockmodel.v1.molang.runtime.binding.QueryBinding;
-import cn.ussshenzhou.ares.attachment.entity.GunHolderState;
+import cn.ussshenzhou.ares.util.GunHolderState;
 import cn.ussshenzhou.ares.gun.client.animation.context.AnimationEventSink;
 import cn.ussshenzhou.ares.gun.client.animation.context.AnimationNotifyEvent;
 import cn.ussshenzhou.ares.gun.client.animation.context.WeaponAnimationContext;

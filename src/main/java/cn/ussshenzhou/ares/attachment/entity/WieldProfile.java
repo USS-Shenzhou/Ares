@@ -2,6 +2,7 @@ package cn.ussshenzhou.ares.attachment.entity;
 
 import cn.ussshenzhou.ares.gun.attribute.GunAttribute;
 import cn.ussshenzhou.ares.gun.attribute.IGunProperties;
+import cn.ussshenzhou.ares.util.GunOperationSessionKind;
 
 /// > 持枪形态策略：承载「单手双持」与「双手」之间的真实差异。
 /// > <p>

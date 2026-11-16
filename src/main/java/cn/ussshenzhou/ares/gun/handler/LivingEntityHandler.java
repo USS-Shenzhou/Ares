@@ -1,10 +1,10 @@
 package cn.ussshenzhou.ares.gun.handler;
 
 import cn.ussshenzhou.ares.Ares;
-import cn.ussshenzhou.ares.attachment.entity.GunHolderState;
+import cn.ussshenzhou.ares.util.GunHolderState;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.gun.item.IGun;
-import cn.ussshenzhou.ares.attachment.entity.ServerPlayerGunCapability;
+import cn.ussshenzhou.ares.attachment.entity.ServerPlayerGunOperator;
 import cn.ussshenzhou.ares.gun.util.AttributeDataHelper;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
@@ -40,7 +40,7 @@ public class LivingEntityHandler {
     public static void onSwapHandItems(LivingSwapItemsEvent.Hands event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             IGunOperator.asGunHolder(serverPlayer).ifPresent(op -> {
-                if (op instanceof ServerPlayerGunCapability cap) {
+                if (op instanceof ServerPlayerGunOperator cap) {
                     cap.forceHandSwap();
                 }
             });
@@ -62,7 +62,7 @@ public class LivingEntityHandler {
         double speedMultiplier = AttributeDataHelper.moveSpeedMultiplier(mainHand);
 
         IGunOperator op = IGunOperator.asGunHolder(player).orElse(null);
-        if (op instanceof ServerPlayerGunCapability cap) {
+        if (op instanceof ServerPlayerGunOperator cap) {
             if (cap.isAiming()) {
                 speedMultiplier *= 0.6;
             }

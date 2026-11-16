@@ -1,6 +1,10 @@
 package cn.ussshenzhou.ares.attachment.entity;
 
+import cn.ussshenzhou.ares.attachment.entity.session.HandGunSession;
 import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
+import cn.ussshenzhou.ares.util.GunHolderState;
+import cn.ussshenzhou.ares.util.GunModuleMode;
+import cn.ussshenzhou.ares.util.GunOperationSessionKind;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

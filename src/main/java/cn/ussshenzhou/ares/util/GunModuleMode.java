@@ -1,4 +1,4 @@
-package cn.ussshenzhou.ares.attachment.entity;
+package cn.ussshenzhou.ares.util;
 
 /// > 枪械的“模块模式”。
 /// > PRIMARY：主枪模式

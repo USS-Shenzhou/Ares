@@ -1,6 +1,6 @@
 package cn.ussshenzhou.ares.gun.gameplay.timeline;
 
-import cn.ussshenzhou.ares.attachment.entity.GunHolderState;
+import cn.ussshenzhou.ares.util.GunHolderState;
 
 import java.util.ArrayList;
 import java.util.Collection;

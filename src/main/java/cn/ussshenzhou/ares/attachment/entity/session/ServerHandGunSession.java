@@ -1,5 +1,6 @@
-package cn.ussshenzhou.ares.attachment.entity;
+package cn.ussshenzhou.ares.attachment.entity.session;
 
+import cn.ussshenzhou.ares.attachment.entity.WieldProfile;
 import cn.ussshenzhou.ares.gun.attribute.GunAttributes;
 import cn.ussshenzhou.ares.gun.gameplay.MuzzleReference;
 import cn.ussshenzhou.ares.gun.gameplay.ShootResult;
@@ -24,6 +25,8 @@ import cn.ussshenzhou.ares.gun.util.AttachmentTreeHelper;
 import cn.ussshenzhou.ares.gun.util.FireModeHelper;
 import cn.ussshenzhou.ares.gun.util.ModuleModeHelper;
 import cn.ussshenzhou.ares.gun.util.MountedWeaponHelper;
+import cn.ussshenzhou.ares.util.GunHolderState;
+import cn.ussshenzhou.ares.util.GunModuleMode;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.InteractionHand;

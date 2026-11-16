@@ -4,7 +4,7 @@ import cn.ussshenzhou.ares.gun.attribute.GunAttributes;
 import cn.ussshenzhou.ares.gun.attribute.InaccuracyType;
 import cn.ussshenzhou.ares.gun.custom.attribute.GunPropertiesCaches;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
-import cn.ussshenzhou.ares.attachment.entity.ServerPlayerGunCapability;
+import cn.ussshenzhou.ares.attachment.entity.ServerPlayerGunOperator;
 import cn.ussshenzhou.ares.gun.custom.CommonAssetsManager;
 import cn.ussshenzhou.ares.gun.custom.ammo.AmmoData;
 import cn.ussshenzhou.ares.gun.custom.ammo.AmmoIndex;
@@ -127,7 +127,7 @@ public class ShootHelper {
         boolean isTracerShot = false;
         if (tracerFrequency >= 0) {
             IGunOperator op = IGunOperator.asGunHolder(player).orElse(null);
-            if (op instanceof ServerPlayerGunCapability serverCap) {
+            if (op instanceof ServerPlayerGunOperator serverCap) {
                 int count = serverCap.incrementShotCounter();
                 isTracerShot = tracerFrequency == 0 || count % tracerFrequency == 0;
             }

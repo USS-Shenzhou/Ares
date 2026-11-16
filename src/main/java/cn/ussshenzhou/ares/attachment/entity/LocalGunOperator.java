@@ -1,5 +1,6 @@
 package cn.ussshenzhou.ares.attachment.entity;
 
+import cn.ussshenzhou.ares.attachment.entity.session.ClientHandGunSession;
 import cn.ussshenzhou.ares.gun.item.AttachmentPath;
 import cn.ussshenzhou.ares.gun.item.IGun;
 import cn.ussshenzhou.ares.gun.item.IMountedWeapon;
@@ -10,6 +11,8 @@ import cn.ussshenzhou.ares.gun.client.util.AimViewHelper;
 import cn.ussshenzhou.ares.gun.network.message.c2s.C2SAimStanceMessage;
 import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
 import cn.ussshenzhou.ares.gun.util.ZoomHelper;
+import cn.ussshenzhou.ares.util.GunModuleMode;
+import cn.ussshenzhou.ares.util.GunOperationSessionKind;
 import cn.ussshenzhou.t88.network.NetworkHelper;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;

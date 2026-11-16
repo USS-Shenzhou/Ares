@@ -1,6 +1,6 @@
 package cn.ussshenzhou.ares.gun.gameplay.reload;
 
-import cn.ussshenzhou.ares.attachment.entity.ServerHandGunSession;
+import cn.ussshenzhou.ares.attachment.entity.session.ServerHandGunSession;
 import cn.ussshenzhou.ares.gun.custom.attribute.GunPropertiesCaches;
 import cn.ussshenzhou.ares.gun.custom.gun.BoltType;
 import cn.ussshenzhou.ares.gun.custom.gun.GunData;

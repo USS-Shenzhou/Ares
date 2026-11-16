@@ -5,7 +5,7 @@ import com.github.mcmodderanchor.simplebedrockmodel.v1.client.animation.IFPAnima
 import com.maydaymemory.mae.basic.DummyPose;
 import com.maydaymemory.mae.basic.Pose;
 import cn.ussshenzhou.ares.gun.TimelessHelperC;
-import cn.ussshenzhou.ares.attachment.entity.GunModuleMode;
+import cn.ussshenzhou.ares.util.GunModuleMode;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.gun.item.IGun;
 import cn.ussshenzhou.ares.gun.client.animation.mounted.HostOverlayBridge;

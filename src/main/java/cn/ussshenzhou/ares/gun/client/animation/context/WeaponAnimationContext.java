@@ -1,8 +1,8 @@
 package cn.ussshenzhou.ares.gun.client.animation.context;
 
 import cn.ussshenzhou.ares.Ares;
-import cn.ussshenzhou.ares.attachment.entity.GunHolderState;
-import cn.ussshenzhou.ares.attachment.entity.GunModuleMode;
+import cn.ussshenzhou.ares.util.GunHolderState;
+import cn.ussshenzhou.ares.util.GunModuleMode;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.gun.item.AttachmentSlot;
 import cn.ussshenzhou.ares.gun.item.IGun;

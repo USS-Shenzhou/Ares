@@ -2,7 +2,7 @@ package cn.ussshenzhou.ares.gun.handler;
 
 import cn.ussshenzhou.ares.Ares;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
-import cn.ussshenzhou.ares.attachment.entity.ServerPlayerGunCapability;
+import cn.ussshenzhou.ares.attachment.entity.ServerPlayerGunOperator;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -15,7 +15,7 @@ public class PlayerLifecycleHandler {
     public static void onPlayerDeath(LivingDeathEvent event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             IGunOperator.asGunHolder(serverPlayer).ifPresent(op -> {
-                if (op instanceof ServerPlayerGunCapability cap) {
+                if (op instanceof ServerPlayerGunOperator cap) {
                     cap.reset();
                 }
             });

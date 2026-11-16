@@ -1,6 +1,6 @@
 package cn.ussshenzhou.ares.gun.gameplay.timeline;
 
-import cn.ussshenzhou.ares.attachment.entity.GunHolderState;
+import cn.ussshenzhou.ares.util.GunHolderState;
 import javax.annotation.Nullable;
 
 /// @author TACZ, USS_Shenzhou

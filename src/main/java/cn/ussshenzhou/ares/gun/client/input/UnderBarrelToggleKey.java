@@ -4,7 +4,7 @@ import cn.ussshenzhou.ares.gun.client.ClientSetup;
 import cn.ussshenzhou.ares.Ares;
 import net.neoforged.fml.common.EventBusSubscriber;
 import com.mojang.blaze3d.platform.InputConstants;
-import cn.ussshenzhou.ares.attachment.entity.GunModuleMode;
+import cn.ussshenzhou.ares.util.GunModuleMode;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.gun.item.IGun;
 import cn.ussshenzhou.ares.attachment.entity.LocalGunOperator;

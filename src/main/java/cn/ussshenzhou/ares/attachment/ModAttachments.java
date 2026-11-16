@@ -3,7 +3,7 @@ package cn.ussshenzhou.ares.attachment;
 import cn.ussshenzhou.ares.Ares;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.attachment.entity.LocalGunOperator;
-import cn.ussshenzhou.ares.attachment.entity.ServerPlayerGunCapability;
+import cn.ussshenzhou.ares.attachment.entity.ServerPlayerGunOperator;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.attachment.AttachmentType;
@@ -21,7 +21,7 @@ public class ModAttachments {
     public static final DeferredHolder<AttachmentType<?>, AttachmentType<IGunOperator>> GUN_HOLDER_CAPABILITY =
             ATTACHMENT_TYPES.register("gun_holder", () -> AttachmentType.<IGunOperator>builder(holder -> {
                 if (holder instanceof ServerPlayer serverPlayer) {
-                    return new ServerPlayerGunCapability(serverPlayer);
+                    return new ServerPlayerGunOperator(serverPlayer);
                 }
                 if (holder instanceof Player player) {
                     return new LocalGunOperator(player);

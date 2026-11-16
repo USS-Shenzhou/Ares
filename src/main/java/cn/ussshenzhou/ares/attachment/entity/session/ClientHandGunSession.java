@@ -1,6 +1,10 @@
-package cn.ussshenzhou.ares.attachment.entity;
+package cn.ussshenzhou.ares.attachment.entity.session;
 
 import cn.ussshenzhou.ares.Ares;
+import cn.ussshenzhou.ares.attachment.entity.LocalGunOperator;
+import cn.ussshenzhou.ares.attachment.entity.WieldProfile;
+import cn.ussshenzhou.ares.util.GunHolderState;
+import cn.ussshenzhou.ares.util.GunModuleMode;
 import com.github.mcmodderanchor.simplebedrockmodel.v1.client.handler.FirstPersonRenderHandler;
 import cn.ussshenzhou.ares.gun.custom.attribute.GunPropertiesCaches;
 import cn.ussshenzhou.ares.gun.gameplay.ShootResult;

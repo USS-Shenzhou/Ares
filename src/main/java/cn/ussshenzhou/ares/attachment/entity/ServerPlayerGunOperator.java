@@ -1,8 +1,10 @@
 package cn.ussshenzhou.ares.attachment.entity;
 
+import cn.ussshenzhou.ares.attachment.entity.session.ServerHandGunSession;
 import cn.ussshenzhou.ares.gun.gameplay.ShootResult;
 import cn.ussshenzhou.ares.gun.item.IGun;
 import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
+import cn.ussshenzhou.ares.util.GunOperationSessionKind;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
@@ -18,11 +20,11 @@ import net.minecraft.world.item.ItemStack;
 /// > </ul>
 /// > 真实换手（F 键对调两手物品，可能同 id 同值）由 {@link #forceHandSwap()} 权威事件驱动强制重建会话。
 /// @author TACZ, USS_Shenzhou
-public class ServerPlayerGunCapability extends AbstractGunOperator<ServerPlayer, ServerHandGunSession> {
+public class ServerPlayerGunOperator extends AbstractGunOperator<ServerPlayer, ServerHandGunSession> {
     /// > 真实换手待处理标志：事件在物品实际对调前触发，tick（物品已对调）时消费。
     private boolean handSwapPending = false;
 
-    public ServerPlayerGunCapability(ServerPlayer player) {
+    public ServerPlayerGunOperator(ServerPlayer player) {
         super(player);
     }
 

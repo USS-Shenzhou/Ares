@@ -1,5 +1,7 @@
 package cn.ussshenzhou.ares.attachment.entity;
 
+import cn.ussshenzhou.ares.util.GunOperationSessionKind;
+
 /// > 双手持枪形态：能力全开，属性 / 时长恒等（即现状行为）。
 /// @author TACZ, USS_Shenzhou
 public class TwoHandProfile implements WieldProfile {

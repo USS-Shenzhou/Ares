@@ -7,7 +7,7 @@ import cn.ussshenzhou.t88.network.annotation.Encoder;
 import cn.ussshenzhou.t88.network.annotation.NetPacket;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
-import cn.ussshenzhou.ares.attachment.entity.ServerPlayerGunCapability;
+import cn.ussshenzhou.ares.attachment.entity.ServerPlayerGunOperator;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -62,7 +62,7 @@ public class C2SFireMessage {
     public void serverHandler(IPayloadContext context) {
         ServerPlayer player = (ServerPlayer) context.player();
         IGunOperator.asGunHolder(player).ifPresent(op -> {
-            if (op instanceof ServerPlayerGunCapability serverOp) {
+            if (op instanceof ServerPlayerGunOperator serverOp) {
                 if (action == ACTION_PRESS) {
                     serverOp.fireWithDirection(hand, yaw, pitch);
                 } else if (action == ACTION_RELEASE) {
