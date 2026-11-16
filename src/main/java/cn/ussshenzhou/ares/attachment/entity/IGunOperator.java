@@ -1,7 +1,7 @@
 package cn.ussshenzhou.ares.attachment.entity;
 
 import cn.ussshenzhou.ares.attachment.ModAttachments;
-import cn.ussshenzhou.ares.attachment.entity.session.HandGunSession;
+import cn.ussshenzhou.ares.attachment.entity.gun.HandGunSession;
 import cn.ussshenzhou.ares.util.GunHolderState;
 import cn.ussshenzhou.ares.util.GunModuleMode;
 import net.minecraft.world.InteractionHand;
@@ -29,7 +29,7 @@ import java.util.Optional;
 /// @author TACZ, USS_Shenzhou
 public interface IGunOperator {
 
-    // FIXME REVIEW returns Optional instead of the Forge LazyOptional; entities other than players get Optional.empty().
+    // NEEDTEST player.removed
     static Optional<IGunOperator> asGunHolder(Entity entity) {
         if (entity instanceof Player player) {
             return Optional.of(player.getData(ModAttachments.GUN_HOLDER_CAPABILITY));

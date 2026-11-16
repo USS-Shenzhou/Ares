@@ -1,4 +1,4 @@
-package cn.ussshenzhou.ares.attachment.entity;
+package cn.ussshenzhou.ares.attachment.entity.gun;
 
 import cn.ussshenzhou.ares.gun.attribute.GunAttribute;
 import cn.ussshenzhou.ares.gun.attribute.IGunProperties;

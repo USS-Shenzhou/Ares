@@ -1,8 +1,7 @@
-package cn.ussshenzhou.ares.attachment.entity.session;
+package cn.ussshenzhou.ares.attachment.entity.gun;
 
 import cn.ussshenzhou.ares.Ares;
 import cn.ussshenzhou.ares.attachment.entity.LocalGunOperator;
-import cn.ussshenzhou.ares.attachment.entity.WieldProfile;
 import cn.ussshenzhou.ares.util.GunHolderState;
 import cn.ussshenzhou.ares.util.GunModuleMode;
 import com.github.mcmodderanchor.simplebedrockmodel.v1.client.handler.FirstPersonRenderHandler;
@@ -149,6 +148,7 @@ public class ClientHandGunSession extends HandGunSession {
         return tracks.gate().canReload();
     }
 
+    @Override
     @Nonnull
     public ItemStack getCurrentItem() {
         return player.getItemInHand(hand());
@@ -462,7 +462,7 @@ public class ClientHandGunSession extends HandGunSession {
         if (activeScope.isEmpty()) {
             return;
         }
-        float next = Mth.clamp((baseProgress < 0.0F ? 0.0F : baseProgress)
+        float next = Mth.clamp((Math.max(baseProgress, 0.0F))
                 + (float) delta * ZOOM_PROGRESS_STEP, 0.0F, 1.0F);
         applyZoomPredict(path, ZoomHelper.getZoomIndex(activeScope), next, false);
     }
@@ -654,7 +654,7 @@ public class ClientHandGunSession extends HandGunSession {
         var ani = FirstPersonRenderHandler.getActiveAnimationInstance(hand());
         if (ani instanceof GunAnimationInstance gunAni) {
             gunAni.fire();
-            // FIXME REVIEW placeholder shoot sound ares:ak47/ak47_shoot kept from respawn, also played in onClientBurstFire;
+            // FIXME REVIEW placeholder shoot sound ares:ak47/ak47_shoot kept from respawn, also played in onClientBurstFire; WAIT UNTIL TACZ RESPAWN UPDATE
             // replace with the gun's own sound later.
             player.playSound(
                     SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath(Ares.MOD_ID, "ak47/ak47_shoot"))

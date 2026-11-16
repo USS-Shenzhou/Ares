@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
 /// > 缺省 namespace 补 `tacz:`：数据包与脚本里的属性键通常写作短名（如 `damage`），
 /// > 与 `gun.has_attachment('tacz:scope')` 等既有约定保持一致。
 /// @author TACZ, USS_Shenzhou
-// FIXME REVIEW renamed from AttributeIds.
 public class AttributeIdHelper {
     public static final String DEFAULT_NAMESPACE = Ares.MOD_ID;
 

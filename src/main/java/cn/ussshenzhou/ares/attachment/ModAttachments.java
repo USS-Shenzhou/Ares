@@ -11,8 +11,6 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
-/// The gun holder is a non-serialized data attachment on players.
-/// It is created lazily on first access and recreated for the new player entity after respawn.
 /// @author TACZ, USS_Shenzhou
 public class ModAttachments {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES =

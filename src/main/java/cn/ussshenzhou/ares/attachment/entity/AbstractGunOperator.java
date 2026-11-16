@@ -1,6 +1,9 @@
 package cn.ussshenzhou.ares.attachment.entity;
 
-import cn.ussshenzhou.ares.attachment.entity.session.HandGunSession;
+import cn.ussshenzhou.ares.attachment.entity.gun.HandGunSession;
+import cn.ussshenzhou.ares.attachment.entity.gun.OneHandProfile;
+import cn.ussshenzhou.ares.attachment.entity.gun.TwoHandProfile;
+import cn.ussshenzhou.ares.attachment.entity.gun.WieldProfile;
 import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
 import cn.ussshenzhou.ares.util.GunHolderState;
 import cn.ussshenzhou.ares.util.GunModuleMode;

@@ -15,7 +15,7 @@ import cn.ussshenzhou.ares.gun.item.IGun;
 */
 import cn.ussshenzhou.ares.Ares;
 import cn.ussshenzhou.ares.util.GunHolderState;
-import cn.ussshenzhou.ares.attachment.entity.session.HandGunSession;
+import cn.ussshenzhou.ares.attachment.entity.gun.HandGunSession;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.Identifier;

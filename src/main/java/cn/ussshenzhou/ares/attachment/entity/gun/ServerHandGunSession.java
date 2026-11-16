@@ -1,6 +1,5 @@
-package cn.ussshenzhou.ares.attachment.entity.session;
+package cn.ussshenzhou.ares.attachment.entity.gun;
 
-import cn.ussshenzhou.ares.attachment.entity.WieldProfile;
 import cn.ussshenzhou.ares.gun.attribute.GunAttributes;
 import cn.ussshenzhou.ares.gun.gameplay.MuzzleReference;
 import cn.ussshenzhou.ares.gun.gameplay.ShootResult;
@@ -348,7 +347,7 @@ public class ServerHandGunSession extends HandGunSession {
             return;
         }
         int modeCount = data.getFireModes().size();
-        if (modeCount == 0 || modeIndex < 0 || modeIndex >= modeCount) {
+        if (modeIndex < 0 || modeIndex >= modeCount) {
             return;
         }
         exitUnderBarrelMode();
@@ -507,8 +506,8 @@ public class ServerHandGunSession extends HandGunSession {
 
     /// > 重算当前射击间隔缓存：由当前枪械 RPM 属性推导（`60000 / RPM`），反映当前枪械最新只读状态。
     /// > 掏枪与每发出膛后调用；每 tick 的 pool 门控读缓存值。
-    // FIXME REVIEW the fire interval only comes from RPM (AttributeDataHelper.shootIntervalMs), also in
-    // ClientHandGunSession.computeCooldownMs.
+    ///
+    /// No longer support dynamic RPM in fire_plan_script
     private void refreshFireInterval() {
         this.currentFireIntervalMs = Math.max(AttributeDataHelper.shootIntervalMs(activeStack()), 1);
     }

@@ -4,7 +4,7 @@ import cn.ussshenzhou.ares.gun.TimelessHelperC;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.gun.item.IGun;
 import cn.ussshenzhou.ares.attachment.entity.LocalGunOperator;
-import cn.ussshenzhou.ares.attachment.entity.session.ClientHandGunSession.ZoomPrediction;
+import cn.ussshenzhou.ares.attachment.entity.gun.ClientHandGunSession.ZoomPrediction;
 import cn.ussshenzhou.ares.gun.client.resource.display.AttachmentDisplayInstance;
 import cn.ussshenzhou.ares.gun.client.resource.display.GunDisplayInstance;
 import cn.ussshenzhou.ares.gun.util.math.MathUtil;

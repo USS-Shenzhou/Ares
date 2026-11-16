@@ -1,6 +1,7 @@
 package cn.ussshenzhou.ares.attachment.entity;
 
-import cn.ussshenzhou.ares.attachment.entity.session.ClientHandGunSession;
+import cn.ussshenzhou.ares.attachment.entity.gun.ClientHandGunSession;
+import cn.ussshenzhou.ares.attachment.entity.gun.WieldProfile;
 import cn.ussshenzhou.ares.gun.item.AttachmentPath;
 import cn.ussshenzhou.ares.gun.item.IGun;
 import cn.ussshenzhou.ares.gun.item.IMountedWeapon;
@@ -198,6 +199,7 @@ public class LocalGunOperator extends AbstractGunOperator<Player, ClientHandGunS
 
     /// > —— 客户端特有方法 ——
 
+    @Override
     public void fireRelease() {
         fireRelease(preferredHand());
     }

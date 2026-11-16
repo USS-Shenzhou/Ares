@@ -1,6 +1,5 @@
-package cn.ussshenzhou.ares.attachment.entity.session;
+package cn.ussshenzhou.ares.attachment.entity.gun;
 
-import cn.ussshenzhou.ares.attachment.entity.WieldProfile;
 import cn.ussshenzhou.ares.gun.gameplay.ShootResult;
 import cn.ussshenzhou.ares.util.GunHolderState;
 import cn.ussshenzhou.ares.util.GunModuleMode;
@@ -15,8 +14,6 @@ import java.util.EnumSet;
 import java.util.List;
 
 /// @author TACZ, USS_Shenzhou
-// FIXME REVIEW fire_plan/reload_plan scripts, hooks, Forge events (GunLifecycleEmitter), ammo switching and unloading are removed
-// from the server and client sessions, ServerPlayerGunCapability and LocalGunOperator.
 public abstract class HandGunSession {
     private final InteractionHand hand;
     private WieldProfile profile;

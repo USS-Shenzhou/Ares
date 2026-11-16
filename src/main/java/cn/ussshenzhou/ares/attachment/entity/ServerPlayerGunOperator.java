@@ -1,6 +1,7 @@
 package cn.ussshenzhou.ares.attachment.entity;
 
-import cn.ussshenzhou.ares.attachment.entity.session.ServerHandGunSession;
+import cn.ussshenzhou.ares.attachment.entity.gun.ServerHandGunSession;
+import cn.ussshenzhou.ares.attachment.entity.gun.WieldProfile;
 import cn.ussshenzhou.ares.gun.gameplay.ShootResult;
 import cn.ussshenzhou.ares.gun.item.IGun;
 import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
