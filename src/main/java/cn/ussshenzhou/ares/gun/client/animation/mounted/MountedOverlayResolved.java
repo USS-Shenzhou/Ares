@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 /// > 解析后的下挂 overlay 运行时数据：在资源重载阶段按解析链（combo profile + mounted template）
-/// > 预先构建，所有动画已绑定到具体 host 模型骨架。供 {@link HostOverlayRuntime} 直接使用。
-/// > <p>
-/// > 解析链：combo profile 显式声明 {@link MountedCompatibilityProfile#grip} 持枪姿态（per-combo），
+/// > 预先构建，所有动画已绑定到具体 host 模型骨架。供 [HostOverlayRuntime] 直接使用。
+/// >
+/// > 解析链：combo profile 显式声明 [MountedCompatibilityProfile#grip] 持枪姿态（per-combo），
 /// > mounted template 提供操作差量蒙太奇与持枪混合规则（per-mounted 复用）。
 /// @author TACZ, USS_Shenzhou
 public class MountedOverlayResolved {

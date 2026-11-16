@@ -40,9 +40,9 @@ public class AimFovHelper {
                 .orElse((float) fallbackFov);
     }
 
-    /// > 开镜模型 FOV（模型透视）：当前激活瞄具声明的 views_fov <b>优先于模型本身</b>——
+    /// > 开镜模型 FOV（模型透视）：当前激活瞄具声明的 views_fov **优先于模型本身**——
     /// > 镜子的倍率（zoom）与模型 fov 一一配套：档位模式下 views_fov[zoomIndex] 与档位倍率对应，
-    /// > 无级模式下由无级位置同比例映射（{@link #resolveScopeZoomFov} 输出的就是该配套值）。
+    /// > 无级模式下由无级位置同比例映射（[#resolveScopeZoomFov] 输出的就是该配套值）。
     /// > 未装瞄具（机瞄）回退枪械 zoom_model_fov。
     public static float getZoomModelFov(ItemStack stack, float fallbackFov) {
         ViewTransition views = getViewTransition(stack);
@@ -60,7 +60,7 @@ public class AimFovHelper {
         return Mth.lerp(views.progress(), activeFov, pendingFov);
     }
 
-    /// > 单个视图位的开镜模型 FOV：瞄具按其声明，本体视位取与倍率配套的 {@code zoom_model_fov}。
+    /// > 单个视图位的开镜模型 FOV：瞄具按其声明，本体视位取与倍率配套的 `zoom_model_fov`。
     private static float viewZoomModelFov(AimView view, float fallbackFov) {
         if (view instanceof AimView.ScopeView scope) {
             return resolveScopeZoomFov(scope.stack(), currentPrediction(), fallbackFov);
@@ -71,7 +71,7 @@ public class AimFovHelper {
 
     /// > 解析指定瞄具的生效模型 FOV：无级进度（预测 → NBT，t=0 低倍 / t=1 高倍，在 zoom_fov_range 上
     /// > 从 maxFov 向 minFov 插值）→ 档位 views_fov[index % n] → fallback。无级范围的档位互斥：
-    /// > 声明了无级范围时档位索引不再参与循环（初始进度由档位映射，见 {@link #resolveScopeZoomProgress}）。
+    /// > 声明了无级范围时档位索引不再参与循环（初始进度由档位映射，见 [#resolveScopeZoomProgress]）。
     public static float resolveScopeZoomFov(ItemStack scope, @Nullable ZoomPrediction prediction, float fallbackFov) {
         AttachmentDisplayInstance display = scope.isEmpty() ? null : TimelessHelperC.getAttachmentDisplay(scope).orElse(null);
         if (display == null) {
@@ -97,7 +97,7 @@ public class AimFovHelper {
 
     /// > 解析指定瞄具的生效倍率（zoom，世界画面缩放用）：无级进度（预测 → NBT，t=0 低倍 / t=1 高倍，
     /// > 在 zoom_range 上从 minZoom 向 maxZoom 插值）→ 档位 zoom[index]（未声明按 70/views_fov 反推）
-    /// > → fallback。与 {@link #resolveScopeZoomFov}（模型 FOV）是两个独立数据字段，共用同一无级进度。
+    /// > → fallback。与 [#resolveScopeZoomFov]（模型 FOV）是两个独立数据字段，共用同一无级进度。
     public static float resolveScopeZoom(ItemStack scope, @Nullable ZoomPrediction prediction, float fallbackZoom) {
         AttachmentDisplayInstance display = scope.isEmpty() ? null : TimelessHelperC.getAttachmentDisplay(scope).orElse(null);
         if (display == null) {

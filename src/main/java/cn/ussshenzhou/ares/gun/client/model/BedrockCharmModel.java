@@ -18,7 +18,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 /// > 挂饰模型（v2）。
-/// > <p>
+/// >
 /// > 除整体静态渲染外，向挂饰物理渲染暴露分层能力：取 layout 骨骼在 bind pose 下的 pivot 偏移、
 /// > 计算某子树几何的体积加权质心、按骨骼名渲染单根子树。挂饰模型无动画，instance 恒处于 bind 状态，
 /// > 故几何查询直接读 instance 的全局变换即可。

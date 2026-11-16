@@ -155,8 +155,8 @@ public class ClientHandGunSession extends HandGunSession {
     }
 
     /// > 当前玩法预判目标：下挂模式返回宿主属性缓存里解析好的下挂副本，否则返回宿主手持物。
-    /// > <p>
-    /// > 下挂副本随宿主 {@link GunPropertiesCaches} 生命周期存活（按宿主 {@link ItemStack} 实例为 key）：
+    /// >
+    /// > 下挂副本随宿主 [GunPropertiesCaches] 生命周期存活（按宿主 [ItemStack] 实例为 key）：
     /// > 宿主实例不变则复用同一副本（不重复解析、不堆短命缓存）；服务端同步重建宿主实例后缓存随之失效重建，
     /// > 永远反映最新权威值，不会 desync。
     @Nonnull
@@ -261,7 +261,7 @@ public class ClientHandGunSession extends HandGunSession {
 
     /// > 客户端主发出膛后的端副作用：更新 muzzle-flash 时间戳、阻止冲刺、起冲刺锁。
     /// > 由开火序列片段在子弹实际出膛后通过 postPrimaryFire 回调触发。
-    /// > （RPM 冷却节奏由 {@link CooldownSegment} 在出膛 notify 时驱动，不在此处理。）
+    /// > （RPM 冷却节奏由 [CooldownSegment] 在出膛 notify 时驱动，不在此处理。）
     private void onShotFired() {
         /// > muzzle-flash 时间戳：记录真实出膛时刻（射速节奏由冷却片段独立维护）
         this.lastShootTimestamp = System.currentTimeMillis();
@@ -326,14 +326,13 @@ public class ClientHandGunSession extends HandGunSession {
     }
 
     /// > 请求切换（收枪 → 掏枪）。客户端会话跨切枪持久存活：
-    /// > <ul>
-    /// >   <li>若已处于收枪窗口（{@link PutAwaySegment} 活跃），忽略本次请求，让窗口跑完。
-    /// >       窗口结束时由 operator 读「实时手持物」落地，故窗口期内目标再变会被自然吸收。</li>
-    /// >   <li>否则清空当前所有片段（打断 reload/burst/inspect/draw），起一段收枪窗口；
-    /// >       时长由「旧枪」（{@link #stack()}）的 putAwayTicks 经形态调整推导。</li>
-    /// > </ul>
-    /// > 收枪结束仅置 {@link #putAwayCompleted} 标志，真正落地延后到 operator tick 轮询时执行，
-    /// > 避免在 {@code tracks.tick()} 迭代内调用 {@link #draw} 的 {@code tracks.clear()}。
+    /// > - 若已处于收枪窗口（[PutAwaySegment] 活跃），忽略本次请求，让窗口跑完。
+    /// >   窗口结束时由 operator 读「实时手持物」落地，故窗口期内目标再变会被自然吸收。
+    /// > - 否则清空当前所有片段（打断 reload/burst/inspect/draw），起一段收枪窗口；
+    /// >   时长由「旧枪」（[#stack()]）的 putAwayTicks 经形态调整推导。
+    /// >
+    /// > 收枪结束仅置 [#putAwayCompleted] 标志，真正落地延后到 operator tick 轮询时执行，
+    /// > 避免在 `tracks.tick()` 迭代内调用 [#draw] 的 `tracks.clear()`。
     public void requestSwitch() {
         if (tracks.has(PutAwaySegment.TOKEN)) {
             return;
@@ -363,7 +362,7 @@ public class ClientHandGunSession extends HandGunSession {
     }
 
     /// > 玩家请求切换瞄准视图位（纯客户端表现）：循环切到下一个视图位并起二阶动力学过渡。
-    /// > 需要至少两个视图位（aimViewCount 由调用方按 {@code AimViewHelper} 收集得出）；已在切换中则忽略。
+    /// > 需要至少两个视图位（aimViewCount 由调用方按 `AimViewHelper` 收集得出）；已在切换中则忽略。
     public void requestAimViewSwitch(int aimViewCount) {
         if (aimViewCount <= 1 || isAimViewSwitching()) {
             return;
@@ -412,12 +411,12 @@ public class ClientHandGunSession extends HandGunSession {
 
     /// > —— 变倍（有级档位 / 无级滚轮）——
 
-    /// > 变倍预测状态载体。无级运行时状态是单个进度 {@code zoomProgress}（0~1），
+    /// > 变倍预测状态载体。无级运行时状态是单个进度 `zoomProgress`（0~1），
     /// > 模型 FOV 与倍率由各自的声明范围在同一进度上插值（同比例映射）；
-    /// > {@code < 0} 表示无级未生效（按档位数组取值）。
-    /// > <p>
-    /// > 预测持续生效直到 NBT 对账一致（{@link LocalGunOperator} 调用 {@link #clearZoomPredict()} 清除）
-    /// > 或确认超时（{@link #isFresh()} 为 false）。
+    /// > `< 0` 表示无级未生效（按档位数组取值）。
+    /// >
+    /// > 预测持续生效直到 NBT 对账一致（[LocalGunOperator] 调用 [#clearZoomPredict()] 清除）
+    /// > 或确认超时（[#isFresh()] 为 false）。
     public record ZoomPrediction(int zoomIndex, float zoomProgress, long timestampMs) {
         public boolean isFresh() {
             return System.currentTimeMillis() - timestampMs < ZOOM_CONFIRM_TIMEOUT_MS;
@@ -436,7 +435,9 @@ public class ClientHandGunSession extends HandGunSession {
     /// > 玩家请求有级变倍（档位 +1 循环，并清除无级进度）：本地预测立即生效并上报服务端权威落地。
     /// >
     /// > @param activeScope 当前激活瞄具（读取其配件 NBT 档位索引）
+    /// >
     /// > @param path        激活瞄具槽位路径（随 C2S 上报）
+    /// >
     /// > @param scopeCount  档位数（views_fov 长度）
     public void requestZoomStep(ItemStack activeScope, AttachmentPath path, int scopeCount) {
         if (activeScope.isEmpty() || scopeCount <= 1) {
@@ -451,8 +452,11 @@ public class ClientHandGunSession extends HandGunSession {
     /// > 预测立即生效；上报走防抖（滚停 {@value #ZOOM_DEBOUNCE_MS}ms 后落最终值），期间不逐格发包。
     /// >
     /// > @param activeScope 当前激活瞄具（档位索引保持来源）
+    /// >
     /// > @param path        激活瞄具槽位路径
+    /// >
     /// > @param delta       本次滚轮格数（正 = 放大倍率）
+    /// >
     /// > @param baseProgress 当前生效进度（预测 / NBT / 档位在范围上的映射）
     public void requestZoomDelta(ItemStack activeScope, AttachmentPath path, double delta, float baseProgress) {
         if (activeScope.isEmpty()) {
@@ -463,8 +467,8 @@ public class ClientHandGunSession extends HandGunSession {
         applyZoomPredict(path, ZoomHelper.getZoomIndex(activeScope), next, false);
     }
 
-    /// > 本地预测写入；{@code sendImmediately} 为真（V 键切档）立即上报服务端权威，
-    /// > 为假（滚轮无级）挂起待 {@link #tick()} 防抖上报最终值。
+    /// > 本地预测写入；`sendImmediately` 为真（V 键切档）立即上报服务端权威，
+    /// > 为假（滚轮无级）挂起待 [#tick()] 防抖上报最终值。
     private void applyZoomPredict(AttachmentPath path, int zoomIndex, float zoomProgress, boolean sendImmediately) {
         predictZoomIndex = Math.max(0, zoomIndex);
         predictZoomProgress = zoomProgress;
@@ -489,11 +493,11 @@ public class ClientHandGunSession extends HandGunSession {
         pendingZoomSyncTimestamp = -1L;
     }
 
-    /// > 玩家请求切换模式（模块模式 / 快慢机）。客户端<b>不做预测</b>：仅起一个锁定窗口
-    /// > （{@link ModeSwitchPendingSegment}）锁住后续操作，等待服务端权威 NBT 同步回来后由
-    /// > {@link #reconcileModes()} 真正应用。已在切换 / 过渡中则忽略本次请求。
-    /// > <p>
-    /// > 发送 C2S 请求由调用方（按键 / {@link #setModuleMode}）负责。
+    /// > 玩家请求切换模式（模块模式 / 快慢机）。客户端**不做预测**：仅起一个锁定窗口
+    /// > （[ModeSwitchPendingSegment]）锁住后续操作，等待服务端权威 NBT 同步回来后由
+    /// > [#reconcileModes()] 真正应用。已在切换 / 过渡中则忽略本次请求。
+    /// >
+    /// > 发送 C2S 请求由调用方（按键 / [#setModuleMode]）负责。
     public void requestModeSwitch() {
         if (isModeSwitching()) {
             return;
@@ -505,8 +509,8 @@ public class ClientHandGunSession extends HandGunSession {
     }
 
     /// > 对账权威 NBT，把模块模式 / 快慢机档位的变化真正落到客户端表现（重建开火序列 / 播过渡 / 播拨杆动画）。
-    /// > 由 {@link #tick()} 每刻调用，覆盖：玩家请求被服务端确认、纯服务端驱动的模式变化。
-    /// > 任一变化被应用后取消等待锁定段（{@link ModeSwitchPendingSegment}）解锁。
+    /// > 由 [#tick()] 每刻调用，覆盖：玩家请求被服务端确认、纯服务端驱动的模式变化。
+    /// > 任一变化被应用后取消等待锁定段（[ModeSwitchPendingSegment]）解锁。
     private void reconcileModes() {
         /// > 收枪 / 切枪窗口期间（PutAwaySegment 活跃）：会话仍绑定旧枪、applied* 是旧枪缓存，
         /// > 而手持物可能已切成另一把枪。此时一切等收枪结束的 draw() 按新枪重设 applied*，
@@ -551,8 +555,8 @@ public class ClientHandGunSession extends HandGunSession {
         }
     }
 
-    /// > 按权威模块模式重建客户端开火序列 / 冷却轨。仅在玩家主动切换（{@code playTransition}）且涉及下挂模式翻转时播过渡。
-    /// > 由 {@link #reconcileModes()} 调用，不发包、不写 NBT（纯表现落地）。换枪 / 服务端纠正时 {@code playTransition=false}，静默重建。
+    /// > 按权威模块模式重建客户端开火序列 / 冷却轨。仅在玩家主动切换（`playTransition`）且涉及下挂模式翻转时播过渡。
+    /// > 由 [#reconcileModes()] 调用，不发包、不写 NBT（纯表现落地）。换枪 / 服务端纠正时 `playTransition=false`，静默重建。
     private void applyModuleMode(@Nonnull GunModuleMode newMode, boolean playTransition) {
         GunModuleMode oldMode = this.appliedMode;
         /// > 进入下挂模式：找不到下挂武器则退回主枪模式。下挂副本由 activeStack 按宿主实例身份缓存。
@@ -586,7 +590,7 @@ public class ClientHandGunSession extends HandGunSession {
     }
 
     /// > 是否正处于模式切换中（客户端表现锁）。包括「已发请求等待服务端确认」的锁定窗口
-    /// > （{@link ModeSwitchPendingSegment}）与「确认后播放过渡」的过渡段（{@link ModeTransitionSegment}）。
+    /// > （[ModeSwitchPendingSegment]）与「确认后播放过渡」的过渡段（[ModeTransitionSegment]）。
     /// > 期间禁止开火/换弹/检视/再切换。
     public boolean isModeSwitching() {
         return tracks.has(ModeSwitchPendingSegment.TOKEN) || tracks.has(ModeTransitionSegment.TOKEN);
@@ -691,14 +695,14 @@ public class ClientHandGunSession extends HandGunSession {
     }
 
     /// > 客户端弹药消耗预测。
-    /// > <p>
+    /// >
     /// > 只对 open 预测弹匣计数（纯数值，错了下次同步自愈，不影响门禁逻辑）。
-    /// > closed/manual <b>绝不写 chambered</b>——它是服务端权威、且自愈逻辑读它分支，
+    /// > closed/manual **绝不写 chambered**——它是服务端权威、且自愈逻辑读它分支，
     /// > 客户端写入会在丢同步时造成死锁（客户端以为已上膛而停止请求，服务端仍未上膛）。
     /// > chamber 类型的开火门禁靠 RPM 冷却 + bolt 窗口（本地运行时状态），不依赖预测 chambered。
-    /// > <p>
-    /// > 下挂模式下 {@code activeStack()} 返回宿主属性缓存里的下挂副本，原地消耗即作为预判（随宿主缓存存活，
-    /// > 服务端同步重建宿主实例时缓存重建自愈）。主枪模式下 {@code activeStack()} 即手持活引用，原地消耗即生效。
+    /// >
+    /// > 下挂模式下 `activeStack()` 返回宿主属性缓存里的下挂副本，原地消耗即作为预判（随宿主缓存存活，
+    /// > 服务端同步重建宿主实例时缓存重建自愈）。主枪模式下 `activeStack()` 即手持活引用，原地消耗即生效。
     private void predictConsume(BoltType boltType) {
         if (!boltType.usesChamber()) {
             AmmoDataHelper.consumeAmmo(activeStack(), 1);
@@ -763,11 +767,11 @@ public class ClientHandGunSession extends HandGunSession {
         return fireController != null && fireController.getBoltType().usesChamber();
     }
 
-    /// > 换弹表现的公共实现。{@code sendPacket=true} 时额外发送 {@link C2SReloadMessage}（玩家主动换弹），
-    /// > {@code false} 时仅做客户端表现（如弹种切换后补播动画）。
-    /// > <p>
-    /// > 切弹种补播表现（{@code sendPacket=false}）是<b>强制表现</b>：服务端已权威决定换弹（退弹 + 重装），
-    /// > 客户端只补动画。因此跳过 {@link ReloadPlan#canReload}（弹匣容量 / 背包余弹这类「主动换弹」专属前置）——
+    /// > 换弹表现的公共实现。`sendPacket=true` 时额外发送 [C2SReloadMessage]（玩家主动换弹），
+    /// > `false` 时仅做客户端表现（如弹种切换后补播动画）。
+    /// >
+    /// > 切弹种补播表现（`sendPacket=false`）是**强制表现**：服务端已权威决定换弹（退弹 + 重装），
+    /// > 客户端只补动画。因此跳过 [ReloadPlan#canReload]（弹匣容量 / 背包余弹这类「主动换弹」专属前置）——
     /// > 切弹种时客户端 stack 仍是旧状态（旧弹种、弹匣可能满），用它判断会误挡掉表现。
     private void startReloadVisual(boolean sendPacket) {
         if (isModeSwitching()) {

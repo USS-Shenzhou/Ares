@@ -9,10 +9,10 @@ public interface AnimationEventSink {
 
     void onSound(Identifier soundId);
 
-    /// > 动画 {@code particle_effects} 通道关键帧触发：请求生成一个粒子效果。
-    /// > <p>
+    /// > 动画 `particle_effects` 通道关键帧触发：请求生成一个粒子效果。
+    /// >
     /// > 仅入队待发射的粒子数据，真正的发射器创建与枪口骨骼绑定由渲染层在拿到
-    /// > 枪口真实变换时完成（见 {@code BedrockGunItemRenderer}）。
+    /// > 枪口真实变换时完成（见 `BedrockGunItemRenderer`）。
     void onParticle(ParticleEffectData data);
 
     AnimationEventSink NONE = new AnimationEventSink() {

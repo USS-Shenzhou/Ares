@@ -16,7 +16,9 @@ import net.minecraft.world.item.ItemStack;
 /// > 改装界面设置配件开关状态请求（C2S，服务端权威）。
 /// >
 /// > @param slotIndex 枪械所在的背包槽位索引
+/// >
 /// > @param path      目标槽位路径（末端槽位上的配件被切换）
+/// >
 /// > @param enabled   目标开关状态
 /// @author TACZ, USS_Shenzhou
 @NetPacket(modid = Ares.MOD_ID)

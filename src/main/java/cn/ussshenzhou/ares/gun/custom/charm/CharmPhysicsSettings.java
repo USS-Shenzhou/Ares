@@ -1,8 +1,8 @@
 package cn.ussshenzhou.ares.gun.custom.charm;
 
 /// > 挂饰物理参数（端无关的纯数据）。
-/// > <p>
-/// > 物理虽然只在客户端表现，但参数属于数据驱动内容，随 {@link CharmData} 一起加载/同步。
+/// >
+/// > 物理虽然只在客户端表现，但参数属于数据驱动内容，随 [CharmData] 一起加载/同步。
 /// > 构造时做范围钳制，保证数值落在合理区间。
 /// @author TACZ, USS_Shenzhou
 public record CharmPhysicsSettings(

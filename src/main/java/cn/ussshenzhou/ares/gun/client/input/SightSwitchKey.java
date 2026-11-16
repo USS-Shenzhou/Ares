@@ -18,8 +18,8 @@ import net.neoforged.neoforge.client.settings.KeyModifier;
 import net.neoforged.bus.api.SubscribeEvent;
 
 /// > 瞄准视图位切换键（Alt+V）：在视图位列表（本体机瞄 / 战术拒枪位 / 安装的瞄具）中循环切换激活项。
-/// > 列表构成见 {@code AimViewHelper}：装了模板瞄具时本体机瞄不进列表。
-/// > <p>
+/// > 列表构成见 `AimViewHelper`：装了模板瞄具时本体机瞄不进列表。
+/// >
 /// > 视点、模板圆切、倍率跟随都是纯客户端表现；拒枪姿态影响散布，由客户端把姿态结果 C2S 上报，
 /// > 服务端权威落地。
 /// @author TACZ, USS_Shenzhou

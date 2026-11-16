@@ -4,13 +4,13 @@ import java.util.NavigableMap;
 import java.util.TreeMap;
 
 /// > host_overlay 权重声明（多态）。同一字段在 JSON 中可写成三种形态，由
-/// > {@link cn.ussshenzhou.ares.gun.client.animation.mounted.serialize.OverlayWeightSpecSerializer} 判别解析：
-/// > <pre>
-/// >   "weight": 1.0                       -> {@link Kind#CONSTANT}
-/// >   "weight": { "0.0": 0, "0.3": 1 }    -> {@link Kind#KEYFRAMES}（M3 曲线）
-/// >   "weight": "query.reload_progress"   -> {@link Kind#EXPRESSION}（M4 Molang）
-/// > </pre>
-/// > 消费侧统一通过 {@link OverlayWeightProvider} 取值，不直接感知形态。
+/// > [cn.ussshenzhou.ares.gun.client.animation.mounted.serialize.OverlayWeightSpecSerializer] 判别解析：
+/// > ```
+/// >   "weight": 1.0                       -> Kind.CONSTANT
+/// >   "weight": { "0.0": 0, "0.3": 1 }    -> Kind.KEYFRAMES（M3 曲线）
+/// >   "weight": "query.reload_progress"   -> Kind.EXPRESSION（M4 Molang）
+/// > ```
+/// > 消费侧统一通过 [OverlayWeightProvider] 取值，不直接感知形态。
 /// @author TACZ, USS_Shenzhou
 public class OverlayWeightSpec {
     public enum Kind {

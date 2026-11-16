@@ -6,12 +6,12 @@ import net.minecraft.util.Mth;
 import javax.annotation.Nullable;
 
 /// > 改装界面的客户端渲染状态（单例）。
-/// > <p>
+/// >
 /// > 复用第一人称枪械渲染：改装时枪继续在世界里渲染，但定位变换插值到模型的
-/// > {@code refit_view}（总览）或选中槽位的 {@code refit_<slot>_view} 骨骼，
-/// > 使枪铺满屏幕并聚焦到对应部位。GUI（{@link cn.ussshenzhou.ares.gun.client.gui.GunRefitScreen}）
+/// > `refit_view`（总览）或选中槽位的 `refit_<slot>_view` 骨骼，
+/// > 使枪铺满屏幕并聚焦到对应部位。GUI（[cn.ussshenzhou.ares.gun.client.gui.GunRefitScreen]）
 /// > 仅作透明覆盖层。
-/// > <p>
+/// >
 /// > 开启进度由二阶动力学平滑驱动：打开界面 0→1（枪移入改装位），关闭 1→0（移回待机位）。
 /// > 槽位聚焦的平滑由渲染端对目标矩阵做逐帧缓动完成（见 BedrockGunItemRenderer）。
 /// @author TACZ, USS_Shenzhou
@@ -93,6 +93,7 @@ public class RefitTransform {
     /// > 累加一次拖拽位移（鼠标拖动），更新目标旋转角并即时跟随。
     /// >
     /// > @param dx 鼠标 x 位移（像素，向右为正）→ yaw
+    /// >
     /// > @param dy 鼠标 y 位移（像素，向下为正）→ pitch
     public static void addDrag(double dx, double dy) {
         dragYaw += (float) dx * DRAG_SENSITIVITY;
@@ -103,8 +104,8 @@ public class RefitTransform {
         DRAG.target(1, dragPitch);
     }
 
-    /// > 松手：保持当前角度，延迟 {@link #RELEASE_DELAY_MS} 后再开始平滑回弹。
-    /// > 实际把 target 置零的动作由 {@link #pollSpringBack()} 在延迟到点时执行。
+    /// > 松手：保持当前角度，延迟 [#RELEASE_DELAY_MS] 后再开始平滑回弹。
+    /// > 实际把 target 置零的动作由 [#pollSpringBack()] 在延迟到点时执行。
     public static void releaseDrag() {
         /// > 目标仍停在松手时的角度，先不回弹
         DRAG.target(0, dragYaw);

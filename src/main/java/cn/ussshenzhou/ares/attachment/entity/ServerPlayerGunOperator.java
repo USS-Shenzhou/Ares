@@ -10,15 +10,14 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 
 /// > 服务端玩家持枪能力：权威执行。
-/// > <p>
+/// >
 /// > 会话身份判定分两级：
-/// > <ul>
-/// >   <li><b>实例身份</b>（{@code ==}）：快速路径。物品栏在服务端权威，槽位 {@code ItemStack} 实例在
-/// >       物品未被换走期间保持同一对象，NBT 原地修改不换实例。</li>
-/// >   <li><b>同槽 + 值签名</b>：实例被重建（如打开创造物品栏等强同步边界）但仍是同一选中槽位、
-/// >       且 Item / gunId 值签名不变时，视为同一把枪，静默重绑活引用，不重置会话。</li>
-/// > </ul>
-/// > 真实换手（F 键对调两手物品，可能同 id 同值）由 {@link #forceHandSwap()} 权威事件驱动强制重建会话。
+/// > - **实例身份**（`==`）：快速路径。物品栏在服务端权威，槽位 `ItemStack` 实例在
+/// >   物品未被换走期间保持同一对象，NBT 原地修改不换实例。
+/// > - **同槽 + 值签名**：实例被重建（如打开创造物品栏等强同步边界）但仍是同一选中槽位、
+/// >   且 Item / gunId 值签名不变时，视为同一把枪，静默重绑活引用，不重置会话。
+/// >
+/// > 真实换手（F 键对调两手物品，可能同 id 同值）由 [#forceHandSwap()] 权威事件驱动强制重建会话。
 /// @author TACZ, USS_Shenzhou
 public class ServerPlayerGunOperator extends AbstractGunOperator<ServerPlayer, ServerHandGunSession> {
     /// > 真实换手待处理标志：事件在物品实际对调前触发，tick（物品已对调）时消费。
@@ -81,7 +80,7 @@ public class ServerPlayerGunOperator extends AbstractGunOperator<ServerPlayer, S
     }
 
     /// > 真实换手（主副手物品对调）发生：请求在下一 tick 强制重建两手会话。
-    /// > 由 {@link net.neoforged.neoforge.event.entity.living.LivingSwapItemsEvent.Hands} 驱动（F 键等换手路径）。
+    /// > 由 [net.neoforged.neoforge.event.entity.living.LivingSwapItemsEvent.Hands] 驱动（F 键等换手路径）。
     public void forceHandSwap() {
         handSwapPending = true;
     }

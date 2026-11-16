@@ -28,7 +28,7 @@ public class AttachmentIndex extends CustomItemIndex<AttachmentData> {
 
     private transient AttachmentType attachmentType;
 
-    /// > 基础形态关闭态使用的完整附件数据（{@link ToggleConfig#getOffData()} 解析结果）；
+    /// > 基础形态关闭态使用的完整附件数据（[ToggleConfig#getOffData()] 解析结果）；
     /// > 声明了 off_data 但解析失败时回退基础 data（null），由数据校验输出错误提示。
     @Nullable
     private transient AttachmentData offData;

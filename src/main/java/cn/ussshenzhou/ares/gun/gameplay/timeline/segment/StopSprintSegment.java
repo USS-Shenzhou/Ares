@@ -7,15 +7,14 @@ import cn.ussshenzhou.ares.gun.gameplay.timeline.SegmentToken;
 import cn.ussshenzhou.ares.gun.gameplay.timeline.Timer;
 import javax.annotation.Nullable;
 
-/// > 跑射延迟轨（仅客户端表现）：收编旧的 {@code stopSprintTimestamp}（短投影窗口）与
-/// > {@code extraBlockSprintTimestamp}（较长的阻止再冲刺窗口）。
-/// > <p>
+/// > 跑射延迟轨（仅客户端表现）：收编旧的 `stopSprintTimestamp`（短投影窗口）与
+/// > `extraBlockSprintTimestamp`（较长的阻止再冲刺窗口）。
+/// >
 /// > 玩家在冲刺中开火时启动本轨：
-/// > <ul>
-/// >   <li>前 {@link #STATE_WINDOW_MS}（180ms）内投影 {@link GunHolderState#STOP_SPRINTING}，
-/// >       表达「停止冲刺过渡」的小状态。</li>
-/// >   <li>前 {@link #SPRINT_BLOCK_MS}（400ms）内收紧冲刺门禁，避免射击打断冲刺后反复进入/取消冲刺。</li>
-/// > </ul>
+/// > - 前 [#STATE_WINDOW_MS]（180ms）内投影 [GunHolderState#STOP_SPRINTING]，
+/// >   表达「停止冲刺过渡」的小状态。
+/// > - 前 [#SPRINT_BLOCK_MS]（400ms）内收紧冲刺门禁，避免射击打断冲刺后反复进入/取消冲刺。
+/// >
 /// > 两窗口结束后轨道自然消失。
 /// @author TACZ, USS_Shenzhou
 public class StopSprintSegment extends ActionSegment {

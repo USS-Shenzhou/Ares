@@ -12,9 +12,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 
 /// > 客户端上报当前瞄准视图位是否为战术拒枪姿态（服务端权威落地）。
-/// > <p>
+/// >
 /// > 视图位列表属于客户端资源（display），服务端不可知，故只上报「姿态结果」；服务端据此决定
-/// > 散布取 {@code inaccuracy_tactical} 还是 {@code inaccuracy_aim}，并只接受数据侧确实声明了
+/// > 散布取 `inaccuracy_tactical` 还是 `inaccuracy_aim`，并只接受数据侧确实声明了
 /// > 拒枪散布属性的枪（否则该属性会取到默认值 0，造成完美精度）。
 /// @author TACZ, USS_Shenzhou
 @NetPacket(modid = Ares.MOD_ID)

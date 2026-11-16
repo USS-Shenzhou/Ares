@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 import org.joml.Vector3f;
 
 /// > 槽位适配器的客户端显示配置。
-/// > <p>
+/// >
 /// > 适配器是叠加在宿主槽位挂点处的小模型（如垫高的导轨），并可把子配件落点抬高。
 /// @author TACZ, USS_Shenzhou
 public class SlotAdapterDisplay {

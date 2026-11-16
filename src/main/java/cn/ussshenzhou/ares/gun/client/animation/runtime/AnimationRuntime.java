@@ -80,7 +80,7 @@ public class AnimationRuntime {
         controller.fire();
     }
 
-    /// > 取出本帧动画 {@code particle_effects} 关键帧累积的粒子请求并清空。由渲染层每帧调用。
+    /// > 取出本帧动画 `particle_effects` 关键帧累积的粒子请求并清空。由渲染层每帧调用。
     public List<ParticleEffectData> consumePendingParticles() {
         return eventSink.consumePendingParticles();
     }
@@ -125,7 +125,7 @@ public class AnimationRuntime {
         controller.playHostOverlayOperation(actionName, expectedDurationSeconds);
     }
 
-    /// > 操作差量归零（动作结束回 idle 持枪）。仅当当前 operation 仍是 {@code actionName} 时才清除。
+    /// > 操作差量归零（动作结束回 idle 持枪）。仅当当前 operation 仍是 `actionName` 时才清除。
     public void clearHostOverlayOperation(String actionName) {
         controller.clearHostOverlayOperation(actionName);
     }
@@ -166,8 +166,8 @@ public class AnimationRuntime {
         }
     }
 
-    /// > 返回当前动画姿态（合成后，未叠 bind）。走限频缓存：与 {@link #getCachedAnimationPose()} 一致，
-    /// > 不绕过 {@code poseRateLimiter} 重新求值，避免高刷屏下每次调用都触发整套合成。
+    /// > 返回当前动画姿态（合成后，未叠 bind）。走限频缓存：与 [#getCachedAnimationPose()] 一致，
+    /// > 不绕过 `poseRateLimiter` 重新求值，避免高刷屏下每次调用都触发整套合成。
     public Pose getPose() {
         return cachedAnimationPose;
     }

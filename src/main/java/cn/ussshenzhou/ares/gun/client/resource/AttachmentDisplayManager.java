@@ -31,7 +31,7 @@ public class AttachmentDisplayManager extends SimplePreparableReloadListener<Map
     }
 
     /// > @param directory 扫描的资源目录。变体复用同一套 display 结构，只是目录不同
-    /// >                  （如 {@code display/attachment_variants}）。
+    /// >                  （如 `display/attachment_variants`）。
     public AttachmentDisplayManager(String directory) {
         this.directory = directory;
     }

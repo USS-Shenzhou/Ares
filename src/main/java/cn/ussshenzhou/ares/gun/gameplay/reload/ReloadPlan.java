@@ -11,8 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 /// > 换弹的纯数据推导（无副作用，双端同源）。
-/// > <p>
-/// > 负责换弹前置条件判断与相位时长推导。计时数字单向来自 {@link GunData}，
+/// >
+/// > 负责换弹前置条件判断与相位时长推导。计时数字单向来自 [GunData]，
 /// > 两端用同一套推导得到一致的时序骨架；副作用由编排层注入的 Step 任务执行。
 /// @author TACZ, USS_Shenzhou
 public class ReloadPlan {
@@ -30,12 +30,14 @@ public class ReloadPlan {
     }
 
     /// > 推导整个换弹动作的总时长（毫秒）。
-    /// > <p>
+    /// >
     /// > 客户端据此做纯倒计时表现与动画时长；服务端的逐发分相位时长由
-    /// > {@link ServerReloadSteps} 独立推导（同源于 GunData）。
+    /// > [ServerReloadSteps] 独立推导（同源于 GunData）。
     /// >
     /// > @param player    玩家（用于逐发换弹估算可装入发数）
+    /// >
     /// > @param gun       枪械物品
+    /// >
     /// > @param data      枪械数据
     public static long totalDurationMs(Player player, ItemStack gun, GunData data) {
         int currentAmmo = AmmoDataHelper.getAmmoCount(gun);

@@ -104,7 +104,7 @@ public class ShootKey {
     }
 
     /// > 松手发射：仅当当前触发方式需要松手发射（charge / delayed / 脚本 trigger）时，扳机 falling-edge 调
-    /// > {@code op.fireRelease(hand)}。instant 触发无需松手发射，跳过。
+    /// > `op.fireRelease(hand)`。instant 触发无需松手发射，跳过。
     private static void fireReleaseIfNeeded(IGunOperator op, InteractionHand hand) {
         if (FireModeHelper.currentTriggerNeedsRelease(op.getCurrentItem(hand))) {
             op.fireRelease(hand);

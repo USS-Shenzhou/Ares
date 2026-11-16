@@ -11,8 +11,8 @@ import cn.ussshenzhou.ares.gun.client.shader.TaczShaders;
 import net.minecraft.client.renderer.ShaderInstance;
 import org.joml.Matrix4f;
 
-/// > 基于 {@link TaczShaders#getCircleShader()} 的 GUI 画圆工具。
-/// > <p>
+/// > 基于 [TaczShaders#getCircleShader()] 的 GUI 画圆工具。
+/// >
 /// > 用一个 quad 覆盖目标区域，shader 在片元层面根据 UV 到中心的距离 + 角度决定是否着色，
 /// > 因此可零成本画出抗锯齿的圆 / 环 / 扇区弧段。
 /// @author TACZ, USS_Shenzhou
@@ -28,7 +28,9 @@ public class CircleRenderer {
     /// > 画环形扇区（弧段）。
     /// >
     /// > @param thickness 环厚度占比（0~1）
+    /// >
     /// > @param start     起始角占比（0~1，从 12 点方向顺时针）
+    /// >
     /// > @param end       结束角占比（0~1）
     public static void drawSector(PoseStack poseStack, float cx, float cy, float radius, int color,
                                   float thickness, float start, float end) {

@@ -18,9 +18,9 @@ import net.minecraft.resources.Identifier;
 import java.util.List;
 import java.util.function.Function;
 
-/// > 状态机求值上下文。持有 {@link TrackRuntime} 与武器动画上下文。
-/// > <p>
-/// > 状态/过渡的动作（onEnter/onUpdate/onExit/afterTrigger）通过 {@link GunMolangContext}
+/// > 状态机求值上下文。持有 [TrackRuntime] 与武器动画上下文。
+/// >
+/// > 状态/过渡的动作（onEnter/onUpdate/onExit/afterTrigger）通过 [GunMolangContext]
 /// > 暴露的 Molang 绑定方法操作此处的轨道，runtime 不内置任何播放生命周期。
 /// @author TACZ, USS_Shenzhou
 public class GunStateContext {
@@ -87,8 +87,8 @@ public class GunStateContext {
         return INTERPOLATOR_BLENDER.blend(fromPose, toPose, alpha);
     }
 
-    /// > 以 additive 方式把 {@code add} 增量叠加到 {@code base} 上。供脚本状态机做条件混合等
-    /// > Molang 表达不了的高级合成。任一为 {@link DummyPose#INSTANCE} 时返回另一个。
+    /// > 以 additive 方式把 `add` 增量叠加到 `base` 上。供脚本状态机做条件混合等
+    /// > Molang 表达不了的高级合成。任一为 [DummyPose#INSTANCE] 时返回另一个。
     public Pose additive(Pose base, Pose add) {
         if (base == DummyPose.INSTANCE) {
             return add;

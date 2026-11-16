@@ -2,12 +2,13 @@ package cn.ussshenzhou.ares.gun.gameplay.reload;
 
 import cn.ussshenzhou.ares.gun.custom.gun.GunData;
 
-/// > 换弹打断策略（纯数据，从 {@link GunData} 推导，双端同源）。
-/// > <p>
-/// > 收编原 {@code ReloadBehavior.canFireInterrupt / canSprintInterrupt}：
+/// > 换弹打断策略（纯数据，从 [GunData] 推导，双端同源）。
+/// >
+/// > 收编原 `ReloadBehavior.canFireInterrupt / canSprintInterrupt`：
 /// > 它们本就只读数据、无状态，因此从有状态的 behavior 实例中剥离为不可变值对象。
 /// >
 /// > @param canFireInterrupt  开火是否可打断当前换弹（true=打断并开火）
+/// >
 /// > @param canSprintInterrupt 疾跑是否可打断当前换弹（true=打断并允许疾跑）
 /// @author TACZ, USS_Shenzhou
 public record ReloadPolicy(boolean canFireInterrupt, boolean canSprintInterrupt) {

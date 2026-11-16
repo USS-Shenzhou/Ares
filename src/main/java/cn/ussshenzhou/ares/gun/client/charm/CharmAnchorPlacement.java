@@ -4,7 +4,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 /// > 挂饰锚点放置与朝向数学（仅依赖 JOML，端无关算法）。
-/// > <p>
+/// >
 /// > 自源模组移植并裁剪：去掉 legacy 偏移兼容分支，仅保留刚性渲染所需的「离面间隙锚点」与
 /// > 「forward 轴对齐命中面法线」两类计算。坐标均在锚点骨骼的局部空间。
 /// @author TACZ, USS_Shenzhou
@@ -15,8 +15,11 @@ public class CharmAnchorPlacement {
     /// > 计算挂饰在锚点骨骼局部空间的初始位置（方块单位）。
     /// >
     /// > @param anchorBlocks            命中点（已 /16 转方块）
+    /// >
     /// > @param storedLocalOffsetPixels 存储的局部附加偏移（像素），为空则按法线离面间隙
+    /// >
     /// > @param localNormal             命中面法线
+    /// >
     /// > @param surfaceClearancePixels  离面间隙（像素）
     public static Vector3f initialPosition(Vector3f anchorBlocks, Vector3f storedLocalOffsetPixels,
                                            Vector3f localNormal, float surfaceClearancePixels) {

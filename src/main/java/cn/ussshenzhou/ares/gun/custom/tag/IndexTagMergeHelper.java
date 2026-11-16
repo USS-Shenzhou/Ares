@@ -11,7 +11,7 @@ import java.util.Map;
 /// @author TACZ, USS_Shenzhou
 // FIXME REVIEW renamed from IndexTagMerger.
 public class IndexTagMergeHelper {
-    /// > {@code layers} 中每个列表必须已按低优先级到高优先级排列。
+    /// > `layers` 中每个列表必须已按低优先级到高优先级排列。
     public static Map<Identifier, List<IndexTagEntry>> merge(
             Map<Identifier, ? extends List<IndexTag>> layers) {
         Map<Identifier, List<IndexTagEntry>> result = new LinkedHashMap<>();

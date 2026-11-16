@@ -14,8 +14,8 @@ import net.minecraft.client.Minecraft;
 import org.joml.Vector3f;
 
 /// > 挂饰渲染器（阶段 3：分层物理摆动）。
-/// > <p>
-/// > 对接 SimpleBedrockModel v2：用 {@link BedrockGunModel#getGlobalTransform(String)} 取锚点骨骼矩阵，
+/// >
+/// > 对接 SimpleBedrockModel v2：用 [BedrockGunModel#getGlobalTransform(String)] 取锚点骨骼矩阵，
 /// > 进入其局部空间后按 layout 把挂饰拆为「固定环 + 动态环 + 摆体」三段：固定环贴模型根不摆，动态环绕
 /// > 固定枢轴主摆 + 吊环铰链扭转，摆体绕动态枢轴主摆 + 轴向滚转。物理用 Verlet 质点（锚点惯性 + 视角
 /// > 重力驱动），纯客户端表现，状态按绑定缓存。
@@ -42,8 +42,8 @@ public class CharmRenderer {
     private static float lastPitch;
 
     /* FIXME rendering
-    /// > 在 {@code afterRender} 末尾（{@code model.resetPose()} 之前）调用，渲染枪上绑定的挂饰。
-    /// > 此时 {@code poseStack} 已含完整第一人称定位变换。
+    /// > 在 `afterRender` 末尾（`model.resetPose()` 之前）调用，渲染枪上绑定的挂饰。
+    /// > 此时 `poseStack` 已含完整第一人称定位变换。
     public static void render(ItemStack gunStack, BedrockGunModel gunModel,
                               PoseStack poseStack, MultiBufferSource buffer, int light) {
         List<GunCharmData> bindings = GunCharmDataHelper.getAll(gunStack);

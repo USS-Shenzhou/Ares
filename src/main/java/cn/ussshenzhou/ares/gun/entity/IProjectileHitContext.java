@@ -6,9 +6,9 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 
 /// > 伤害管线命中上下文抽象。
-/// > <p>
-/// > 把 {@link cn.ussshenzhou.ares.gun.gameplay.DamageHelper} 从「弹丸实体」解耦出来：飞行弹丸
-/// > （{@link AbstractGunProjectile}）与瞬时射线（激光 hitscan）都实现此接口，从而共用整条
+/// >
+/// > 把 [cn.ussshenzhou.ares.gun.gameplay.DamageHelper] 从「弹丸实体」解耦出来：飞行弹丸
+/// > （[AbstractGunProjectile]）与瞬时射线（激光 hitscan）都实现此接口，从而共用整条
 /// > 伤害管线（部位判定 / 距离衰减 / 蓄力 / 穿透 / 事件 / 钩子 / 击杀 / 击退），无需为激光重写。
 /// @author TACZ, USS_Shenzhou
 public interface IProjectileHitContext {
@@ -51,10 +51,10 @@ public interface IProjectileHitContext {
     @Nullable
     Identifier getAmmoId();
 
-    /// > 命中方向（已归一化），用于击退。替代实弹的 {@code getDeltaMovement().normalize()}。
+    /// > 命中方向（已归一化），用于击退。替代实弹的 `getDeltaMovement().normalize()`。
     Vec3 getHitDirection();
 
-    /// > {@link net.minecraft.world.damagesource.DamageSource} 的 projectile 参数：实弹返回自身，激光返回 shooter 或 null。
+    /// > [net.minecraft.world.damagesource.DamageSource] 的 projectile 参数：实弹返回自身，激光返回 shooter 或 null。
     @Nullable
     Entity getDamageSourceEntity();
 

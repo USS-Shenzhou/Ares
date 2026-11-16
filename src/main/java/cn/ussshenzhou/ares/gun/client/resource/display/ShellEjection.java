@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import org.joml.Vector3f;
 
 /// > 抛壳运动配置（枪 display）。
-/// > <p>
+/// >
 /// > 弹壳生成后在「冻结的第一人称视图坐标系」内做匀变速直线运动 + 三轴匀角速度旋转，
 /// > 各参数的缺省值沿用 legacy 实现。坐标轴含义同模型空间：x=右, y=上, z=前。
 /// @author TACZ, USS_Shenzhou

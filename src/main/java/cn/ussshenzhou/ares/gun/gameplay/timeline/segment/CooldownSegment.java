@@ -9,15 +9,15 @@ import cn.ussshenzhou.ares.gun.gameplay.timeline.SegmentToken;
 import javax.annotation.Nullable;
 
 /// > RPM 射击冷却片段（仅客户端表现）。
-/// > <p>
-/// > 以<b>墙上时钟</b>判定（{@code now >= readyAtMs} 才放行），给出亚刻（sub-tick）精度的开火节流。
-/// > 连射由渲染帧驱动 {@code fire} 轮询，本片段据墙上时钟即时放行，避免把判定量化到游戏刻（50ms）
-/// > 边界导致的射速抖动。冷却期投影 {@link GunHolderState#FIRE_COOLDOWN} 并收紧开火门禁。
-/// > <p>
-/// > 节奏锚点 {@code readyAtMs} 在出膛时步进（{@code += cooldownMs}）以吃掉 tick 量化余数，
+/// >
+/// > 以**墙上时钟**判定（`now >= readyAtMs` 才放行），给出亚刻（sub-tick）精度的开火节流。
+/// > 连射由渲染帧驱动 `fire` 轮询，本片段据墙上时钟即时放行，避免把判定量化到游戏刻（50ms）
+/// > 边界导致的射速抖动。冷却期投影 [GunHolderState#FIRE_COOLDOWN] 并收紧开火门禁。
+/// >
+/// > 节奏锚点 `readyAtMs` 在出膛时步进（`+= cooldownMs`）以吃掉 tick 量化余数，
 /// > 保证连射节奏均匀；间隔过大（首发 / 长时间未射）时以当前时刻重新起锚。
-/// > <p>
-/// > <b>注意</b>：服务端不使用本片段。服务端的射速门控是一种容差性质的额外门控（credit-pool 缓冲，
+/// >
+/// > **注意**：服务端不使用本片段。服务端的射速门控是一种容差性质的额外门控（credit-pool 缓冲，
 /// > 宽容地吃掉网络抖动与 tick 量化），与客户端「严格冷却 + 投影 + 门禁」语义不同，
 /// > 直接由服务端 operator 维护，不强行塞进本片段体系（见设计文档 4.1）。
 /// @author TACZ, USS_Shenzhou
@@ -26,11 +26,11 @@ public class CooldownSegment extends ActionSegment {
     public static final String ID = "cooldown";
     public static final SegmentToken<CooldownSegment> TOKEN = SegmentToken.of(ID, CooldownSegment.class);
 
-    /// > 下一发冷却间隔供给器：每发出膛现取（RPM 静态或脚本 {@code cooldownMs} 动态）。
+    /// > 下一发冷却间隔供给器：每发出膛现取（RPM 静态或脚本 `cooldownMs` 动态）。
     /// > 使得动态射速（转速渐进 / 过热降速）可逐发生效，而非构造时固定。
     private final CooldownProvider provider;
 
-    /// > 最近一次 {@link #onShotFired} 取到的冷却间隔（毫秒），供门禁判定与调试展示。
+    /// > 最近一次 [#onShotFired] 取到的冷却间隔（毫秒），供门禁判定与调试展示。
     private long cooldownMs;
 
     /// > 墙上时钟：冷却结束、允许下一发的时刻。-1 表示尚未开火（不在冷却中）。
@@ -41,7 +41,7 @@ public class CooldownSegment extends ActionSegment {
         this(fixed(cooldownMs));
     }
 
-    /// > 动态冷却构造：每发出膛从 {@code provider} 现取下一发间隔。
+    /// > 动态冷却构造：每发出膛从 `provider` 现取下一发间隔。
     public CooldownSegment(CooldownProvider provider) {
         this.provider = provider;
         this.cooldownMs = Math.max(provider.nextCooldownMs(), 1);
@@ -65,7 +65,7 @@ public class CooldownSegment extends ActionSegment {
     }
 
     /// > 一发出膛（主发或 burst 后续均适用）：以墙上时钟重启 / 步进冷却。
-    /// > 由 {@link SingleShotSegment} 在出膛 notify 时通过 back-reference 驱动。
+    /// > 由 [SingleShotSegment] 在出膛 notify 时通过 back-reference 驱动。
     public void onShotFired() {
         /// > 每发现取下一发冷却间隔：动态射速（转速渐进 / 过热降速）逐发生效。
         this.cooldownMs = Math.max(provider.nextCooldownMs(), 1);

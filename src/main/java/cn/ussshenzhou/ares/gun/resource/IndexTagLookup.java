@@ -46,6 +46,6 @@ public interface IndexTagLookup {
     /// > 获取已展开的成员集合；未知或无效标签返回空集合。
     Set<Identifier> getMembers(Identifier tagId);
 
-    /// > 获取包含指定成员的全部有效标签（包含经由 {@code #tag} 展开的间接归属）。
+    /// > 获取包含指定成员的全部有效标签（包含经由 `#tag` 展开的间接归属）。
     Set<Identifier> getTags(Identifier memberId);
 }

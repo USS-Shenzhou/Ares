@@ -19,7 +19,7 @@ import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.Optional;
 
-/// > 槽位适配器 display 的资源重载管理器，扫描 {@code display/slot_adapters} 目录。
+/// > 槽位适配器 display 的资源重载管理器，扫描 `display/slot_adapters` 目录。
 /// @author TACZ, USS_Shenzhou
 public class SlotAdapterDisplayManager extends SimplePreparableReloadListener<Map<Identifier, JsonElement>> {
     public static final Marker MARKER = MarkerFactory.getMarker("SlotAdapterDisplayManager");

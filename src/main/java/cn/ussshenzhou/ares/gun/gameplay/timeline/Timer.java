@@ -1,18 +1,18 @@
 package cn.ussshenzhou.ares.gun.gameplay.timeline;
 
 /// > 轻量毫秒计时原语。
-/// > <p>
-/// > 收编散落在双端 operator 里的裸时间戳（{@code System.currentTimeMillis()} 直接比较）。
-/// > 计时单位统一为毫秒，但推进由游戏 tick 驱动（每 tick 累加 {@code deltaMs}），
+/// >
+/// > 收编散落在双端 operator 里的裸时间戳（`System.currentTimeMillis()` 直接比较）。
+/// > 计时单位统一为毫秒，但推进由游戏 tick 驱动（每 tick 累加 `deltaMs`），
 /// > 因此实际粒度仍是 tick，不受墙上时钟双端漂移影响。
-/// > <p>
+/// >
 /// > 典型用法：
-/// > <pre>
+/// > ```
 /// >   timer.start(500);            // 起一个 500ms 的窗口
 /// >   boolean done = timer.tick(deltaMs);  // 每 tick 推进，窗口刚结束时返回 true
 /// >   if (timer.isRunning()) ...   // 窗口期内
 /// >   float p = timer.progress();  // 0~1 进度
-/// > </pre>
+/// > ```
 /// @author TACZ, USS_Shenzhou
 public class Timer {
     private long durationMs = 0;
@@ -31,6 +31,7 @@ public class Timer {
     /// > 推进计时。
     /// >
     /// > @param deltaMs 本 tick 经过的毫秒数
+    /// >
     /// > @return true 表示本次推进后计时刚好结束（仅在结束的那一拍返回 true）
     public boolean tick(long deltaMs) {
         this.justFinished = false;
@@ -51,7 +52,7 @@ public class Timer {
         return running;
     }
 
-    /// > 本 tick 是否刚刚结束（由 {@link #tick(long)} 设置，下一次 tick 复位）。
+    /// > 本 tick 是否刚刚结束（由 [#tick(long)] 设置，下一次 tick 复位）。
     public boolean justFinished() {
         return justFinished;
     }

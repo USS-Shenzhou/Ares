@@ -123,8 +123,8 @@ public enum ClientAssetsManager {
     }
 
     /// > 预构建所有显式声明 grip 的 combo 的 host overlay 运行时数据。
-    /// > <p>
-    /// > combo profile 必须显式提供 {@link MountedCompatibilityProfile#grip}；operation / grip_blend / transitions
+    /// >
+    /// > combo profile 必须显式提供 [MountedCompatibilityProfile#grip]；operation / grip_blend / transitions
     /// > 直接从同一个 combo 文件读取。持枪姿态与操作差量动画的关键帧均驱动 host 骨骼，boneIndex 必须绑定到
     /// > host 模型，因此按各 combo 的 host_display 模型单独编译。必须在原始动画 pojo被清理前调用。
     private void resolveHostOverlays() {
@@ -175,7 +175,7 @@ public enum ClientAssetsManager {
         }
     }
 
-    /// > 把某个动画文件中的指定动画绑定到 host 模型骨架并编译为 {@link BedrockAnimation}。找不到返回 null。
+    /// > 把某个动画文件中的指定动画绑定到 host 模型骨架并编译为 [BedrockAnimation]。找不到返回 null。
     @Nullable
     private BedrockAnimation compileAnimation(Identifier fileId, String animationName,
                                               cn.ussshenzhou.ares.gun.client.model.BedrockGunModel hostModel) {
@@ -302,7 +302,7 @@ public enum ClientAssetsManager {
     }
 
     /// > 按资源路径解析显示实例：先查配件 display 目录，再查变体 display 目录
-    /// > （{@code display/attachment_variants}，作为可复用几何资产池，供模式关态几何等引用）。
+    /// > （`display/attachment_variants`，作为可复用几何资产池，供模式关态几何等引用）。
     @Nonnull
     public Optional<AttachmentDisplayInstance> getDisplay(Identifier path) {
         Optional<AttachmentDisplayInstance> base = attachmentDisplayManager.getDisplay(path);

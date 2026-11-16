@@ -16,7 +16,7 @@ public class AmmoDataHelper {
         return gun.getOrDefault(ModDataComponents.AMMO_COUNT, 0);
     }
 
-    /// > 写入弹匣存量。余弹不是属性来源，故不触发属性缓存失效（{@link #setAmmoId} 才需要）。
+    /// > 写入弹匣存量。余弹不是属性来源，故不触发属性缓存失效（[#setAmmoId] 才需要）。
     public static void setAmmoCount(ItemStack gun, int count) {
         if (gun.isEmpty()) {
             return;
@@ -33,7 +33,7 @@ public class AmmoDataHelper {
     }
 
     /// > 写入当前弹种。弹种是属性修饰来源之一，写入方负责让属性缓存失效
-    /// > （契约见 {@link GunPropertiesCaches}）。
+    /// > （契约见 [GunPropertiesCaches]）。
     public static void setAmmoId(ItemStack gun, Identifier ammoId) {
         if (gun.isEmpty()) {
             return;

@@ -12,12 +12,12 @@ import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.TreeMap;
 
-/// > {@link OverlayWeightSpec} 多态反序列化：
-/// > <pre>
+/// > [OverlayWeightSpec] 多态反序列化：
+/// > ```
 /// >   数字     -> CONSTANT
 /// >   对象     -> KEYFRAMES（key=进度字符串，value=权重）
 /// >   字符串   -> EXPRESSION（Molang，M4 求值）
-/// > </pre>
+/// > ```
 /// @author TACZ, USS_Shenzhou
 public class OverlayWeightSpecSerializer implements JsonDeserializer<OverlayWeightSpec> {
     @Override

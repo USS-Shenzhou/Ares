@@ -67,7 +67,9 @@ public interface IGun extends ICustomItem<GunIndex, GunData>, IAttachmentHolder 
     }
 
     /// > 获取所有被套件禁用的父级槽位
+    /// >
     /// > @param gun 枪械物品
+    /// >
     /// > @return 被禁用的槽位ID集合
     @Nonnull
     default Set<Identifier> getDisabledSlots(ItemStack gun, Map<Identifier, AttachmentSlot> allSlots) {

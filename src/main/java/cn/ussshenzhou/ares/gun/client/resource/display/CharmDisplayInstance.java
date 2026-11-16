@@ -9,8 +9,8 @@ import net.minecraft.resources.Identifier;
 import javax.annotation.Nullable;
 
 /// > 挂饰 display 运行时实例。
-/// > <p>
-/// > 必须在资源包重载期间构建，否则所需的模型缓存（{@link ClientAssetsManager#getModelPojo}）不可用。
+/// >
+/// > 必须在资源包重载期间构建，否则所需的模型缓存（[ClientAssetsManager#getModelPojo]）不可用。
 /// > 承载挂饰模型 + 贴图 + 渲染变换；本期先打通加载链路，渲染留到后续阶段。
 /// @author TACZ, USS_Shenzhou
 public class CharmDisplayInstance {

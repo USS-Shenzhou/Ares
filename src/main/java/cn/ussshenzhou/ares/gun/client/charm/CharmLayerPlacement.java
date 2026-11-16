@@ -5,7 +5,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 /// > 挂饰分层摆动的几何放置与朝向数学（自源挂饰模组移植，仅依赖 JOML）。
-/// > <p>
+/// >
 /// > 把锚点（命中点）与挂饰模型各 layout 骨骼的 pivot 偏移，换算成「模型根 / 固定枢轴 / 动态枢轴 /
 /// > 摆体质心」在锚点骨骼局部空间的静止位置；并提供主摆动（swing）与吊环扭转（hinge twist）旋转。
 /// @author TACZ, USS_Shenzhou

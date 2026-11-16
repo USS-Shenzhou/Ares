@@ -11,11 +11,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /// > 挂饰物理状态缓存。
-/// > <p>
+/// >
 /// > 按「挂饰绑定」的唯一标识（charmId + displayId + bone + hit/normal/offset）缓存各层物理状态：
-/// > 主摆动 {@link CharmPhysicsState}、吊环铰链 {@link CharmHingeState}、摆体轴向滚转
-/// > {@link CharmAxialRollState}。切枪 / 改绑定会自然换键得到新状态，避免姿态错乱。
-/// > <p>
+/// > 主摆动 [CharmPhysicsState]、吊环铰链 [CharmHingeState]、摆体轴向滚转
+/// > [CharmAxialRollState]。切枪 / 改绑定会自然换键得到新状态，避免姿态错乱。
+/// >
 /// > 物理纯客户端表现，状态随渲染帧推进，不走服务端同步。
 /// @author TACZ, USS_Shenzhou
 public class CharmRenderStateCache {

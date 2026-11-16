@@ -2,14 +2,14 @@ package cn.ussshenzhou.ares.gun.gameplay.timeline;
 
 import net.minecraft.world.item.ItemStack;
 
-/// > 出膛前否决的受控只读操作集：{@link FireController} 实现它，暴露给「出膛前门禁脚本」的只读查询。
-/// > <p>
-/// > 这是一个<b>纯 Java 内部能力接口</b>（不直接暴露给 JS），由 {@code shared/script/fire} 的
-/// > {@code FirePreShotApi} 包装后交给脚本。与 {@link FireAfterShotOps} 对称，但语义相反：
-/// > afterShot 是出膛<b>后</b>的动作编排（有编排原语），preShot 是出膛<b>前</b>的<b>纯决策</b>——
-/// > 只提供只读查询、<b>不含任何编排原语与副作用</b>。脚本据此返回 accept/block。
-/// > <p>
-/// > 世界副作用（{@code EffectApi}）绝不经此下放（见 {@code docs/scripting-boundaries.md} 第三节硬约束）。
+/// > 出膛前否决的受控只读操作集：[FireController] 实现它，暴露给「出膛前门禁脚本」的只读查询。
+/// >
+/// > 这是一个**纯 Java 内部能力接口**（不直接暴露给 JS），由 `shared/script/fire` 的
+/// > `FirePreShotApi` 包装后交给脚本。与 [FireAfterShotOps] 对称，但语义相反：
+/// > afterShot 是出膛**后**的动作编排（有编排原语），preShot 是出膛**前**的**纯决策**——
+/// > 只提供只读查询、**不含任何编排原语与副作用**。脚本据此返回 accept/block。
+/// >
+/// > 世界副作用（`EffectApi`）绝不经此下放（见 `docs/scripting-boundaries.md` 第三节硬约束）。
 /// @author TACZ, USS_Shenzhou
 public interface FirePreShotOps {
 

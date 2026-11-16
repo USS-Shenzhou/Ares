@@ -95,17 +95,17 @@ public class GunDisplay {
     @SerializedName("tactical_stance")
     public TacticalStance tacticalStance = null;
 
-    /// > HUD 枪械图标（2D 贴图，39x13 区域）。对应包内 {@code textures/gun/hud/<id>.png}；缺省则不渲染图标。
+    /// > HUD 枪械图标（2D 贴图，39x13 区域）。对应包内 `textures/gun/hud/<id>.png`；缺省则不渲染图标。
     @Nullable
     @SerializedName("hud")
     public Identifier hudTexture = null;
 
-    /// > 空弹（或过热）时替换的 HUD 图标；缺省时退化为把 {@code hud} 染红。
+    /// > 空弹（或过热）时替换的 HUD 图标；缺省时退化为把 `hud` 染红。
     @Nullable
     @SerializedName("hud_empty")
     public Identifier hudEmptyTexture = null;
 
-    /// > HUD 弹药计数样式：{@code normal} / {@code percent}。缺省 {@code normal}。
+    /// > HUD 弹药计数样式：`normal` / `percent`。缺省 `normal`。
     @SerializedName("ammo_count_style")
     public String ammoCountStyle = "normal";
 
@@ -113,7 +113,7 @@ public class GunDisplay {
     @SerializedName("show_crosshair")
     public boolean showCrosshair = false;
 
-    /// > 单手双持形态的按手模型/动画/贴图变体。主手用 {@code right}，副手用 {@code left}。
+    /// > 单手双持形态的按手模型/动画/贴图变体。主手用 `right`，副手用 `left`。
     /// > 任一字段缺省则回退顶层同名字段。
     @Nullable
     @SerializedName("one_hand")
@@ -154,22 +154,22 @@ public class GunDisplay {
 
     /// > 战术拒枪姿态的 display 声明。各字段缺省时回退机瞄位对应值，包作者可以先只给骨骼。
     public static class TacticalStance {
-        /// > 定位组骨骼名，缺省 {@code tactical_view}。
+        /// > 定位组骨骼名，缺省 `tactical_view`。
         @Nullable
         @SerializedName("view")
         public String view = null;
 
-        /// > 世界倍率，缺省回退 {@code iron_zoom}。
+        /// > 世界倍率，缺省回退 `iron_zoom`。
         @Nullable
         @SerializedName("zoom")
         public Float zoom = null;
 
-        /// > 非瞄准时的模型 FOV，缺省回退 {@code model_fov}。
+        /// > 非瞄准时的模型 FOV，缺省回退 `model_fov`。
         @Nullable
         @SerializedName("model_fov")
         public Float modelFov = null;
 
-        /// > 开镜时的模型 FOV，缺省回退 {@code zoom_model_fov}。
+        /// > 开镜时的模型 FOV，缺省回退 `zoom_model_fov`。
         @Nullable
         @SerializedName("zoom_model_fov")
         public Float zoomModelFov = null;

@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import org.joml.Quaternionf;
 
 /// > 第一人称枪械动画实例，存放在玩家实体的IGunHolderCapability中。
-/// > 仅承载 animation 运行时：host 由 {@link AnimationRuntime} 求值，下挂由独立的 mounted runtime 求值。
+/// > 仅承载 animation 运行时：host 由 [AnimationRuntime] 求值，下挂由独立的 mounted runtime 求值。
 /// @author TACZ, USS_Shenzhou
 public class GunAnimationInstance implements IFPAnimationInstance {
     private Quaternionf cameraRotation = new Quaternionf();
@@ -79,9 +79,9 @@ public class GunAnimationInstance implements IFPAnimationInstance {
     }
 
     /// > 解析本实例当前生效的 display：本手为单手形态时按手选用单手变体（主手 right / 副手 left），
-    /// > 否则用顶层（双手）display。无变体声明时 {@code forHand} 自身会回退 base。
-    /// > <p>
-    /// > 单手形态判定见 {@link DualWieldHelper#isOneHandedForm}：副手始终单手，主手仅双持时单手。
+    /// > 否则用顶层（双手）display。无变体声明时 `forHand` 自身会回退 base。
+    /// >
+    /// > 单手形态判定见 [DualWieldHelper#isOneHandedForm]：副手始终单手，主手仅双持时单手。
     private GunDisplayInstance resolveEffectiveDisplay() {
         if (baseDisplay.hasOneHandVariants() && DualWieldHelper.isOneHandedForm(player, hand)) {
             return baseDisplay.forHand(hand);
@@ -90,9 +90,9 @@ public class GunAnimationInstance implements IFPAnimationInstance {
     }
 
     /// > 当前生效 display（双持按手变体或本体）。供渲染器取用同一 model 对象施加 pose。
-    /// > <p>
+    /// >
     /// > 形态切换（进入/退出双持）由 SBM 经「渲染变体键」统一驱动重建实例，本实例创建后
-    /// > {@link #currentDisplay} 即固定，不在 tick 内自行切换，避免与 SBM 实例生命周期冲突。
+    /// > [#currentDisplay] 即固定，不在 tick 内自行切换，避免与 SBM 实例生命周期冲突。
     public GunDisplayInstance effectiveDisplay() {
         return currentDisplay;
     }
@@ -245,7 +245,7 @@ public class GunAnimationInstance implements IFPAnimationInstance {
         }
     }
 
-    /// > 取出本帧 host 主枪动画 {@code particle_effects} 关键帧累积的粒子请求。由渲染层每帧调用。
+    /// > 取出本帧 host 主枪动画 `particle_effects` 关键帧累积的粒子请求。由渲染层每帧调用。
     /// > 本期仅消费 host 主枪（下挂武器粒子留待后续）。
     public java.util.List<com.github.mcmodderanchor.simplebedrockmodel.v1.common.resource.pojo.ParticleEffectData> consumePendingParticles() {
         if (animationRuntime == null) {

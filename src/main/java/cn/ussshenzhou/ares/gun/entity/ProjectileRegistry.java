@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /// > 弹丸类型注册表。
-/// > <p>
-/// > 以字符串 key 映射到 {@link ProjectileProvider}，取代早期写死的枚举 + switch 工厂。
-/// > 内置类型（bullet/grenade/arrow）在类加载时自注册；第三方可通过 {@link #register}
+/// >
+/// > 以字符串 key 映射到 [ProjectileProvider]，取代早期写死的枚举 + switch 工厂。
+/// > 内置类型（bullet/grenade/arrow）在类加载时自注册；第三方可通过 [#register]
 /// > 在 mod setup 阶段注册新类型，无需修改本类。
 /// @author TACZ, USS_Shenzhou
 // FIXME REVIEW only the bullet provider is registered; grenade, arrow and laser projectiles are not ported.

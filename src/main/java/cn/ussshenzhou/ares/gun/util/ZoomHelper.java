@@ -4,16 +4,15 @@ import cn.ussshenzhou.ares.gun.init.ModDataComponents;
 import net.minecraft.world.item.ItemStack;
 
 /// > 瞄具倍率状态的 NBT 存取（双端共用）。
-/// > <p>
-/// > 写入瞄具配件自身 ItemStack NBT，随配件实例移动；多层树场景下由 {@link AttachmentTreeHelper}
+/// >
+/// > 写入瞄具配件自身 ItemStack NBT，随配件实例移动；多层树场景下由 [AttachmentTreeHelper]
 /// > 的自底向上回写机制序列化到顶层枪械。
-/// > <ul>
-/// >   <li>{@code ZoomIndex}：有级档位索引（int，缺省 0）；</li>
-/// >   <li>{@code ZoomProgress}：无级进度（float 0~1，键不存在 = 未使用无级）。
-/// >       模型 FOV 与倍率是两个独立数据字段（各自范围），运行时共用这一个进度、各自在范围内插值
-/// >       （同比例映射）。</li>
-/// > </ul>
-/// > 服务端权威落地（经 C2S + {@link AttachmentTreeHelper#setZoom}），客户端预测先行后对账。
+/// > - `ZoomIndex`：有级档位索引（int，缺省 0）；
+/// > - `ZoomProgress`：无级进度（float 0~1，键不存在 = 未使用无级）。
+/// >   模型 FOV 与倍率是两个独立数据字段（各自范围），运行时共用这一个进度、各自在范围内插值
+/// >   （同比例映射）。
+/// >
+/// > 服务端权威落地（经 C2S + [AttachmentTreeHelper#setZoom]），客户端预测先行后对账。
 /// @author TACZ, USS_Shenzhou
 public class ZoomHelper {
     public static void setZoomIndex(ItemStack scope, int index) {

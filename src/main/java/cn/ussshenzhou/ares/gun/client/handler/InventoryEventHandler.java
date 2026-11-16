@@ -21,16 +21,15 @@ import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 
-/// > 客户端持枪会话的<b>唯一检测器</b>。
-/// > <p>
-/// > 客户端无稳定物品实例可追踪（任何 NBT 变化都会让网络层重建新 {@code ItemStack}），
+/// > 客户端持枪会话的**唯一检测器**。
+/// >
+/// > 客户端无稳定物品实例可追踪（任何 NBT 变化都会让网络层重建新 `ItemStack`），
 /// > 故以「选中槽位 + 双持签名」为快照做值启发式检测，避免弹药 / 配件 NBT 变化被误判为切枪：
-/// > <ul>
-/// >   <li>双持签名变化（含主 / 副手持枪形态切换）→ 全量 {@code resync} 重判双手会话，
-/// >       使主手能从单手模式重新进入双手模式（反之亦然），并触发掏枪。</li>
-/// >   <li>选中槽位变化 / 同槽位换成不同枪 → 触发主手收枪（收枪完成后自动掏新枪）。</li>
-/// > </ul>
-/// > {@link LocalGunOperator} 不再自轮询，仅推进现存会话。
+/// > - 双持签名变化（含主 / 副手持枪形态切换）→ 全量 `resync` 重判双手会话，
+/// >   使主手能从单手模式重新进入双手模式（反之亦然），并触发掏枪。
+/// > - 选中槽位变化 / 同槽位换成不同枪 → 触发主手收枪（收枪完成后自动掏新枪）。
+/// >
+/// > [LocalGunOperator] 不再自轮询，仅推进现存会话。
 /// @author TACZ, USS_Shenzhou
 @EventBusSubscriber(modid = Ares.MOD_ID, value = Dist.CLIENT)
 public class InventoryEventHandler {

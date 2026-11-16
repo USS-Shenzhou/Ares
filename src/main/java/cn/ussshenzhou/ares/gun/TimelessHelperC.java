@@ -74,10 +74,10 @@ public class TimelessHelperC {
     }
 
     /// > 取某配件「当前生效形态」的几何 display（统一入口）。
-    /// > <p>
+    /// >
     /// > 解析顺序：关态几何（当前生效形态 toggle 声明了 off_display 且开关关闭）→
     /// > 用户选择的变体 display → 空（调用方回退基础 display）。空态基础几何由
-    /// > {@link #getAttachmentDisplay(ItemStack)} 提供。
+    /// > [#getAttachmentDisplay(ItemStack)] 提供。
     @Nonnull
     public static Optional<AttachmentDisplayInstance> getActiveDisplay(ItemStack attachment) {
         if (IAttachment.asAttachment(attachment) == null) {

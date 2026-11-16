@@ -19,7 +19,8 @@ import cn.ussshenzhou.ares.gun.custom.variant.VariantIndex;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-/// > 自定义物品类型注册，用于数据包驱动的物品类型<br/>
+/// > 自定义物品类型注册，用于数据包驱动的物品类型
+/// >
 /// > 集成自动数据包配置加载和同步功能
 /// @author TACZ, USS_Shenzhou
 public class ModCustomItemTypes {
@@ -35,7 +36,8 @@ public class ModCustomItemTypes {
             "attachments", () -> AttachmentIndex.TYPE
     );
 
-    /// > 下挂武器，可以作为单独的枪使用，也可以作为下挂配件安装到枪上；<br/>
+    /// > 下挂武器，可以作为单独的枪使用，也可以作为下挂配件安装到枪上；
+    /// >
     /// > 为了简化结构，我们不允许下挂武器上再安装配件
     public static DeferredHolder<CustomItemType<?, ?>, CustomItemType<UnderBarrelGunIndex, UnderBarrelGunData>> UNDER_BARREL = CUSTOM_ITEM_TYPE.register(
             "under_barrels", () -> UnderBarrelGunIndex.TYPE

@@ -38,19 +38,19 @@ public class AttachmentDisplay {
     @SerializedName("views_fov")
     public float[] viewsFov = null;
 
-    /// > 有级档位的倍率数组，与 {@link #viewsFov} 一一配套（同索引 = 同一档）。
+    /// > 有级档位的倍率数组，与 [#viewsFov] 一一配套（同索引 = 同一档）。
     /// > 声明了 views_fov 但缺省本字段时，按 70/viewsFov 反推。
     @Nullable
     @SerializedName("zoom")
     public float[] zoom = null;
 
     /// > 无级模型 FOV 范围（[minFov, maxFov]，数值越小倍率越高）。声明后开镜按住变倍键
-    /// > 拨动滚轮在范围内连续调节<b>模型 FOV</b>；缺省 = 不支持无级模型 FOV。
+    /// > 拨动滚轮在范围内连续调节**模型 FOV**；缺省 = 不支持无级模型 FOV。
     @Nullable
     @SerializedName("zoom_fov_range")
     public float[] zoomFovRange = null;
 
-    /// > 无级倍率范围（[minZoom, maxZoom]，与 {@link #zoomFovRange} 配套的独立字段，
+    /// > 无级倍率范围（[minZoom, maxZoom]，与 [#zoomFovRange] 配套的独立字段，
     /// > 滚轮同比例映射调节）。缺省时按 70/zoomFovRange 反推。
     @Nullable
     @SerializedName("zoom_range")
@@ -65,10 +65,8 @@ public class AttachmentDisplay {
     /// > ===== 以下字段仅在本 display 作为「配件变体」使用时有意义 =====
 
     /// > 变体几何模式：
-    /// > <ul>
-    /// >   <li>{@code replace}：用本 display 的模型整体替换基础配件模型（默认）；</li>
-    /// >   <li>{@code overlay}：在基础配件模型之上、{@link #attachBone} 指定骨骼处叠加渲染本模型。</li>
-    /// > </ul>
+    /// > - `replace`：用本 display 的模型整体替换基础配件模型（默认）；
+    /// > - `overlay`：在基础配件模型之上、[#attachBone] 指定骨骼处叠加渲染本模型。
     @SerializedName("mode")
     public String mode = "replace";
 

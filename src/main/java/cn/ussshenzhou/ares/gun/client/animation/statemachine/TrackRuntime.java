@@ -18,19 +18,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-/// > 管理一组命名轨道（track），每个轨道持有一个 {@link PoseSource} 播放后端。
-/// > <p>
+/// > 管理一组命名轨道（track），每个轨道持有一个 [PoseSource] 播放后端。
+/// >
 /// > 这是状态机播放动画的载体：状态机本身只负责通过条件选择输出哪个轨道的姿态，
 /// > 而“播放什么动画、如何播放”由动作指令（Molang 绑定方法）声明，runtime 不内置生命周期。
 /// > 后端可以是常规 runner（loop/once/manual）或 montage runner（变速 + notify + 多轨）：
-/// > <ul>
-/// >   <li>loop：循环播放，按真实时间推进。</li>
-/// >   <li>once：播放一次后停止。</li>
-/// >   <li>manual：相位不随时间推进，由 {@link #setLocomotionPhase} 每 tick 设置；
-/// >       所有 manual 轨道在 {@link #tick()} 中统一推进，独立于状态机当前状态，
-/// >       避免过渡期间相位冻结导致的跳变。</li>
-/// >   <li>montage：由蒙太奇驱动的一次性动作，支持变速对齐 gameplayTicks、notify 时间点、多轨混合。</li>
-/// > </ul>
+/// > - loop：循环播放，按真实时间推进。
+/// > - once：播放一次后停止。
+/// > - manual：相位不随时间推进，由 [#setLocomotionPhase] 每 tick 设置；
+/// >   所有 manual 轨道在 [#tick()] 中统一推进，独立于状态机当前状态，
+/// >   避免过渡期间相位冻结导致的跳变。
+/// > - montage：由蒙太奇驱动的一次性动作，支持变速对齐 gameplayTicks、notify 时间点、多轨混合。
+///
 /// @author TACZ, USS_Shenzhou
 public class TrackRuntime {
     private static class Track {
@@ -95,7 +94,7 @@ public class TrackRuntime {
         playLoop(track, animation);
     }
 
-    /// > 幂等停止：仅当轨道存在时移除（与 {@link #stop} 等价，命名对称供 onUpdate 使用）。
+    /// > 幂等停止：仅当轨道存在时移除（与 [#stop] 等价，命名对称供 onUpdate 使用）。
     public void ensureStop(String track) {
         tracks.remove(track);
     }
@@ -105,14 +104,14 @@ public class TrackRuntime {
         putSource(track, AnimationRunnerSource.create(resolveAnimation(track, animation), AnimationRunnerSource.Mode.ONCE, eventSink, track, timelineContext));
     }
 
-    /// > 在指定轨道播放手动相位动画。相位由 {@link #setLocomotionPhase} 设置，不随时间推进。
+    /// > 在指定轨道播放手动相位动画。相位由 [#setLocomotionPhase] 设置，不随时间推进。
     public void playManual(String track, String animation) {
         putSource(track, AnimationRunnerSource.create(resolveAnimation(track, animation), AnimationRunnerSource.Mode.MANUAL, eventSink, track, timelineContext));
     }
 
     /// > 在指定轨道播放一次动画并按期望时长变速对齐玩法时长（如 reload）。播完停止。
-    /// > <p>
-    /// > speed = 动画全长 / expectedDurationSeconds；expectedDurationSeconds&lt;=0 时原速。
+    /// >
+    /// > speed = 动画全长 / expectedDurationSeconds；expectedDurationSeconds<=0 时原速。
     /// > notify 跟随动画 timeline，触发时机随 speed 缩放，与 montage 变速行为一致。
     public void playScaled(String track, String animation, float expectedDurationSeconds) {
         BedrockAnimation bedrockAnimation = resolveAnimation(track, animation);
@@ -128,7 +127,7 @@ public class TrackRuntime {
 
     /// > 在指定轨道播放 montage 驱动的一次性动作。
     /// >
-    /// > @param expectedDurationSeconds 期望时长（秒），用于变速对齐 gameplayTicks；&lt;=0 表示原速。
+    /// > @param expectedDurationSeconds 期望时长（秒），用于变速对齐 gameplayTicks；<=0 表示原速。
     public void playMontage(String track, Identifier montageId, String section, float expectedDurationSeconds) {
         AnimationMontage<MontageContext> montage = montageResolver.apply(montageId);
         if (montage == null) {
@@ -168,9 +167,9 @@ public class TrackRuntime {
 
     /// > 每 tick 调用：推进各后端时间，并同步所有 manual 轨道的相位。
     /// > manual 相位同步独立于状态机状态，保证过渡期间相位也是实时的。
-    /// > <p>
+    /// >
     /// > 用快照遍历：后端 tick 会消费动画 timeline 指令（action.play/stop_track 等），可能在迭代过程中
-    /// > 增删轨道，直接遍历 {@code tracks.values()} 会抛 {@link java.util.ConcurrentModificationException}。
+    /// > 增删轨道，直接遍历 `tracks.values()` 会抛 [java.util.ConcurrentModificationException]。
     public void tick() {
         for (Track track : tracks.values().toArray(new Track[0])) {
             if (track.isManual()) {
@@ -183,10 +182,10 @@ public class TrackRuntime {
         }
     }
 
-    /// > 计算指定轨道当前的输出姿态；轨道不存在时返回 {@link DummyPose#INSTANCE}。
-    /// > <p>
-    /// > 传入与状态机共享的 {@link GunMolangContext} 作为求值上下文，使动画内嵌的动态关键帧
-    /// > （骨骼变换写成 Molang 表达式，如随 {@code query.anim_time} / 变量实时偏移）能读到运行时量。
+    /// > 计算指定轨道当前的输出姿态；轨道不存在时返回 [DummyPose#INSTANCE]。
+    /// >
+    /// > 传入与状态机共享的 [GunMolangContext] 作为求值上下文，使动画内嵌的动态关键帧
+    /// > （骨骼变换写成 Molang 表达式，如随 `query.anim_time` / 变量实时偏移）能读到运行时量。
     /// > 静态关键帧动画不读 context，开销可忽略；求值频率由上层限频兜底。
     public Pose evaluatePose(String track) {
         Track t = tracks.get(track);

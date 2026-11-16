@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 /// > 安装的模板缓冲瞄具的发现入口。
-/// > <p>
+/// >
 /// > 本表只负责「枪上装了哪些需要模板缓冲的瞄具」，顺序恒为枪械附件槽位声明顺序。
-/// > 视图位的完整列表（本体机瞄 / 战术拒枪位 / 瞄具）与索引口径见 {@link AimViewHelper}。
+/// > 视图位的完整列表（本体机瞄 / 战术拒枪位 / 瞄具）与索引口径见 [AimViewHelper]。
 /// @author TACZ, USS_Shenzhou
 public class SightScopeHelper {
     /// > 收集顶层枪械上需要模板缓冲的瞄具，顺序为槽位声明顺序。

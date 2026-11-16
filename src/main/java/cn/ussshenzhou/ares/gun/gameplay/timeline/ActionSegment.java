@@ -16,13 +16,13 @@ public abstract class ActionSegment {
 
     private boolean active = true;
 
-    /// > 所属片段集合的 back-reference，由 {@link SegmentSet#add(ActionSegment)} 注入。
+    /// > 所属片段集合的 back-reference，由 [SegmentSet#add(ActionSegment)] 注入。
     /// > 片段可借此在自己的 notify / phase 边界编排兄弟片段（如开火片段在出膛时驱动冷却片段），
     /// > 把链式编排收进 timeline 层，而非散落到 operator 回调。未加入任何集合时为 null。
     @Nullable
     private SegmentSet owner;
 
-    /// > 由 {@link SegmentSet} 在加入时调用，注入容器 back-reference。
+    /// > 由 [SegmentSet] 在加入时调用，注入容器 back-reference。
     void attach(@Nullable SegmentSet set) {
         this.owner = set;
     }
@@ -36,16 +36,17 @@ public abstract class ActionSegment {
     /// > 推进本片段。
     /// >
     /// > @param deltaMs 本 tick 经过的毫秒数
-    /// > @return true 表示片段仍活跃；返回 false 时由 {@link SegmentSet} 移除
+    /// >
+    /// > @return true 表示片段仍活跃；返回 false 时由 [SegmentSet] 移除
     public abstract boolean tick(long deltaMs);
 
     /// > 声明本片段对动作许可的约束。默认不约束（不收紧任何动作）。
-    /// > 由 {@link SegmentSet#gate()} 在聚合时调用。
+    /// > 由 [SegmentSet#gate()] 在聚合时调用。
     public void constrain(ActionGate.Builder gate) {
     }
 
     /// > 本片段投影到的对外状态。默认 null 表示不参与投影。
-    /// > 由 {@link SegmentSet#projectStates()} 收集为集合时读取（多状态可并存）。
+    /// > 由 [SegmentSet#projectStates()] 收集为集合时读取（多状态可并存）。
     @Nullable
     public GunHolderState projectedState() {
         return null;

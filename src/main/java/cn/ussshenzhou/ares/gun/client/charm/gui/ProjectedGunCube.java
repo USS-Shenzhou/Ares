@@ -5,13 +5,13 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 /// > 改装界面挂饰拾取：单个枪体 cube 的屏幕投影 + 射线相交记录。
-/// > <p>
+/// >
 /// > 算法对接 SimpleBedrockModel v2：cube 几何在 bake 后已是「骨骼局部空间 + 方块单位」
 /// > （除 16 并减去 bone pivot）。本类把 cube 局部 AABB 连同
-/// > {@code mvp = proj × viewModel × boneGlobal × cubeRotation} 一并持有，鼠标点击时逆 mvp
+/// > `mvp = proj × viewModel × boneGlobal × cubeRotation` 一并持有，鼠标点击时逆 mvp
 /// > 反投影出 cube 局部空间的 3D 射线，用 slab 法做射线-AABB 相交，命中后把命中点 / 法线经
-/// > {@code cubeToBone} 变换回锚点骨骼局部空间（命中点再 ×16 转像素），产出与几何无关的
-/// > {@code boneName + localHit + localNormal} 绑定契约。
+/// > `cubeToBone` 变换回锚点骨骼局部空间（命中点再 ×16 转像素），产出与几何无关的
+/// > `boneName + localHit + localNormal` 绑定契约。
 /// @author TACZ, USS_Shenzhou
 public class ProjectedGunCube {
     private static final float PIXELS_PER_BLOCK = 16.0f;
@@ -36,13 +36,21 @@ public class ProjectedGunCube {
     private final boolean[] cornerVisible = new boolean[8];
 
     /// > @param boneName   cube 所属骨骼名
+    /// >
     /// > @param viewModel  poseStack.last().pose()（含相机 + 第一人称定位）
+    /// >
     /// > @param boneGlobal 该骨骼当前全局变换（受动画影响）
+    /// >
     /// > @param cubeToBone cube 自身旋转（translate pivot → rotate → translate -pivot）；无旋转为单位阵
+    /// >
     /// > @param proj       投影矩阵
+    /// >
     /// > @param localMin   cube 局部 AABB 最小角（方块）
+    /// >
     /// > @param localMax   cube 局部 AABB 最大角（方块）
+    /// >
     /// > @param guiW       GUI 宽（像素）
+    /// >
     /// > @param guiH       GUI 高（像素）
     public ProjectedGunCube(String boneName, Matrix4f viewModel, Matrix4f boneGlobal, Matrix4f cubeToBone,
                             Matrix4f proj, Vector3f localMin, Vector3f localMax, float guiW, float guiH) {
@@ -88,7 +96,7 @@ public class ProjectedGunCube {
         }
     }
 
-    /// > cube 局部 8 个角（方块单位），顺序与 {@code BedrockCube} 顶点常量一致。
+    /// > cube 局部 8 个角（方块单位），顺序与 `BedrockCube` 顶点常量一致。
     private Vector3f[] corners() {
         float x1 = localMin.x, y1 = localMin.y, z1 = localMin.z;
         float x2 = localMax.x, y2 = localMax.y, z2 = localMax.z;
@@ -112,8 +120,8 @@ public class ProjectedGunCube {
         };
     }
 
-    /// > 6 个面（按 {@code axis*2 + (sign>0?1:0)} 索引）的角点环路，顺序首尾相接构成 4 条边。
-    /// > 角点编号与 {@link #corners()} 一致。
+    /// > 6 个面（按 `axis*2 + (sign>0?1:0)` 索引）的角点环路，顺序首尾相接构成 4 条边。
+    /// > 角点编号与 [#corners()] 一致。
     private static final int[][] FACE_LOOPS = {
             /// > axis 0 (X) min 面 x=x1
             {0, 4, 7, 3},
@@ -132,6 +140,7 @@ public class ProjectedGunCube {
     /// > 返回命中面 4 条边的屏幕端点数组：{x1,y1,x2,y2}，两端都可见才返回该边，否则该项为 null。
     /// >
     /// > @param axis 命中面所在轴（0=X / 1=Y / 2=Z）
+    /// >
     /// > @param sign 命中面外法线在该轴上的符号（min 面 -1 / max 面 +1）
     public float[][] faceEdgeSegments(int axis, float sign) {
         int key = axis * 2 + (sign > 0.0f ? 1 : 0);
@@ -159,10 +168,10 @@ public class ProjectedGunCube {
         return new float[]{(ndcX * 0.5f + 0.5f) * guiW, (1.0f - (ndcY * 0.5f + 0.5f)) * guiH};
     }
 
-    /// > 鼠标射线-AABB 相交。命中返回 {@link Hit}（含锚点骨骼局部空间的命中点/法线），否则 null。
-    /// > <p>
+    /// > 鼠标射线-AABB 相交。命中返回 [Hit]（含锚点骨骼局部空间的命中点/法线），否则 null。
+    /// >
     /// > 射线在视图空间构造：相机位于原点朝 -Z，由鼠标 NDC 经投影矩阵的 x/y 项（FOV + 离轴）
-    /// > 解析出视图空间方向，再用 {@code viewCubeInv} 把原点与方向变换到 cube 局部空间求交。
+    /// > 解析出视图空间方向，再用 `viewCubeInv` 把原点与方向变换到 cube 局部空间求交。
     /// > 这样完全不依赖投影矩阵的近/远平面 z 约定，兼容光影（Iris/Oculus）的 reversed-Z 投影。
     public Hit hit(double mouseX, double mouseY, float guiW, float guiH) {
         float ndcX = (float) (mouseX / guiW) * 2.0f - 1.0f;
@@ -262,12 +271,19 @@ public class ProjectedGunCube {
     /// > 单次命中结果。坐标统一在锚点骨骼局部空间，与挂饰渲染端一致。
     /// >
     /// > @param boneName    命中骨骼名
+    /// >
     /// > @param localHit    锚点骨骼局部命中点（像素，写入 NBT）
+    /// >
     /// > @param localNormal 锚点骨骼局部命中面外法线（单位向量，写入 NBT）
-    /// > @param hitBone     锚点骨骼局部命中点（方块，用于 {@link #projectBoneToScreen} 绘制预览）
+    /// >
+    /// > @param hitBone     锚点骨骼局部命中点（方块，用于 [#projectBoneToScreen] 绘制预览）
+    /// >
     /// > @param distance    命中点的 NDC 深度（z/w，越小越近，用于跨 cube 排序）
+    /// >
     /// > @param cube        命中的 cube（用于反投影绘制）
-    /// > @param hitAxis     命中面所在轴（0=X / 1=Y / 2=Z），用于 {@link #faceEdgeSegments} 只画命中面
+    /// >
+    /// > @param hitAxis     命中面所在轴（0=X / 1=Y / 2=Z），用于 [#faceEdgeSegments] 只画命中面
+    /// >
     /// > @param hitSign     命中面外法线在该轴上的符号（min 面 -1 / max 面 +1）
     public record Hit(String boneName, Vector3f localHit, Vector3f localNormal,
                       Vector3f hitBone, float distance, ProjectedGunCube cube,

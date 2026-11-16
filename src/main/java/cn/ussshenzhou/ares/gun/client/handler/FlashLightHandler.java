@@ -15,11 +15,11 @@ import net.neoforged.bus.api.SubscribeEvent;
 import org.joml.Vector3f;
 
 /// > 枪灯（手电）环境照明后处理触发器。
-/// > <p>
-/// > 在场景渲染完成（{@link RenderLevelStageEvent.Stage#AFTER_LEVEL}）后，若本机玩家第一人称持枪
-/// > 且当前帧存在 active 枪灯（枪自带或配件，受开关状态门控），则执行 {@link FlashLightRenderer}
-/// > 的屏幕空间聚光灯后处理。光源参数由 {@code BedrockGunItemRenderer} 在 afterRender 写入
-/// > {@link FirstPersonPoseCache}（与枪体 bob/sway/动画同步）。
+/// >
+/// > 在场景渲染完成（[RenderLevelStageEvent.Stage#AFTER_LEVEL]）后，若本机玩家第一人称持枪
+/// > 且当前帧存在 active 枪灯（枪自带或配件，受开关状态门控），则执行 [FlashLightRenderer]
+/// > 的屏幕空间聚光灯后处理。光源参数由 `BedrockGunItemRenderer` 在 afterRender 写入
+/// > [FirstPersonPoseCache]（与枪体 bob/sway/动画同步）。
 /// @author TACZ, USS_Shenzhou
 @EventBusSubscriber(modid = Ares.MOD_ID, value = Dist.CLIENT)
 public class FlashLightHandler {

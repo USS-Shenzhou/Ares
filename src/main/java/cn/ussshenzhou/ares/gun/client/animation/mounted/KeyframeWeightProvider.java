@@ -4,10 +4,10 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
-/// > 关键帧权重 provider：从 {@link OverlayWeightSpec} 的关键帧表按 section 进度线性插值。
-/// > <p>
-/// > 常数形态退化为单关键帧 {@code {0: c}}，任意进度恒返回该常数（M2 即用此路径）。
-/// > 曲线形态按 {@link OverlayWeightContext#sectionProgress()} 在相邻关键帧间线性插值（M3 启用进度采样）。
+/// > 关键帧权重 provider：从 [OverlayWeightSpec] 的关键帧表按 section 进度线性插值。
+/// >
+/// > 常数形态退化为单关键帧 `{0: c}`，任意进度恒返回该常数（M2 即用此路径）。
+/// > 曲线形态按 [OverlayWeightContext#sectionProgress()] 在相邻关键帧间线性插值（M3 启用进度采样）。
 /// @author TACZ, USS_Shenzhou
 public class KeyframeWeightProvider implements OverlayWeightProvider {
     private final NavigableMap<Float, Float> points;

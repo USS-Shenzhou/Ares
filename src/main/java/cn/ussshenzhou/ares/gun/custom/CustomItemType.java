@@ -13,13 +13,18 @@ import java.util.Map;
 /// > 代表一种数据驱动物品类型
 /// >
 /// > @param id 类型id
+/// >
 /// > @param indexPathConverter index文件路径映射
+/// >
 /// > @param dataPathConverter 配置数据文件路径映射
+/// >
 /// > @param factory index工厂
+/// >
 /// > @param gson gson实例
 /// >
-/// > @param <T> index实现类型
-/// > @param <D> index的配置数据类型
+/// > @param `T` index实现类型
+/// >
+/// > @param `D` index的配置数据类型
 /// @author TACZ, USS_Shenzhou
 // FIXME REVIEW createClientCache is removed together with the network sync.
 public record CustomItemType<T extends CustomItemIndex<D>, D> (
@@ -42,9 +47,13 @@ public record CustomItemType<T extends CustomItemIndex<D>, D> (
         /// > 创建一个index实例
         /// >
         /// > @param id             index的注册ID
+        /// >
         /// > @param json           index的json数据
+        /// >
         /// > @param dataMap        此index关联的所有配置数据的map
+        /// >
         /// > @param registryAccess
+        /// >
         /// > @return index实例，若创建失败则返回null
         @Nullable
         T create(Gson gson, Identifier id, JsonElement json, @UnmodifiableView Map<Identifier, JsonElement> dataMap, HolderLookup.Provider registryAccess);

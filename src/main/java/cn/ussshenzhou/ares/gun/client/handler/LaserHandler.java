@@ -11,17 +11,17 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.dimension.DimensionType;
 
 /// > 镭射（激光指示器）的渲染辅助工具。
-/// > <p>
-/// > 第一人称镭射由 {@code BedrockGunItemRenderer} 在枪模型渲染阶段直绘（与枪体 bob/sway/动画
+/// >
+/// > 第一人称镭射由 `BedrockGunItemRenderer` 在枪模型渲染阶段直绘（与枪体 bob/sway/动画
 /// > 同步，受配件/枪开关状态门控）；本类仅保留世界光照下光束可见度的计算入口
-/// > （{@link #computeBeamAlpha}）。
+/// > （[#computeBeamAlpha]）。
 /// @author TACZ, USS_Shenzhou
 public class LaserHandler {
     /// > 最大射程（米）。
     private static final float MAX_RANGE = 64.0f;
 
     /// > 由玩家眼位真实世界光照算出光束可见度 [0,1]：亮处趋近 0、暗处趋近 1。
-    /// > 算法对齐 {@code FlashLightHandler.computeEnvDim}（原版 LightTexture 公式）。
+    /// > 算法对齐 `FlashLightHandler.computeEnvDim`（原版 LightTexture 公式）。
     public static float computeBeamAlpha(LocalPlayer player, float partialTick) {
         BlockPos eyePos = BlockPos.containing(player.getEyePosition());
         ClientLevel level = (ClientLevel) player.level();

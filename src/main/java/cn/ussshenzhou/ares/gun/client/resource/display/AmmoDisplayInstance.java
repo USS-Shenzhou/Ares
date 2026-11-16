@@ -14,8 +14,8 @@ import javax.annotation.Nullable;
 import org.joml.Vector3f;
 
 /// > 弹药 display 运行时实例。
-/// > <p>
-/// > 必须在资源包重载期间构建，否则所需的模型缓存（{@link ClientAssetsManager#getModelPojo}）不可用。
+/// >
+/// > 必须在资源包重载期间构建，否则所需的模型缓存（[ClientAssetsManager#getModelPojo]）不可用。
 /// > 承载弹药本体模型 / 贴图 / GUI 图标 / 各上下文缩放，以及抛壳弹壳模型与贴图。模型或贴图缺失则退化
 /// > 为 GUI 2D 图标渲染；弹壳缺失则该弹药不抛壳。
 /// @author TACZ, USS_Shenzhou

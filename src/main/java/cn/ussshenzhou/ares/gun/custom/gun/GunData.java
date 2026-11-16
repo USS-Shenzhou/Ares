@@ -31,8 +31,8 @@ public class GunData {
     @SerializedName("reload_duration")
     private int reloadDuration = 40;
 
-    /// > 按弹匣扩容等级（{@code magLevel}，0 起）区分的换弹总时长（tick）。
-    /// > 声明后弹匣换弹按当前扩容等级取对应时长，缺省 / 越界回退 {@link #reloadDuration}。
+    /// > 按弹匣扩容等级（`magLevel`，0 起）区分的换弹总时长（tick）。
+    /// > 声明后弹匣换弹按当前扩容等级取对应时长，缺省 / 越界回退 [#reloadDuration]。
     @Nullable
     @SerializedName("reload_duration_by_level")
     private int[] reloadDurationByLevel;
@@ -117,10 +117,10 @@ public class GunData {
     }
 
     /// > 按弹匣扩容等级取换弹总时长（tick）。
-    /// > 未声明 {@code reload_duration_by_level} 或数组为空时回退 {@link #getReloadDuration()}；
+    /// > 未声明 `reload_duration_by_level` 或数组为空时回退 [#getReloadDuration()]；
     /// > 等级越界（超出数组长度）时回退数组末元素。
     /// >
-    /// > @param level 弹匣扩容等级（0 起），来自 {@code IGunProperties.getMagLevel()}
+    /// > @param level 弹匣扩容等级（0 起），来自 `IGunProperties.getMagLevel()`
     public int getReloadDurationForLevel(int level) {
         if (reloadDurationByLevel == null || reloadDurationByLevel.length == 0) {
             return reloadDuration;

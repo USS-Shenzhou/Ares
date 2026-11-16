@@ -12,7 +12,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 
-/// > 开火 C2S。{@code chargeTicks} 仅在 {@link #ACTION_RELEASE} 时有意义：客户端松手时随包上报的
+/// > 开火 C2S。`chargeTicks` 仅在 [#ACTION_RELEASE] 时有意义：客户端松手时随包上报的
 /// > 蓄力原始累积量（tick 数），服务端据此用同一脚本纯函数重算倍率（不上报倍率，见蓄力权威模型）。
 /// > PRESS 时恒 0。
 /// @author TACZ, USS_Shenzhou

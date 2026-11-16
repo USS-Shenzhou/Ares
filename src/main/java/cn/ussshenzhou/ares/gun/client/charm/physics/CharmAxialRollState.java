@@ -5,9 +5,9 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 /// > 摆体轴向滚转状态（自源挂饰模组移植，仅依赖 JOML）。
-/// > <p>
+/// >
 /// > 在摆体主摆动之上叠加沿吊挂轴的滚转：除了把滚转角拉向可见目标外，还引入由偏心质量 + 局部加速度
-/// > 计算的力矩（{@link #forceTorque}），让带配重的挂饰在甩动时产生自然的轴向旋转。
+/// > 计算的力矩（[#forceTorque]），让带配重的挂饰在甩动时产生自然的轴向旋转。
 /// @author TACZ, USS_Shenzhou
 public class CharmAxialRollState {
     private static final float MIN_VECTOR_LENGTH_SQUARED = 1.0E-8f;

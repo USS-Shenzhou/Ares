@@ -176,7 +176,7 @@ public class GunDisplayInstance {
         return basePojo.animationPoseCompositions;
     }
 
-    /// > 取单手双持按手变体：{@code MAIN_HAND} → right，{@code OFF_HAND} → left。
+    /// > 取单手双持按手变体：`MAIN_HAND` → right，`OFF_HAND` → left。
     /// > 未声明对应变体时返回本体（回退到双手 display，验证期允许）。
     public GunDisplayInstance forHand(InteractionHand hand) {
         if (hand == InteractionHand.OFF_HAND) {
@@ -361,7 +361,7 @@ public class GunDisplayInstance {
         instance.zoomModelFov = pojo.zoomModelFov > 0.0F ? pojo.zoomModelFov : 70.0F;
     }
 
-    /// > 解析战术拒枪姿态：定位组骨骼缺省 {@code tactical_view}，倍率 / FOV 缺省回退机瞄位对应值。
+    /// > 解析战术拒枪姿态：定位组骨骼缺省 `tactical_view`，倍率 / FOV 缺省回退机瞄位对应值。
     /// > 骨骼在模型里不存在时视为该枪没有此姿态（告警并整条不进视图位列表），避免包作者写错名字后
     /// > 在游戏里切到一个取不到视点的空视图位。
     public static void buildTacticalStance(GunDisplayInstance instance, GunDisplay pojo) {
@@ -400,7 +400,7 @@ public class GunDisplayInstance {
         instance.showCrosshair = pojo.showCrosshair;
     }
 
-    /// > 解析抛壳运动配置。{@code shell} 字段缺失则不抛壳（{@code shellEjection == null}）。
+    /// > 解析抛壳运动配置。`shell` 字段缺失则不抛壳（`shellEjection == null`）。
     public static void buildShellEjection(GunDisplayInstance instance, GunDisplay pojo) {
         instance.shellEjection = null;
         ShellEjection shell = pojo.shell;
@@ -616,8 +616,8 @@ public class GunDisplayInstance {
     }
 
     /// > 懒加载并缓存指定 montage 的编译结果。缓存 null 结果避免重复编译失败。
-    /// > <p>
-    /// > {@code animationResolver} 用于把 montage 段引用的动画名解析为本 display 的 {@link BedrockAnimation}
+    /// >
+    /// > `animationResolver` 用于把 montage 段引用的动画名解析为本 display 的 [BedrockAnimation]
     /// > （绑定本模型骨架），因此编译产物只在本 display 内复用。
     @Nullable
     public AnimationMontage<MontageContext> getOrCompileMontage(Identifier montageId,

@@ -13,9 +13,9 @@ import org.joml.Vector3f;
 import java.util.List;
 
 /// > 挂饰防穿模调试可视化：在锚点骨骼局部空间把枪体碰撞盒画成线框 OBB，并把质点探针球画成三轴十字。
-/// > <p>
-/// > 调用前 {@code poseStack} 须已进入锚点骨骼局部空间（与碰撞盒、质点位置同一空间，方块单位）。
-/// > 仅在 {@link CharmRenderer#DEBUG_COLLISION} 打开时调用。
+/// >
+/// > 调用前 `poseStack` 须已进入锚点骨骼局部空间（与碰撞盒、质点位置同一空间，方块单位）。
+/// > 仅在 [CharmRenderer#DEBUG_COLLISION] 打开时调用。
 /// @author TACZ, USS_Shenzhou
 public class CharmCollisionDebugRenderer {
     /// > OBB 12 条边的角点索引对；角点编号 (x?,y?,z?) 位掩码：bit0=x, bit1=y, bit2=z
@@ -29,7 +29,9 @@ public class CharmCollisionDebugRenderer {
     };
 
     /// > @param poseStack      已进入锚点骨骼局部空间
+    /// >
     /// > @param probeCenter    质点探针中心（锚点骨骼局部空间，方块）
+    /// >
     /// > @param probeRadius    探针半径（方块）
     public static void render(PoseStack poseStack, MultiBufferSource buffer,
                               List<CharmCollisionBox> boxes, Vector3f probeCenter, float probeRadius) {

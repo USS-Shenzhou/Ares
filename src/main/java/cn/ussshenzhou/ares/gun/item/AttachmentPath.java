@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Objects;
 
 /// > 配件槽位路径。
-/// > <p>
+/// >
 /// > 从枪械顶层槽位 id 开始，逐层指向多层配件树中的目标槽位。
-/// > 例如 {@code [tacz:kit_barrel, tacz:muzzle]} 表示「枪的 kit_barrel 槽 → 该配件的 muzzle 子槽」。
-/// > <p>
-/// > 路径长度即为目标槽位所处的深度，受 {@link IAttachmentHolder#MAX_ATTACHMENT_DEPTH} 约束。
+/// > 例如 `[tacz:kit_barrel, tacz:muzzle]` 表示「枪的 kit_barrel 槽 → 该配件的 muzzle 子槽」。
+/// >
+/// > 路径长度即为目标槽位所处的深度，受 [IAttachmentHolder#MAX_ATTACHMENT_DEPTH] 约束。
 /// @author TACZ, USS_Shenzhou
 public record AttachmentPath(List<Identifier> slots) {
     public static final AttachmentPath EMPTY = new AttachmentPath(List.of());

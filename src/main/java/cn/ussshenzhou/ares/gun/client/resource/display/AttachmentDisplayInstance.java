@@ -223,7 +223,7 @@ public class AttachmentDisplayInstance {
         return slots.get(slotId);
     }
 
-    /// > 变体几何模式：{@code replace}（替换基础模型）或 {@code overlay}（在 attach_bone 处叠加）。
+    /// > 变体几何模式：`replace`（替换基础模型）或 `overlay`（在 attach_bone 处叠加）。
     public String getVariantMode() {
         return variantMode;
     }

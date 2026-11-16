@@ -25,8 +25,8 @@ import org.joml.Vector3f;
 import java.util.List;
 
 /// > 挂饰调试命令：在没有拾取 UI（阶段 5）之前，用命令把挂饰绑定到主手枪，用于验证渲染。
-/// > <p>
-/// > 服务端权威写入枪械 NBT（{@link GunCharmDataHelper}），随同步下发到客户端渲染。
+/// >
+/// > 服务端权威写入枪械 NBT（[GunCharmDataHelper]），随同步下发到客户端渲染。
 /// > 默认命中点取锚点骨骼原点、法线取 +Z、偏移 0。
 /// @author TACZ, USS_Shenzhou
 public class CharmCommand {

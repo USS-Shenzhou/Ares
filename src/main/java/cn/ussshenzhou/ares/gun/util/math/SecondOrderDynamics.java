@@ -23,8 +23,11 @@ public class SecondOrderDynamics {
     private ScheduledFuture<?> handle;
 
     /// > @param f  Natural frequency
+    /// >
     /// > @param z  Damping coefficient
+    /// >
     /// > @param r  Initial velocity
+    /// >
     /// > @param x0 Initial position
     public SecondOrderDynamics(float f, float z, float r, float[] x0) {
         k1 = (float) (z / (Math.PI * f));

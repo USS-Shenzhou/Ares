@@ -2,14 +2,14 @@ package cn.ussshenzhou.ares.gun.gameplay.timeline;
 
 import net.minecraft.world.item.ItemStack;
 
-/// > 出膛后编排的受控操作集：{@link FireController} 实现它，暴露给「出膛后编排脚本」的受控原语。
-/// > <p>
-/// > 这是一个<b>纯 Java 内部能力接口</b>（不直接暴露给 JS），由 {@code shared/script/fire} 的
-/// > {@code FireOrchestrationApi} 包装后交给脚本。所有操作都路由回 {@link FireController} 的既有编排方法，
-/// > 因此<b>双端差异由 {@link FireController.Hooks} 注入的回调自动承载</b>（客户端表现/预测，服务端权威），
-/// > 脚本与内置默认走同一套端适配，无需自行 {@code if (isClient)}。
-/// > <p>
-/// > 世界副作用（{@code EffectApi}）绝不经此下放（见 {@code docs/scripting-boundaries.md} 第三节硬约束）。
+/// > 出膛后编排的受控操作集：[FireController] 实现它，暴露给「出膛后编排脚本」的受控原语。
+/// >
+/// > 这是一个**纯 Java 内部能力接口**（不直接暴露给 JS），由 `shared/script/fire` 的
+/// > `FireOrchestrationApi` 包装后交给脚本。所有操作都路由回 [FireController] 的既有编排方法，
+/// > 因此**双端差异由 [FireController.Hooks] 注入的回调自动承载**（客户端表现/预测，服务端权威），
+/// > 脚本与内置默认走同一套端适配，无需自行 `if (isClient)`。
+/// >
+/// > 世界副作用（`EffectApi`）绝不经此下放（见 `docs/scripting-boundaries.md` 第三节硬约束）。
 /// @author TACZ, USS_Shenzhou
 public interface FireAfterShotOps {
 

@@ -49,14 +49,14 @@ public class GunAttributeManager extends JsonDataManager<GunAttribute> {
         this.dataMap = builder.build();
     }
 
-    /// > 由注册项构造属性定义。<b>id 来自注册路径</b>（注册项内不再声明 id），
-    /// > 展示名缺省按 {@code attribute.<namespace>.<path>} 推导。
+    /// > 由注册项构造属性定义。**id 来自注册路径**（注册项内不再声明 id），
+    /// > 展示名缺省按 `attribute.<namespace>.<path>` 推导。
     private static void toAttribute(Identifier id, GunAttribute attribute) {
         String name = attribute.nameKey() != null ? attribute.nameKey() : "attribute." + id.getNamespace() + "." + id.getPath();
         attribute.bind(id, Component.translatable(name));
     }
 
-    /// > 校验注册项数值域：{@code min <= max}，且 {@code default} 落在域内。
+    /// > 校验注册项数值域：`min <= max`，且 `default` 落在域内。
     /// >
     /// > @return 错误说明；合法返回 null
     @Nullable

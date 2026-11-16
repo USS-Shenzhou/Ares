@@ -7,7 +7,7 @@ import cn.ussshenzhou.ares.gun.gameplay.timeline.SegmentToken;
 import cn.ussshenzhou.ares.gun.gameplay.timeline.Timer;
 import javax.annotation.Nullable;
 
-/// > 拔枪轨：拔枪倒计时，期间投影 {@link GunHolderState#DRAWING}。
+/// > 拔枪轨：拔枪倒计时，期间投影 [GunHolderState#DRAWING]。
 /// > 倒计时结束后回 NORMAL（轨道自然结束、投影随之消失）。
 /// @author TACZ, USS_Shenzhou
 public class DrawSegment extends ActionSegment {

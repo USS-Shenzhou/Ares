@@ -8,9 +8,13 @@ public class InaccuracyHelper {
     /// > 对发射方向施加散布偏移。
     /// >
     /// > @param yaw        原始偏航角（度）
+    /// >
     /// > @param pitch      原始俯仰角（度）
+    /// >
     /// > @param inaccuracy 散布值（越大越不准）
+    /// >
     /// > @param random     随机源
+    /// >
     /// > @return float[2]：[偏移后的 yaw, 偏移后的 pitch]
     public static float[] applyInaccuracy(float yaw, float pitch, float inaccuracy, RandomSource random) {
         if (inaccuracy <= 0) {

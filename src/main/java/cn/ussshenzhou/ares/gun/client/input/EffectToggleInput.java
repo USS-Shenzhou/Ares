@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /// > 效果开关快捷键的共享执行逻辑（镭射 / 枪灯）。
-/// > <p>
+/// >
 /// > 按下时对主手枪执行「乐观预判」：先本地翻转枪自带效果键与配件树中全部匹配的可开关配件
-/// > （渲染立即生效），再发送 {@link C2SToggleEffectMessage} 由服务端权威执行；服务端随物品栏
+/// > （渲染立即生效），再发送 [C2SToggleEffectMessage] 由服务端权威执行；服务端随物品栏
 /// > 同步覆盖自愈（预写自愈模式，与 ModuleModeHelper 注释一致）。
-/// > <p>
+/// >
 /// > 枪上既无自带效果、也无匹配配件时不发送请求（避免写入无意义 NBT）。
 /// @author TACZ, USS_Shenzhou
 public class EffectToggleInput {

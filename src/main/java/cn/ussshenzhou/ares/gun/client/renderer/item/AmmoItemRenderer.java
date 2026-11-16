@@ -23,12 +23,12 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 /// > 弹药物品渲染器（独立 BEWLR）。
-/// > <p>
-/// > 弹药是无动画的静态物品，不走 SBM 的第一人称动画驱动渲染（{@code AbstractGeoItemRendererV2} 依赖动画实例），
-/// > 故采用独立的 {@link BlockEntityWithoutLevelRenderer}：模型层用 v2 的 {@link BedrockAmmoModel}（与弹壳 / 挂饰同源）。
-/// > <p>
+/// >
+/// > 弹药是无动画的静态物品，不走 SBM 的第一人称动画驱动渲染（`AbstractGeoItemRendererV2` 依赖动画实例），
+/// > 故采用独立的 [BlockEntityWithoutLevelRenderer]：模型层用 v2 的 [BedrockAmmoModel]（与弹壳 / 挂饰同源）。
+/// >
 /// > GUI 上下文或模型 / 贴图缺失时渲染 2D 格子图标；其余上下文（展示框 / 地面 / 第三人称手持等）渲染 3D 模型，
-/// > 通过弹药模型的定位组（{@code fixed} / {@code ground} / {@code thirdperson_hand}）把对应锚点对齐到方块中心。
+/// > 通过弹药模型的定位组（`fixed` / `ground` / `thirdperson_hand`）把对应锚点对齐到方块中心。
 /// @author TACZ, USS_Shenzhou
 public class AmmoItemRenderer extends BlockEntityWithoutLevelRenderer {
     private static final SlotModel SLOT_MODEL = new SlotModel();
@@ -91,7 +91,7 @@ public class AmmoItemRenderer extends BlockEntityWithoutLevelRenderer {
         poseStack.mulPoseMatrix(transform.invert());
     }
 
-    /// > 渲染 GUI 2D 格子图标。图标贴图缺失时回退 {@link MissingTextureAtlasSprite}。
+    /// > 渲染 GUI 2D 格子图标。图标贴图缺失时回退 [MissingTextureAtlasSprite]。
     private void renderSlot(@Nullable AmmoDisplayInstance display, PoseStack poseStack, MultiBufferSource bufferSource,
                             int packedLight, int packedOverlay) {
         Identifier slotTexture = display == null ? null : display.getSlotTexture();

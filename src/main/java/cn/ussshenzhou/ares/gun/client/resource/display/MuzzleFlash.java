@@ -5,9 +5,9 @@ import net.minecraft.resources.Identifier;
 import javax.annotation.Nullable;
 
 /// > 枪口火光/枪烟配置。
-/// > <p>
-/// > 当前粒子由动画 {@code particle_effects} 关键帧驱动并指定 effect 与 locator，本配置仅在动画
-/// > 关键帧未指定 locator 时提供「回退骨骼名」。{@code texture}/{@code scale}/{@code duration} 为
+/// >
+/// > 当前粒子由动画 `particle_effects` 关键帧驱动并指定 effect 与 locator，本配置仅在动画
+/// > 关键帧未指定 locator 时提供「回退骨骼名」。`texture`/`scale`/`duration` 为
 /// > 早期 quad-billboard 实现遗留字段，保留以兼容旧 json，当前不再使用。
 /// @author TACZ, USS_Shenzhou
 public class MuzzleFlash {

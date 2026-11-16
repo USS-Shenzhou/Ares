@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.List;
 
 /// > 枪口火光/手电环境照明后处理。
-/// > <p>
+/// >
 /// > 纯屏幕空间实现：shader 用主帧缓冲深度重建视图空间坐标，按 From/To/Angle/Range 计算锥形照明，
 /// > 并沿光源到片元的视图空间线段采样主深度图，近似处理屏幕内遮挡。
 /// @author TACZ, USS_Shenzhou
@@ -80,15 +80,21 @@ public class FlashLightRenderer {
     }
 
 /// > 执行一次持续手电后处理（参数化）。
-/// > <p>
+/// >
 /// > 纯屏幕空间聚光灯：from/to 为视图空间光源点与朝向，color/angle/range/luminance 为灯光参数。
 /// >
 /// > @param proj       当前帧场景投影矩阵
+/// >
 /// > @param from       视图空间光源起点
+/// >
 /// > @param to         视图空间光源指向点
+/// >
 /// > @param lightColor 灯光颜色（RGB 0~1）
+/// >
 /// > @param angle      锥角（弧度）
+/// >
 /// > @param range      照射范围（米）
+/// >
 /// > @param luminance  亮度
     public static void renderFlashlight(Matrix4f proj, Vector3f from, Vector3f to,
                                         Vector3f lightColor, float angle, float range, float luminance) {
@@ -108,9 +114,12 @@ public class FlashLightRenderer {
 
     /// > 执行一次枪口火光后处理。
     /// >
-    /// > @param luminance 爆闪强度（>0），由 {@link #computeFlashLuminance} 计算
+    /// > @param luminance 爆闪强度（>0），由 [#computeFlashLuminance] 计算
+    /// >
     /// > @param envDim    环境调光系数 [0,1]，由玩家眼位真实光照算出，亮处趋近 0
+    /// >
     /// > @param proj      当前帧场景投影矩阵
+    /// >
     /// > @param view      当前帧场景 modelView 矩阵（保留签名兼容当前调用；纯屏幕空间路径不使用）
     public static void render(float luminance, float envDim, Matrix4f proj, Matrix4f view, Camera camera) {
         luminance *= envDim;

@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /// > 枪械伤害管线核心。
-/// > <p>
+/// >
 /// > 计算流程：部位倍率 → 距离衰减 → 蓄力倍率 → 自定义护甲减伤（阶段 2 接入）→ 穿透衰减 → 事件 → 应用伤害 → 附加效果。
 /// @author TACZ, USS_Shenzhou
 // FIXME REVIEW hooks and Forge events are removed from the damage pipeline.
@@ -27,8 +27,11 @@ public class DamageHelper {
     /// > 对命中实体执行完整伤害管线。
     /// >
     /// > @param projectile 命中上下文（飞行弹丸或激光 hitscan）
+    /// >
     /// > @param target     命中目标
+    /// >
     /// > @param hitPos     命中点坐标
+    /// >
     /// > @param gunStack   射击者手持的枪械（用于事件传递，可为空）
     public static void applyDamage(IProjectileHitContext projectile, Entity target, Vec3 hitPos, ItemStack gunStack) {
         Entity shooter = projectile.getOwner();

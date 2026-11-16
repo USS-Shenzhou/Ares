@@ -93,7 +93,7 @@ public class AttachmentSlotSerializer implements JsonDeserializer<AttachmentSlot
         return id;
     }
 
-    /// > 解析可选的 {@code rail} 配置（委托给 {@link RailConfigSerializer}）。
+    /// > 解析可选的 `rail` 配置（委托给 [RailConfigSerializer]）。
     @Nullable
     private static RailConfig parseRail(JsonObject parent, JsonDeserializationContext ctx) {
         if (!parent.has("rail") || parent.get("rail").isJsonNull()) {

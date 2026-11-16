@@ -15,7 +15,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
 /// > 改装界面卸下挂饰请求（C2S，服务端权威）。
-/// > <p>
+/// >
 /// > 移除枪械 NBT 中的挂饰结合数据，并把挂饰物品归还玩家背包。
 /// >
 /// > @param gunSlotIndex 枪械所在背包槽位索引

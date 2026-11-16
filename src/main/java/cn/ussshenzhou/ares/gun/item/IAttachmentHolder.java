@@ -17,13 +17,13 @@ import java.util.Map;
 /// @author TACZ, USS_Shenzhou
 public interface IAttachmentHolder {
     /// > 配件树的最大深度。语义：从任意 holder 算起，其下子配件树的最大层数。
-    /// > <p>
+    /// >
     /// > 同时用作属性聚合 / 渲染递归遍历的硬截断，保证即便数据异常也不会无限递归。
     int MAX_ATTACHMENT_DEPTH = 3;
 
     /// > 计算某个物品堆作为容器时，其已安装子配件树的高度（叶子节点高度为 0）。
-    /// > <p>
-    /// > 遍历使用 NBT 读取（{@link #getStoredAttachment}），避免触发属性缓存递归。
+    /// >
+    /// > 遍历使用 NBT 读取（[#getStoredAttachment]），避免触发属性缓存递归。
     static int getSubtreeDepth(ItemStack stack) {
         return getSubtreeDepth(stack, MAX_ATTACHMENT_DEPTH);
     }
@@ -62,7 +62,7 @@ public interface IAttachmentHolder {
     }
 
     /// > 获取nbt中持久化的配件，应当返回一个新的配件物品实例；如果为空且定义了虚拟配件，则回退到默认虚拟配件.
-    /// > <p>
+    /// >
     /// > 对于内置模块：若 NBT 未写入该槽位且槽位声明了默认配件，则返回虚拟默认件（不写 NBT）。
     /// > 一旦玩家替换或往其子槽装件，会通过安装链 copy-on-write 实体化进 NBT。
     // FIXME REVIEW renamed from the misspelled getStorgeAttachment.

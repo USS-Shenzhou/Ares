@@ -1,10 +1,10 @@
 package cn.ussshenzhou.ares.gun.client.animation.statemachine.source;
 
-/// > 轨道进度控制句柄。仅常规 runner 后端（{@link AnimationRunnerSource}）真实支持，
+/// > 轨道进度控制句柄。仅常规 runner 后端（[AnimationRunnerSource]）真实支持，
 /// > 用于 manual / locomotion 轨道每 tick 强设相位。
-/// > <p>
-/// > montage 后端不支持外部任意强设进度（进度由 section 内部管理），其 {@link PoseSource#progress()}
-/// > 返回 {@link #NONE}，调用 {@link #setProgress} 将被忽略。
+/// >
+/// > montage 后端不支持外部任意强设进度（进度由 section 内部管理），其 [PoseSource#progress()]
+/// > 返回 [#NONE]，调用 [#setProgress] 将被忽略。
 /// @author TACZ, USS_Shenzhou
 public interface IProgressControl {
     /// > 不支持外部强设进度的空实现。montage 后端返回此实例。

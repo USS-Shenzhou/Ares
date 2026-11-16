@@ -16,8 +16,8 @@ import javax.annotation.Nullable;
 
 import java.io.IOException;
 
-/// > 客户端自定义 shader 注册。当前提供 GUI 画圆 / 环形扇区用的 {@code circle} shader。
-/// > <p>
+/// > 客户端自定义 shader 注册。当前提供 GUI 画圆 / 环形扇区用的 `circle` shader。
+/// >
 /// > circle shader 用 normal 属性编码 thickness / start / end，可在一次 quad 内画出实心圆、
 /// > 圆环或扇区弧段，适合做径向轮盘（如弹种选择轮盘）。
 /// @author TACZ, USS_Shenzhou

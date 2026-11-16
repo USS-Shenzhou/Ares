@@ -18,16 +18,14 @@ import cn.ussshenzhou.ares.gun.client.animation.context.AnimationEventSink;
 import cn.ussshenzhou.ares.gun.client.animation.statemachine.GunMolangContext;
 import net.minecraft.resources.Identifier;
 
-/// > 由常规 {@link AnimationRunner} 驱动的播放后端。
-/// > <p>
-/// > 支持三种模式（沿用原 {@code TrackRuntime} 行为）：
-/// > <ul>
-/// >   <li>{@link Mode#LOOP}：循环播放，按真实时间推进。</li>
-/// >   <li>{@link Mode#ONCE}：播放一次后停止。</li>
-/// >   <li>{@link Mode#MANUAL}：相位不随时间推进，由外部通过 {@link #progress()} 每 tick 强设。</li>
-/// > </ul>
-/// > <p>
-/// > 动画文件内嵌的 timeline 关键帧（如 {@code action.notify('mag_out')}）在 {@link #tick()} 推进后被消费：
+/// > 由常规 [AnimationRunner] 驱动的播放后端。
+/// >
+/// > 支持三种模式（沿用原 `TrackRuntime` 行为）：
+/// > - [Mode#LOOP]：循环播放，按真实时间推进。
+/// > - [Mode#ONCE]：播放一次后停止。
+/// > - [Mode#MANUAL]：相位不随时间推进，由外部通过 [#progress()] 每 tick 强设。
+/// >
+/// > 动画文件内嵌的 timeline 关键帧（如 `action.notify('mag_out')`）在 [#tick()] 推进后被消费：
 /// > 取出本帧新触发的关键帧并执行其指令。MANUAL 模式不按时间推进、不消费 timeline（locomotion 轨无 timeline）。
 /// @author TACZ, USS_Shenzhou
 public class AnimationRunnerSource implements PoseSource {
@@ -72,7 +70,9 @@ public class AnimationRunnerSource implements PoseSource {
     /// > 创建一个常规 runner 后端，并接入 timeline 事件消费。动画缺失时返回 null。
     /// >
     /// > @param eventSink       timeline 关键帧（notify）转发目标；为 null 时不消费 timeline。
+    /// >
     /// > @param trackName       轨道名，用于 notify 事件定位。
+    /// >
     /// > @param timelineContext timeline 指令执行上下文（与状态机共享）；为 null 时不消费 timeline。
     public static AnimationRunnerSource create(BedrockAnimation animation, Mode mode,
                                                AnimationEventSink eventSink, String trackName,
@@ -82,7 +82,7 @@ public class AnimationRunnerSource implements PoseSource {
 
     /// > 创建一个常规 runner 后端，可指定播放速度（用于 ONCE 模式按期望时长变速对齐）。动画缺失时返回 null。
     /// >
-    /// > @param speed 播放速度倍率，仅对 ONCE 模式生效；&lt;=0 视为 1.0 原速。
+    /// > @param speed 播放速度倍率，仅对 ONCE 模式生效；<=0 视为 1.0 原速。
     public static AnimationRunnerSource create(BedrockAnimation animation, Mode mode,
                                                AnimationEventSink eventSink, String trackName,
                                                GunMolangContext timelineContext, float speed) {
@@ -138,8 +138,8 @@ public class AnimationRunnerSource implements PoseSource {
         return progressControl;
     }
 
-    /// > 消费本帧新触发的 timeline 关键帧，执行其指令（如 {@code action.notify('mag_out')}）。
-    /// > <p>
+    /// > 消费本帧新触发的 timeline 关键帧，执行其指令（如 `action.notify('mag_out')`）。
+    /// >
     /// > 执行前把共享 context 的 timeline 定位信息（sink/montageId/track）瞬时切换为本后端的：
     /// > 客户端单线程同步执行、无交错，切换与执行原子完成。
     private void emitTimelineEvents() {
@@ -173,8 +173,8 @@ public class AnimationRunnerSource implements PoseSource {
         }
     }
 
-    /// > 消费本帧新触发的 {@code particle_effects} 关键帧，转发到事件 sink。
-    /// > 与 {@link #emitSoundEvents()} 同构：仅入队请求，发射器创建由渲染层完成。
+    /// > 消费本帧新触发的 `particle_effects` 关键帧，转发到事件 sink。
+    /// > 与 [#emitSoundEvents()] 同构：仅入队请求，发射器创建由渲染层完成。
     private void emitParticleEvents() {
         if (timelineSink == null) {
             return;

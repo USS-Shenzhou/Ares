@@ -8,8 +8,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.Identifier;
 
 /// > 镭射专用渲染类型。
-/// > <p>
-/// > 继承 {@link RenderType} 仅用于访问 protected 的 RenderStateShard 常量，避免在业务渲染类里直接碰访问限制。
+/// >
+/// > 继承 [RenderType] 仅用于访问 protected 的 RenderStateShard 常量，避免在业务渲染类里直接碰访问限制。
 /// @author TACZ, USS_Shenzhou
 public class LaserRenderTypes extends RenderType {
     private static final Identifier LASER_TEXTURE = Ares.modLoc("textures/entity/tracer.png");

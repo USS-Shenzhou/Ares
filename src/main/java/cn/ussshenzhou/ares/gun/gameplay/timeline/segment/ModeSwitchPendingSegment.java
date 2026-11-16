@@ -7,13 +7,13 @@ import cn.ussshenzhou.ares.gun.gameplay.timeline.SegmentToken;
 import cn.ussshenzhou.ares.gun.gameplay.timeline.Timer;
 
 /// > 模式切换请求锁定窗口（仅客户端）。
-/// > <p>
-/// > 客户端切换模块模式 / 快慢机时<b>不做预测</b>：发出 C2S 请求后起本片段锁定输入，等待服务端权威 NBT
+/// >
+/// > 客户端切换模块模式 / 快慢机时**不做预测**：发出 C2S 请求后起本片段锁定输入，等待服务端权威 NBT
 /// > 同步回来，由会话 tick 对账真正应用切换并取消本片段。若请求丢失（服务端 NBT 不变、无同步回传），
 /// > 本片段计时到期后自然消失解锁，玩家可再次按键。
-/// > <p>
-/// > 锁定期间禁止开火 / 换弹 / 检视 / 再次切换，与 {@link ModeTransitionSegment} 门禁一致。
-/// > 不投影 {@link GunHolderState}（纯门禁，不占用 isIdle）。
+/// >
+/// > 锁定期间禁止开火 / 换弹 / 检视 / 再次切换，与 [ModeTransitionSegment] 门禁一致。
+/// > 不投影 [GunHolderState]（纯门禁，不占用 isIdle）。
 /// @author TACZ, USS_Shenzhou
 public class ModeSwitchPendingSegment extends ActionSegment {
 

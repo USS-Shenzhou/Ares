@@ -5,7 +5,7 @@ import com.maydaymemory.mae.util.Easing;
 /// > 状态机过渡缓动曲线的字符串解析，供 Molang / JS 两种后端共用，避免重复。
 /// @author TACZ, USS_Shenzhou
 public class TransitionEasing {
-    /// > 解析缓动名称；未知或 null 返回 {@link Easing#LINEAR}。
+    /// > 解析缓动名称；未知或 null 返回 [Easing#LINEAR]。
     public static Easing resolve(String easing) {
         if (easing == null) {
             return Easing.LINEAR;

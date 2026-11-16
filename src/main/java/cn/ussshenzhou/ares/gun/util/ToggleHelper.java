@@ -13,13 +13,13 @@ import net.minecraft.world.item.ItemStack;
 import javax.annotation.Nullable;
 
 /// > 可开关配件 / 枪自带效果的开关状态 NBT 读写（双端共用）。
-/// > <p>
-/// > 配件开关状态存于配件自身 ItemStack NBT（键 {@code ToggleEnabled}），随配件实例移动，
-/// > 多层树场景由 {@link AttachmentTreeHelper} 的自底向上回写机制序列化到顶层枪械。
-/// > 未写入时按「当前生效形态」的默认值（{@link ToggleConfig#isDefaultEnabled()}）解释；
+/// >
+/// > 配件开关状态存于配件自身 ItemStack NBT（键 `ToggleEnabled`），随配件实例移动，
+/// > 多层树场景由 [AttachmentTreeHelper] 的自底向上回写机制序列化到顶层枪械。
+/// > 未写入时按「当前生效形态」的默认值（[ToggleConfig#isDefaultEnabled()]）解释；
 /// > 形态不可开关时恒为开启（旧配件行为不变）。
-/// > <p>
-/// > 枪自带镭射/灯开关存于枪自身 NBT（{@code LaserEnabled} / {@code FlashlightEnabled}），缺省开启。
+/// >
+/// > 枪自带镭射/灯开关存于枪自身 NBT（`LaserEnabled` / `FlashlightEnabled`），缺省开启。
 /// @author TACZ, USS_Shenzhou
 public class ToggleHelper {
     /// > 读取配件的开关状态；未写入 NBT 时按当前生效形态（变体优先）的默认值解释。
@@ -45,8 +45,8 @@ public class ToggleHelper {
     }
 
     /// > 解析配件「当前生效形态」的开关能力配置（双端共用）。
-    /// > <p>
-    /// > 优先取当前选中变体（{@link VariantHelper#getVariant}）自身声明的 toggle；
+    /// >
+    /// > 优先取当前选中变体（[VariantHelper#getVariant]）自身声明的 toggle；
     /// > 变体不可开关（未声明 toggle）时返回 null（该形态整体不可开关，基础形态不越权）；
     /// > 无变体时回退基础形态（配件 index）的 toggle；均无可开关能力返回 null。
     @Nullable

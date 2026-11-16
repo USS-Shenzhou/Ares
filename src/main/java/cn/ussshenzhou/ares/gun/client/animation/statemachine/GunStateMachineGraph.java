@@ -15,18 +15,18 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /// > 已编译的状态机图：把无状态的状态机定义编译为不可变、可跨实例共享的状态/过渡对象图。
-/// > <p>
+/// >
 /// > 本图对「求值后端」无知：状态与过渡只需实现 MAE 的
-/// > {@link IAnimationState} / {@link IAnimationTransition} 接口，方法体既可由 Molang 表达式驱动
-/// > （{@link GunAnimationState} / {@link GunAnimationTransition}），也可由 JS 闭包驱动
-/// > （脚本状态机）。两条 loader 产出同一种 {@code GunStateMachineGraph}，下游
-/// > {@link GunStateMachineRuntime} 完全复用。
-/// > <p>
-/// > 运行时状态只存在于每实例的 {@link com.maydaymemory.mae.control.statemachine.AnimationStateMachine}
-/// > 与 {@link GunStateContext}。因此本图由数据管理器在资源 reload 时构建一次，所有枪械实例共享同一份，
-/// > 求值时各自传入独立的 {@link GunStateContext}（各自的轨道 / variable 存储），互不干扰。
-/// > <p>
-/// > {@link #onInitHook} 在状态机创建时执行一次（见 {@link GunStateMachineRuntime}），用于建立常驻轨道；
+/// > [IAnimationState] / [IAnimationTransition] 接口，方法体既可由 Molang 表达式驱动
+/// > （[GunAnimationState] / [GunAnimationTransition]），也可由 JS 闭包驱动
+/// > （脚本状态机）。两条 loader 产出同一种 `GunStateMachineGraph`，下游
+/// > [GunStateMachineRuntime] 完全复用。
+/// >
+/// > 运行时状态只存在于每实例的 [com.maydaymemory.mae.control.statemachine.AnimationStateMachine]
+/// > 与 [GunStateContext]。因此本图由数据管理器在资源 reload 时构建一次，所有枪械实例共享同一份，
+/// > 求值时各自传入独立的 [GunStateContext]（各自的轨道 / variable 存储），互不干扰。
+/// >
+/// > [#onInitHook] 在状态机创建时执行一次（见 [GunStateMachineRuntime]），用于建立常驻轨道；
 /// > Molang 路径下它包装一段 onInit 表达式，JS 路径下它包装脚本注册的 onInit 闭包。
 /// @author TACZ, USS_Shenzhou
 public class GunStateMachineGraph {
@@ -46,7 +46,9 @@ public class GunStateMachineGraph {
     /// > 通用工厂：由任意求值后端（Molang / JS）构建图。状态图与 onInit 钩子由调用方组装完毕后传入。
     /// >
     /// > @param states     状态 id -> 状态对象（过渡已绑定到各状态）
-    /// > @param entryState 入口状态；为 null 时取 {@code states} 的任意一个并告警
+    /// >
+    /// > @param entryState 入口状态；为 null 时取 `states` 的任意一个并告警
+    /// >
     /// > @param onInitHook 状态机创建时执行一次的钩子（建立常驻轨道等），可为 null
     public static GunStateMachineGraph of(Map<String, GunState> states,
                                           @Nullable GunState entryState,
@@ -62,7 +64,7 @@ public class GunStateMachineGraph {
         return new GunStateMachineGraph(safeStates, resolvedEntry, onInitHook);
     }
 
-    /// > Molang 路径：把 JSON 反序列化出的 {@link GunStateMachine} 编译为图。定义为空时返回空图。
+    /// > Molang 路径：把 JSON 反序列化出的 [GunStateMachine] 编译为图。定义为空时返回空图。
     public static GunStateMachineGraph compile(GunStateMachine definition) {
         MochaEngine<?> engine = GunMolangContext.sharedCompileEngine();
         MolangExpression onInit = compileAction(engine, definition.onInit, "stateMachine.onInit", definition.entryStateId);

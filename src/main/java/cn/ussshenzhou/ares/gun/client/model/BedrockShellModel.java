@@ -10,8 +10,8 @@ import com.github.mcmodderanchor.simplebedrockmodel.v2.common.model.runtime.Tree
 import com.github.mcmodderanchor.simplebedrockmodel.v2.common.model.tree.TreeBedrockModel;
 
 /// > 弹壳模型（v2）。弹壳无动画与子骨骼逻辑，仅静态渲染整棵模型。
-/// > <p>
-/// > 与 {@link BedrockAttachmentModel} 同源（{@link TreeBedrockModel}），但不涉及瞄具/目镜/分划板等
+/// >
+/// > 与 [BedrockAttachmentModel] 同源（[TreeBedrockModel]），但不涉及瞄具/目镜/分划板等
 /// > 特殊骨骼处理，是最精简的渲染包装。
 /// @author TACZ, USS_Shenzhou
 public class BedrockShellModel {

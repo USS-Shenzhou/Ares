@@ -14,7 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.function.Consumer;
 */
 
-/// > 基础配件物品类，用于数据包定义的配件<br/>
+/// > 基础配件物品类，用于数据包定义的配件
+/// >
 /// > 其他的物品可以通过附加相应tag来作为配件使用
 /// @author TACZ, USS_Shenzhou
 public class AttachmentItem extends Item implements IAttachment {

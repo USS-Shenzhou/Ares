@@ -13,8 +13,8 @@ import net.minecraft.resources.Identifier;
 
 import java.util.function.Function;
 
-/// > 状态机运行时：只承载每实例独有的运行时状态（{@link GunStateContext} 与 {@link AnimationStateMachine}）。
-/// > 无状态的编译产物（状态/过渡图 + Molang 表达式）由 {@link GunStateMachineGraph} 在资源 reload 时编译一次，
+/// > 状态机运行时：只承载每实例独有的运行时状态（[GunStateContext] 与 [AnimationStateMachine]）。
+/// > 无状态的编译产物（状态/过渡图 + Molang 表达式）由 [GunStateMachineGraph] 在资源 reload 时编译一次，
 /// > 所有实例共享同一份，此处仅按需 new 一个状态机壳并绑定各自的上下文。
 /// @author TACZ, USS_Shenzhou
 public class GunStateMachineRuntime {

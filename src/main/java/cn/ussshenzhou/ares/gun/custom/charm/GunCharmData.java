@@ -15,16 +15,21 @@ import net.minecraft.world.item.ItemStackTemplate;
 import org.joml.Vector3f;
 
 /// > 单条「挂饰结合到枪体」的数据：挂在某骨骼表面的某点、朝某法线方向。
-/// > <p>
-/// > 仅承载单条记录的序列化（{@link #save()} / {@link #load(CompoundTag)}）。枪械 NBT 根键
-/// > {@code TaczCharms.charms}（list）的读写集中在 {@link cn.ussshenzhou.ares.gun.util.GunCharmDataHelper}，
+/// >
+/// > 仅承载单条记录的序列化（[#save()] / [#load(CompoundTag)]）。枪械 NBT 根键
+/// > `TaczCharms.charms`（list）的读写集中在 [cn.ussshenzhou.ares.gun.util.GunCharmDataHelper]，
 /// > 跨版本风险收敛于该 helper。
 /// >
-/// > @param charmStack  挂饰 ItemStack（含标准 {@link ICustomItem#CUSTOM_ID_TAG}）
+/// > @param charmStack  挂饰 ItemStack（含标准 [ICustomItem#CUSTOM_ID_TAG]）
+/// >
 /// > @param displayId   枪械 display id（绑定时记录，用于校验模型一致）
+/// >
 /// > @param boneName    结合到枪体的哪个骨骼
+/// >
 /// > @param localHit    骨骼局部坐标系下的命中点（吊挂锚点，像素）
+/// >
 /// > @param localNormal 局部命中面法线（决定挂饰朝外方向）
+/// >
 /// > @param localOffset 局部附加偏移
 /// @author TACZ, USS_Shenzhou
 // FIXME REVIEW the charm stack is stored as ItemStackTemplate with charmStack() returning an ItemStack; save/load replaced with

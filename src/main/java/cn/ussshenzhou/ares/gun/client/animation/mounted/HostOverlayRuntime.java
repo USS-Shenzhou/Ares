@@ -23,14 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /// > host overlay 运行时：把下挂相关的姿态修正注入到 host 主姿态上，分两层（性质不同，注入点也不同）：
-/// > <ul>
-/// >   <li><b>grip 持枪姿态层</b>：per-combo 的绝对姿态（如手握在下挂上、整枪倾斜）。用 {@link SkeletonBaseLayerBlend}
-/// >       per-hand 权重 <b>layered</b> 混合，由 controller 在 movement 之前注入——这样 movement 的走路 bob 能 additive
-/// >       叠在「已倾斜的持枪基准」上而不被覆盖。</li>
-/// >   <li><b>operation 操作差量层</b>：per-mounted 的相对增量动画（如换弹时手离开护木去操作下挂再回来）。
-/// >       <b>additive</b> 混合，由 controller 在 movement 之后注入。idle 时无操作段，增量为 0。</li>
-/// > </ul>
-/// > 两层动画均在资源重载阶段绑定到具体 host 模型骨架（见 {@link MountedOverlayResolved}），运行时直接使用。
+/// > - **grip 持枪姿态层**：per-combo 的绝对姿态（如手握在下挂上、整枪倾斜）。用 [SkeletonBaseLayerBlend]
+/// >   per-hand 权重 **layered** 混合，由 controller 在 movement 之前注入——这样 movement 的走路 bob 能 additive
+/// >   叠在「已倾斜的持枪基准」上而不被覆盖。
+/// > - **operation 操作差量层**：per-mounted 的相对增量动画（如换弹时手离开护木去操作下挂再回来）。
+/// >   **additive** 混合，由 controller 在 movement 之后注入。idle 时无操作段，增量为 0。
+/// >
+/// > 两层动画均在资源重载阶段绑定到具体 host 模型骨架（见 [MountedOverlayResolved]），运行时直接使用。
 /// @author TACZ, USS_Shenzhou
 public class HostOverlayRuntime {
     /// > 用于把绝对持枪姿态按过渡权重从「零增量」插值到「满额」（additive 强度缩放）。
@@ -113,13 +112,13 @@ public class HostOverlayRuntime {
         operationActionName = "none";
     }
 
-    /// > 条件归零：仅当当前 operation 仍是 {@code actionName} 指定的那个动作时才清除。
-    /// > <p>
+    /// > 条件归零：仅当当前 operation 仍是 `actionName` 指定的那个动作时才清除。
+    /// >
     /// > 用于解决多动作竞态：fire 触发的 operation 在 fire 退出时调本方法停止，但若期间
     /// > reload/inspect 已抢先切换了 operation，则当前 action 名不匹配，本次停止被忽略，
     /// > 避免误打断后续动作（下挂仍在播放对应动画时主枪 overlay 不应被清掉）。
-    /// > <p>
-    /// > {@code actionName} 为 null/空时退化为无条件清除（向后兼容）。
+    /// >
+    /// > `actionName` 为 null/空时退化为无条件清除（向后兼容）。
     public void clearOperation(String actionName) {
         if (actionName == null || actionName.isBlank()) {
             clearOperation();
@@ -150,7 +149,9 @@ public class HostOverlayRuntime {
     }
 
     /// > 开始播放过渡段差量动画（若该 combo 配了过渡动画）。无动画时仅靠 transitionWeight 做淡入淡出。
+    /// >
     /// > @param toUnderBarrel true=切到下挂方向，false=切回主枪方向
+    /// >
     /// > @return 过渡动画时长（秒），无动画返回 0
     public float playTransition(boolean toUnderBarrel) {
         BedrockAnimation animation = resolved != null

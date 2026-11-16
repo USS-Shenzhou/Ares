@@ -3,7 +3,7 @@ package cn.ussshenzhou.ares.gun.client.renderer.crosshair;
 import cn.ussshenzhou.ares.Ares;
 import net.minecraft.resources.Identifier;
 
-/// > 静态准星类型（贴图映射，形状在贴图内）。名称与 {@code textures/crosshair/normal/<name>.png} 一一对应。
+/// > 静态准星类型（贴图映射，形状在贴图内）。名称与 `textures/crosshair/normal/<name>.png` 一一对应。
 /// @author TACZ, USS_Shenzhou
 public enum CrosshairType {
     EMPTY,

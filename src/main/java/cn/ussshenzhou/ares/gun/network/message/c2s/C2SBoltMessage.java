@@ -13,9 +13,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 
 /// > 客户端拉栓意图。无负载——服务端读主手枪械自行判定。
-/// > <p>
+/// >
 /// > 用于客户端驱动的自动上膛恢复：客户端检测到「持枪 + 弹匣有弹 + 未上膛」时发送，
-/// > 服务端在 {@link ServerPlayerGunOperator#requestChamber()} 中同条件二次校验后执行补膛。
+/// > 服务端在 [ServerPlayerGunOperator#requestChamber()] 中同条件二次校验后执行补膛。
 /// > 补膛是弹药从弹匣移到膛、总量守恒，重复请求无害（!chambered 守卫），无作弊面。
 /// @author TACZ, USS_Shenzhou
 @NetPacket(modid = Ares.MOD_ID)

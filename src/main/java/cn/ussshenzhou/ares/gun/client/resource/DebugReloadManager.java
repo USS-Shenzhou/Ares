@@ -19,7 +19,9 @@ import java.util.Optional;
 public class DebugReloadManager {
 
     /// > 尝试热重载指定显示配置 ID 及其所有依赖
+    /// >
     /// > @param displayId 显示配置 ID (e.g. "tacz:ak47_display")
+    /// >
     /// > @return 是否成功
     public static boolean reloadGunDisplay(Identifier displayId) {
         LogUtils.getLogger().info("Hot reloading gun display for: {}", displayId);

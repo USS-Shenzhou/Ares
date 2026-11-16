@@ -4,9 +4,9 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 /// > 碰撞探针：挂饰球探针在摆体局部的偏移与半径。
-/// > <p>
+/// >
 /// > 自源挂饰模组移植（仅依赖 JOML）。本期物理只做自由摆动，探针主要用于阶段 4 的碰撞防穿模，
-/// > 这里先建好类型，{@code stepWithCollisionProbes} 传空 box list 时不会产生穿模修正。
+/// > 这里先建好类型，`stepWithCollisionProbes` 传空 box list 时不会产生穿模修正。
 /// @author TACZ, USS_Shenzhou
 public record CharmCollisionProbe(Vector3f offset, float radius) {
     public CharmCollisionProbe {

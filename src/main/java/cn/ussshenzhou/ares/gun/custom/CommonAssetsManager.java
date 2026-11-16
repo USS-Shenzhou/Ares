@@ -296,7 +296,7 @@ public class CommonAssetsManager implements ICommonAssetsManager {
     }
 
     /// > 属性引用校验：所有内容数据里出现的属性 id 必须在注册表中存在。
-    /// > <p>
+    /// >
     /// > 属性解析已改为不依赖注册表（修饰可创建属性），拼错的 id 不再于解析期报错，因此由本校验
     /// > 补齐 fail-fast，并把错误定位到引用它的内容文件。
     private void validateAttributeReferences() {

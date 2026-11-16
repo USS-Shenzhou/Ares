@@ -42,6 +42,7 @@ public class GunRecoil {
     /// > 返回经过随机取值、缩放后摄像机垂直后坐力的样条插值函数。
     /// >
     /// > @param modifier 配件对后坐力的修改
+    /// >
     /// > @return 样条插值函数
     @Nullable
     public PolynomialSplineFunction genPitchSplineFunction(float modifier) {
@@ -51,6 +52,7 @@ public class GunRecoil {
     /// > 返回经过随机取值、缩放后摄像机水平后坐力的样条插值函数。
     /// >
     /// > @param modifier 配件对后坐力的修改
+    /// >
     /// > @return 样条插值函数
     @Nullable
     public PolynomialSplineFunction genYawSplineFunction(float modifier) {

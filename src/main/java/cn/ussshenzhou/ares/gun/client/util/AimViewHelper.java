@@ -10,14 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /// > 瞄准视图位的统一发现入口。
-/// > <p>
+/// >
 /// > 镜头视点、世界倍率与模型 FOV、模板缓冲会话、开镜变倍四处都按同一份有序列表读取同一枚索引，
 /// > 避免各自扫描后产生错位。列表顺序即 Alt+V 的循环顺序：
-/// > <ul>
-/// >   <li>枪上没有任何模板缓冲瞄具时：本体机瞄位 →（声明时）战术拒枪位；</li>
-/// >   <li>装了模板缓冲瞄具时：瞄具1 → … → 瞄具n →（声明时）战术拒枪位。
-/// >       本体机瞄位不进列表——瞄具已经把它挡死，切回去没有意义。</li>
-/// > </ul>
+/// > - 枪上没有任何模板缓冲瞄具时：本体机瞄位 →（声明时）战术拒枪位；
+/// > - 装了模板缓冲瞄具时：瞄具1 → … → 瞄具n →（声明时）战术拒枪位。
+/// >   本体机瞄位不进列表——瞄具已经把它挡死，切回去没有意义。
+/// >
 /// > 索引 0 恒为当前默认视点，保证掏枪后的默认开镜形态与是否新增拒枪位无关。
 /// @author TACZ, USS_Shenzhou
 public class AimViewHelper {
@@ -32,6 +31,7 @@ public class AimViewHelper {
     /// > 收集视图位。
     /// >
     /// > @param stack   枪械物品堆
+    /// >
     /// > @param display 本次生效的 display（双持单手变体有自己的模型与骨骼名时须传入）；
     /// >                为 null 时按物品取本体 display
     public static List<AimView> collect(ItemStack stack, @Nullable GunDisplayInstance display) {

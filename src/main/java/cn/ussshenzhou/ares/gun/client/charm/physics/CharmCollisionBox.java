@@ -4,7 +4,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 /// > 挂饰碰撞盒：带局部↔世界变换的 OBB（自源挂饰模组原样移植，仅依赖 JOML）。
-/// > <p>
+/// >
 /// > 阶段 4 碰撞防穿模会把枪体附近 cube 转成本类型；阶段 3 自由摆动暂不构造碰撞盒，
 /// > 这里先建好类型保证物理层 API 完整。
 /// @author TACZ, USS_Shenzhou

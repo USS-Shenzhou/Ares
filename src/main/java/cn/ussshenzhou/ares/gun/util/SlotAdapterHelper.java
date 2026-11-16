@@ -9,12 +9,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /// > 槽位适配器选择的 NBT 存取（双端共用）。
-/// > <p>
-/// > 适配器选择存于「宿主」的 ItemStack NBT 复合标签 {@code SlotAdapters} 下，按槽位 id 索引
-/// > （{@code slotId(string) -> adapterId(string)}）。
-/// > <p>
+/// >
+/// > 适配器选择存于「宿主」的 ItemStack NBT 复合标签 `SlotAdapters` 下，按槽位 id 索引
+/// > （`slotId(string) -> adapterId(string)`）。
+/// >
 /// > 关键：适配器选择独立于该槽位是否安装了子配件——空槽也能记住所选适配器
-/// > （例如玩家配置了「垫高的空导轨」）。多层树场景下由 {@link AttachmentTreeHelper} 的
+/// > （例如玩家配置了「垫高的空导轨」）。多层树场景下由 [AttachmentTreeHelper] 的
 /// > 自底向上回写机制序列化到顶层枪械。
 /// @author TACZ, USS_Shenzhou
 public class SlotAdapterHelper {

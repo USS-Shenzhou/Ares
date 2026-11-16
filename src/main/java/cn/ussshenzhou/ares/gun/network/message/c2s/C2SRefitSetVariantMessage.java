@@ -18,7 +18,9 @@ import javax.annotation.Nullable;
 /// > 改装界面设置配件变体请求（C2S，服务端权威）。
 /// >
 /// > @param slotIndex 枪械所在的背包槽位索引
+/// >
 /// > @param path      目标槽位路径（末端槽位上的配件被设置变体）
+/// >
 /// > @param variantId 变体 index id；为空表示清除变体（恢复基础几何）
 /// @author TACZ, USS_Shenzhou
 @NetPacket(modid = Ares.MOD_ID)

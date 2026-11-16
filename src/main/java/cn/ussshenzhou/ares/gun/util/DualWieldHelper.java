@@ -28,7 +28,7 @@ public class DualWieldHelper {
         return data != null && data.isOneHanded();
     }
 
-    /// > 该物品是否为「副手可用特殊物品」（带 {@link #OFFHAND_USABLE} 标签，如盾牌）。
+    /// > 该物品是否为「副手可用特殊物品」（带 [#OFFHAND_USABLE] 标签，如盾牌）。
     public static boolean isOffhandUsable(ItemStack stack) {
         return !stack.isEmpty() && stack.is(OFFHAND_USABLE);
     }
@@ -52,7 +52,7 @@ public class DualWieldHelper {
     }
 
     /// > 该手当前是否以「单手形态」持枪。
-    /// > <p>
+    /// >
     /// > 副手只在「自身是单手枪」且「主手未持双手枪霸占视野」时成立——主手持双手长枪时副手等于未启用。
     /// > 主手在双持、或「自身单手枪 + 副手持可用特殊物品（盾牌等）」时单手，否则双手持握。
     /// > 渲染（选用单手按手变体 display）与 operator 会话形态判定共用此口径，避免二者发散。

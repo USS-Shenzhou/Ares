@@ -9,14 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /// > 第一人称视图空间姿态缓存（渲染期 → 事件期 的单帧传递通道）。
-/// > <p>
-/// > 由 {@code BedrockGunItemRenderer} 在 afterRender（第一人称主视图，含 item FOV 修正）期间写入：
-/// > <ul>
-/// >   <li><b>枪口姿态</b>：按手、主枪/下挂来源和 display 枪口序号隔离（多来源并存）；
-/// >       渲染某手第一人称枪体前先清除该手，未在本帧渲染的来源不会沿用旧姿态。</li>
-/// >   <li><b>枪灯姿态</b>：单值（屏幕后处理单灯合成，多灯取第一个）；每帧收集前清除。</li>
-/// > </ul>
-/// > 消费者（{@code AFTER_LEVEL} 手电后处理 / 曳光弹实体渲染 / 枪口火光后处理）直接读取当前帧姿态。
+/// >
+/// > 由 `BedrockGunItemRenderer` 在 afterRender（第一人称主视图，含 item FOV 修正）期间写入：
+/// > - **枪口姿态**：按手、主枪/下挂来源和 display 枪口序号隔离（多来源并存）；
+/// >   渲染某手第一人称枪体前先清除该手，未在本帧渲染的来源不会沿用旧姿态。
+/// > - **枪灯姿态**：单值（屏幕后处理单灯合成，多灯取第一个）；每帧收集前清除。
+/// >
+/// > 消费者（`AFTER_LEVEL` 手电后处理 / 曳光弹实体渲染 / 枪口火光后处理）直接读取当前帧姿态。
 /// @author TACZ, USS_Shenzhou
 public class FirstPersonPoseCache {
     private static final Map<MuzzleCacheKey, MuzzlePose> MUZZLES = new HashMap<>();

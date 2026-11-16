@@ -11,7 +11,7 @@ import java.util.WeakHashMap;
 
 /// > 记录实体按完整发射源区分的最近开火时间戳。
 /// >
-/// > 由 {@code S2CShootPacket} 写入；当前保留给后续第三人称枪口表现使用。
+/// > 由 `S2CShootPacket` 写入；当前保留给后续第三人称枪口表现使用。
 /// @author TACZ, USS_Shenzhou
 public class MuzzleFlashHandler {
     private static final Map<Entity, Map<Source, Long>> SHOOT_TIMESTAMPS = new WeakHashMap<>();

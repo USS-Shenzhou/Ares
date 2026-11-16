@@ -53,7 +53,7 @@ public class AnimationEventDispatcher implements AnimationEventSink {
     }
 
     /// > 解析抛壳事件名对应的抛壳窗序号；非抛壳事件返回 -1。
-    /// > {@code shell_eject} -> 0，{@code shell_eject_N} -> N。
+    /// > `shell_eject` -> 0，`shell_eject_N` -> N。
     private static int parseShellEjectWindow(String eventName) {
         if (eventName == null) {
             return -1;

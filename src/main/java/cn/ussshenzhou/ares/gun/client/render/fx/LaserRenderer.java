@@ -19,18 +19,17 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 /// > 镭射（激光指示器）世界空间表现渲染。
-/// > <p>
-/// > 与曳光弹同类，属于世界空间自发光几何，走 {@link RenderType#entityTranslucentEmissive}，
+/// >
+/// > 与曳光弹同类，属于世界空间自发光几何，走 [RenderType#entityTranslucentEmissive]，
 /// > 不涉及任何后处理（手电那套 PostChain/深度重建仅用于「照亮已有表面」，镭射只是自发光）。
-/// > <p>
+/// >
 /// > 表现要素：
-/// > <ul>
-/// >   <li>从起点沿方向做 raycast（方块 + 实体），命中处画一个朝向相机的发光落点光斑；</li>
-/// >   <li>从起点到落点画一条细发光束，被墙/实体挡住的部分通过 raycast 直接裁掉，
-/// >       束的可见度由环境光照决定（暗处更明显）。</li>
-/// > </ul>
-/// > 渲染坐标：顶点位置取「世界坐标 - 相机坐标」，配合 {@code poseStack}（已含相机旋转），
-/// > 这是 {@code RenderLevelStageEvent} 阶段绘制世界几何的标准做法。
+/// > - 从起点沿方向做 raycast（方块 + 实体），命中处画一个朝向相机的发光落点光斑；
+/// > - 从起点到落点画一条细发光束，被墙/实体挡住的部分通过 raycast 直接裁掉，
+/// >   束的可见度由环境光照决定（暗处更明显）。
+/// >
+/// > 渲染坐标：顶点位置取「世界坐标 - 相机坐标」，配合 `poseStack`（已含相机旋转），
+/// > 这是 `RenderLevelStageEvent` 阶段绘制世界几何的标准做法。
 /// @author TACZ, USS_Shenzhou
 public class LaserRenderer {
     /// > 光束基础半宽（米），按到相机距离轻微放大避免远处消失。
@@ -90,7 +89,7 @@ public class LaserRenderer {
         renderBeamView(new Matrix4f(), bufferSource, view.beamStart(), view.beamEnd(), color, view.beamAlpha());
     }
 
-    /// > 渲染镭射落点光斑部分（视图空间）。仅在命中方块表面（{@code hitSurface}）时渲染——未命中不画悬空辉光。
+    /// > 渲染镭射落点光斑部分（视图空间）。仅在命中方块表面（`hitSurface`）时渲染——未命中不画悬空辉光。
     public static void renderFirstPersonDotPart(MultiBufferSource bufferSource, FirstPersonLaserView view, float[] color) {
         if (view == null || !view.hitSurface()) {
             return;
@@ -99,16 +98,22 @@ public class LaserRenderer {
     }
 
     /// > 在两个给定世界点之间直接绘制激光束（不再内部 raycast）。
-    /// > <p>
+    /// >
     /// > 用于光束类射弹的脉冲表现：起点由客户端按射击者实时求出，终点是服务端权威命中点。
     /// > 激光束是强自发光能量光柱，以满亮度渲染（不像镭射指示器那样按环境光衰减）。
     /// >
-    /// > @param poseStack    {@code RenderLevelStageEvent} 的 poseStack（已含相机旋转，未含相机平移）
+    /// > @param poseStack    `RenderLevelStageEvent` 的 poseStack（已含相机旋转，未含相机平移）
+    /// >
     /// > @param camera       主相机，用于取相机世界坐标与 billboard 朝向
+    /// >
     /// > @param bufferSource 顶点缓冲来源
+    /// >
     /// > @param worldStart   束流起点（世界坐标）
+    /// >
     /// > @param worldEnd     束流终点 = 命中点（世界坐标）
+    /// >
     /// > @param color        RGB 颜色（每分量 0~1）
+    /// >
     /// > @param drawDot      是否在终点绘制落点光斑（本机视角绘制，其他玩家仅束）
     public static void renderBeamBetween(PoseStack poseStack, Camera camera, MultiBufferSource bufferSource,
                                          Vec3 worldStart, Vec3 worldEnd, float[] color, boolean drawDot) {
@@ -119,6 +124,7 @@ public class LaserRenderer {
     /// > 在两个给定世界点之间绘制激光束，芯/辉光半宽 + 截面滚转由调用方指定（display 视觉表达式驱动）。
     /// >
     /// > @param coreHalfWidth 内层白热芯半宽（米）
+    /// >
     /// > @param glowHalfWidth 外层辉光壳半宽（米）
     public static void renderBeamBetween(PoseStack poseStack, Camera camera, MultiBufferSource bufferSource,
                                          Vec3 worldStart, Vec3 worldEnd, float[] color, boolean drawDot,
@@ -130,7 +136,9 @@ public class LaserRenderer {
     /// > 在两个给定世界点之间绘制激光束，芯/辉光半宽 + 截面滚转由调用方指定（display 视觉表达式驱动）。
     /// >
     /// > @param coreHalfWidth 内层白热芯半宽（米）
+    /// >
     /// > @param glowHalfWidth 外层辉光壳半宽（米）
+    /// >
     /// > @param rollDegrees   方柱截面绕束轴滚转角（度）
     public static void renderBeamBetween(PoseStack poseStack, Camera camera, MultiBufferSource bufferSource,
                                          Vec3 worldStart, Vec3 worldEnd, float[] color, boolean drawDot,
@@ -163,9 +171,9 @@ public class LaserRenderer {
     /// > 计算第一人称能量束视图几何：终点方向在「相机视线」与「枪口视觉方向」之间按小权重融合
     /// > （主体跟相机故无拖拽、不乱飘，混入少量枪口方向保留真实感），长度锁定真实命中距离
     /// > （命中点经相机转视图空间后与起点取距，避免跨坐标系混算）。
-    /// > <p>
-    /// > {@code hitType}（见 {@link LaserHitType}）为服务端权威判定结果：落点光斑只在命中方块
-    /// > 表面（{@code HIT_BLOCK}）时渲染，命中实体 / 射空不渲染悬空辉光。
+    /// >
+    /// > `hitType`（见 [LaserHitType]）为服务端权威判定结果：落点光斑只在命中方块
+    /// > 表面（`HIT_BLOCK`）时渲染，命中实体 / 射空不渲染悬空辉光。
     public static FirstPersonBeamView computeFirstPersonBeam(Camera camera, Matrix4f providerViewTransform, Vec3 worldHit,
                                                              byte hitType) {
         Vector3f viewStartVec = providerViewTransform.getTranslation(new Vector3f());
@@ -204,7 +212,7 @@ public class LaserRenderer {
                 coreHalfWidth, glowHalfWidth, rollDegrees);
     }
 
-    /// > 渲染能量束落点光斑部分（视图空间）。仅在终点贴住方块表面（{@code hitSurface}）时渲染。
+    /// > 渲染能量束落点光斑部分（视图空间）。仅在终点贴住方块表面（`hitSurface`）时渲染。
     public static void renderFirstPersonDotPart(MultiBufferSource bufferSource, FirstPersonBeamView view, float[] color) {
         if (view == null || !view.hitSurface()) {
             return;
@@ -214,13 +222,12 @@ public class LaserRenderer {
     }
 
     /// > 立体激光光柱：双层方柱。
-    /// > <p>
+    /// >
     /// > 与镭射指示器的 billboard 细带不同，能量束需要体积感——用绕束轴的方形截面 4 面侧墙组成方柱，
     /// > 加法混合下侧墙相互叠加自然出中心更亮的体积效果。叠两层：
-    /// > <ul>
-    /// >   <li>外层辉光壳：较粗、本色、低 alpha，做柔和辉光包边；</li>
-    /// >   <li>内层白热芯：较细、向白色提亮、高 alpha，做白热核心。</li>
-    /// > </ul>
+    /// > - 外层辉光壳：较粗、本色、低 alpha，做柔和辉光包边；
+    /// > - 内层白热芯：较细、向白色提亮、高 alpha，做白热核心。
+    /// >
     /// > 坐标空间由调用方决定（世界几何传「世界坐标 - 相机坐标」，视图几何传视图坐标）。
     private static void renderVolumetricBeam(Matrix4f pose, MultiBufferSource bufferSource,
                                              Vec3 start, Vec3 end, float[] color,
@@ -261,7 +268,7 @@ public class LaserRenderer {
                 cr, cg, cb, 230);
     }
 
-    /// > 绕单位轴 {@code axis} 旋转向量 {@code vec}（Rodrigues 公式）。cos/sin 由调用方预算。
+    /// > 绕单位轴 `axis` 旋转向量 `vec`（Rodrigues 公式）。cos/sin 由调用方预算。
     private static Vec3 rotateAboutAxis(Vec3 vec, Vec3 axis, double cos, double sin) {
         Vec3 cross = axis.cross(vec);
         double dot = axis.dot(vec);
@@ -308,15 +315,24 @@ public class LaserRenderer {
 
     /// > 渲染一次镭射。
     /// >
-    /// > @param poseStack  {@code RenderLevelStageEvent} 的 poseStack（已含相机旋转，未含相机平移）
+    /// > @param poseStack  `RenderLevelStageEvent` 的 poseStack（已含相机旋转，未含相机平移）
+    /// >
     /// > @param camera     主相机，用于取相机世界坐标与 billboard 朝向
+    /// >
     /// > @param bufferSource 顶点缓冲来源
+    /// >
     /// > @param worldStart 激光起点世界坐标
+    /// >
     /// > @param worldDir   激光方向（世界空间，需已归一化）
+    /// >
     /// > @param color      RGB 颜色（每分量 0~1）
+    /// >
     /// > @param maxRange   最大射程（米）
+    /// >
     /// > @param shooter    持枪者，raycast 时排除自身
+    /// >
     /// > @param beamAlpha  光束可见度系数 [0,1]，由环境光照算出，亮处趋近 0
+    /// >
     /// > @param drawDot    是否绘制落点光斑（本机视角绘制，其他玩家仅束）
     public static void render(PoseStack poseStack, Camera camera, MultiBufferSource bufferSource,
                               Vec3 worldStart, Vec3 worldDir, float[] color, float maxRange,
@@ -446,12 +462,11 @@ public class LaserRenderer {
     }
 
     /// > 绘制依附命中平面的发光光斑（视图空间，双层）：
-    /// > <ul>
-    /// >   <li>辉光层：billboard（视图空间相机朝向 -Z，quad 直接用视图 x / y 轴），大尺寸低 alpha，
-    /// >       径向渐变纹理柔和淡出——保证掠射角下光斑仍可见并给出泛光晕；</li>
-    /// >   <li>核点层：贴面（normal 所在平面），小尺寸近白高亮——贴合命中表面，给出落点实感。</li>
-    /// > </ul>
-    /// > 两层共用径向渐变贴图 {@link LaserRenderTypes#laserDot()}，加法混合。
+    /// > - 辉光层：billboard（视图空间相机朝向 -Z，quad 直接用视图 x / y 轴），大尺寸低 alpha，
+    /// >   径向渐变纹理柔和淡出——保证掠射角下光斑仍可见并给出泛光晕；
+    /// > - 核点层：贴面（normal 所在平面），小尺寸近白高亮——贴合命中表面，给出落点实感。
+    /// >
+    /// > 两层共用径向渐变贴图 [LaserRenderTypes#laserDot()]，加法混合。
     private static void renderDotOnPlane(Matrix4f pose, MultiBufferSource bufferSource,
                                          Vec3 center, Vec3 normal, float[] color) {
         Vec3 n = normal.normalize();

@@ -16,8 +16,8 @@ import net.minecraft.world.item.Item;
 import java.util.Map;
 
 /// > 挂饰的数据驱动索引（index/charms/*.json）。
-/// > <p>
-/// > 接入标准 {@link CustomItemType} 管线：自动数据包加载、服务端→客户端同步、创造栏列出。
+/// >
+/// > 接入标准 [CustomItemType] 管线：自动数据包加载、服务端→客户端同步、创造栏列出。
 /// @author TACZ, USS_Shenzhou
 public class CharmIndex extends CustomItemIndex<CharmData> {
     public static final CustomItemType<CharmIndex, CharmData> TYPE = new CustomItemType<>(

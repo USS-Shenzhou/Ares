@@ -7,8 +7,8 @@ import cn.ussshenzhou.ares.gun.gameplay.timeline.SegmentToken;
 import cn.ussshenzhou.ares.gun.gameplay.timeline.Timer;
 import javax.annotation.Nullable;
 
-/// > 收枪轨：收枪倒计时，期间投影 {@link GunHolderState#PUTTING_AWAY}。
-/// > 倒计时结束触发 {@link #onComplete} 回调（由 operator 切入待拔出的物品并启动 {@link DrawSegment}）。
+/// > 收枪轨：收枪倒计时，期间投影 [GunHolderState#PUTTING_AWAY]。
+/// > 倒计时结束触发 [#onComplete] 回调（由 operator 切入待拔出的物品并启动 [DrawSegment]）。
 /// @author TACZ, USS_Shenzhou
 public class PutAwaySegment extends ActionSegment {
 

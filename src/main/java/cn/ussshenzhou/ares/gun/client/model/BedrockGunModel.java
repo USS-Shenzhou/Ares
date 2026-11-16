@@ -27,9 +27,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /// > 枪械模型（v2）。
-/// > <p>
-/// > 静态几何由共享的 {@link TreeBedrockModel} 提供；当前姿态保存在每个显示实例独立持有的
-/// > {@link TreeModelInstance} 上。本类实现 {@link BoneIndexProvider} 以便动画系统按骨骼名绑定索引。
+/// >
+/// > 静态几何由共享的 [TreeBedrockModel] 提供；当前姿态保存在每个显示实例独立持有的
+/// > [TreeModelInstance] 上。本类实现 [BoneIndexProvider] 以便动画系统按骨骼名绑定索引。
 /// @author TACZ, USS_Shenzhou
 public class BedrockGunModel implements BoneIndexProvider {
     private static final String LEFT_HAND_BONE = "lefthand_pos";
@@ -163,8 +163,8 @@ public class BedrockGunModel implements BoneIndexProvider {
     }
 
     /// > 获取指定骨骼在 bind pose 下的全局变换（不受动画影响），结果按骨骼名缓存。
-    /// > <p>
-    /// > 用于改装视角等「静态锚点」骨骼：直接读 {@link #getGlobalTransform(String)} 会带上
+    /// >
+    /// > 用于改装视角等「静态锚点」骨骼：直接读 [#getGlobalTransform(String)] 会带上
     /// > 待机呼吸等动画位移导致镜头持续抖动，故沿父链累乘 bind 局部变换得到稳定值。
     @Nullable
     public Matrix4f getBindGlobalTransform(String boneName) {
@@ -208,7 +208,7 @@ public class BedrockGunModel implements BoneIndexProvider {
     }
 
     /// > 模型几何中心（模型空间，不受动画影响），按需计算并缓存。
-    /// > <p>
+    /// >
     /// > 优先取渲染包围盒中心；包围盒缺失时回退到所有可见几何骨骼 bind 全局位置的包围盒中心，
     /// > 排除 view / camera / hand 等纯锚点骨骼以免把中心拉偏。用于改装拖拽旋转的旋转中心。
     public Vector3f getModelCenter() {

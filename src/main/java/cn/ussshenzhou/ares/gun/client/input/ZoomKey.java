@@ -18,10 +18,10 @@ import net.neoforged.neoforge.client.settings.KeyModifier;
 import net.neoforged.bus.api.SubscribeEvent;
 
 /// > 变倍键（默认 V）：开镜时按下在当前激活瞄具的倍率档位间循环；开镜时按住并拨动滚轮进行无级变倍
-/// > （仅瞄具声明了 {@code zoom_fov_range} 时）。未开镜的 V 不响应（预留近战）。
-/// > <p>
-/// > 侧瞄切换为独立组合键（默认 Alt+V，见 {@link SightSwitchKey}）。滚轮判定用
-/// > {@link KeyMapping#isDown()}（尊重玩家自定义键位，不做物理键硬编码）；键位冲突由
+/// > （仅瞄具声明了 `zoom_fov_range` 时）。未开镜的 V 不响应（预留近战）。
+/// >
+/// > 侧瞄切换为独立组合键（默认 Alt+V，见 [SightSwitchKey]）。滚轮判定用
+/// > [KeyMapping#isDown()]（尊重玩家自定义键位，不做物理键硬编码）；键位冲突由
 /// > Forge 按键体系在设置界面按既有规则处理。
 /// @author TACZ, USS_Shenzhou
 @EventBusSubscriber(modid = Ares.MOD_ID, value = Dist.CLIENT)

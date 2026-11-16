@@ -36,9 +36,9 @@ public class MountedWeaponHelper {
     }
 
     /// > 查找已安装下挂武器在宿主配件树中的槽位路径（供玩法层定位并回写下挂 NBT）。
-    /// > <p>
-    /// > 与 {@link #findInstalledMountedWeapon} 同步遍历，但返回到达该下挂武器的 {@link AttachmentPath}，
-    /// > 配合 {@link AttachmentTreeHelper#writeAttachmentBack} 把玩法修改自底向上回写到宿主枪。
+    /// >
+    /// > 与 [#findInstalledMountedWeapon] 同步遍历，但返回到达该下挂武器的 [AttachmentPath]，
+    /// > 配合 [AttachmentTreeHelper#writeAttachmentBack] 把玩法修改自底向上回写到宿主枪。
     @Nonnull
     public static Optional<AttachmentPath> findInstalledMountedWeaponPath(@Nonnull ItemStack gunStack) {
         IGun gun = IGun.asGun(gunStack);
@@ -49,9 +49,9 @@ public class MountedWeaponHelper {
         return Optional.ofNullable(found);
     }
 
-    /// > 对 {@link IGun} 与 {@link IMountedWeapon} 通用地解析其 {@link GunData}。
-    /// > <p>
-    /// > 下挂武器的 data 为 {@code UnderBarrelGunData extends GunData}，玩法层（射击/换弹）只需 GunData 视图。
+    /// > 对 [IGun] 与 [IMountedWeapon] 通用地解析其 [GunData]。
+    /// >
+    /// > 下挂武器的 data 为 `UnderBarrelGunData extends GunData`，玩法层（射击/换弹）只需 GunData 视图。
     @Nullable
     public static GunData resolveGunData(@Nonnull ItemStack stack) {
         if (stack.getItem() instanceof IGun iGun) {
@@ -63,7 +63,7 @@ public class MountedWeaponHelper {
         return null;
     }
 
-    /// > 对 {@link IGun} 与 {@link IMountedWeapon} 通用地解析其自定义注册 id；非自定义物品返回 null。
+    /// > 对 [IGun] 与 [IMountedWeapon] 通用地解析其自定义注册 id；非自定义物品返回 null。
     @Nullable
     public static Identifier resolveCustomId(@Nonnull ItemStack stack) {
         if (stack.isEmpty()) {
@@ -74,8 +74,8 @@ public class MountedWeaponHelper {
     }
 
     /// > 在 holder 的直接槽位中查找下挂武器，并递归进入任意带槽位的子配件。
-    /// > <p>
-    /// > 全程使用 NBT 读取（{@link IAttachmentHolder#getStoredAttachment}），避免触发属性缓存递归。
+    /// >
+    /// > 全程使用 NBT 读取（[IAttachmentHolder#getStoredAttachment]），避免触发属性缓存递归。
     @Nonnull
     private static Optional<ItemStack> findMountedWeaponInHolder(@Nonnull IAttachmentHolder holder, @Nonnull ItemStack holderStack, int remaining) {
         if (remaining <= 0) {
@@ -100,7 +100,7 @@ public class MountedWeaponHelper {
         return Optional.empty();
     }
 
-    /// > 与 {@link #findMountedWeaponInHolder} 同构，但累积并返回到达下挂武器的槽位路径。
+    /// > 与 [#findMountedWeaponInHolder] 同构，但累积并返回到达下挂武器的槽位路径。
     @Nullable
     private static AttachmentPath findMountedWeaponPathInHolder(@Nonnull IAttachmentHolder holder, @Nonnull ItemStack holderStack,
                                                                 @Nonnull AttachmentPath prefix, int remaining) {

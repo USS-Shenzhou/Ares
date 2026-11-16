@@ -3,16 +3,19 @@ package cn.ussshenzhou.ares.gun.item;
 import org.joml.Vector3f;
 
 /// > 导轨微调配置。
-/// > <p>
-/// > 声明某个 {@link AttachmentSlot} 上已安装配件可沿导轨方向滑动的范围。
-/// > 偏移是沿 {@link #axis} 单位方向的一个标量（单位：模型空间，1.0 = 16 像素 = 1 格）。
-/// > <p>
+/// >
+/// > 声明某个 [AttachmentSlot] 上已安装配件可沿导轨方向滑动的范围。
+/// > 偏移是沿 [#axis] 单位方向的一个标量（单位：模型空间，1.0 = 16 像素 = 1 格）。
+/// >
 /// > 第一阶段仅支持单轴平移；旋转 / 多轴留作后续扩展。
 /// >
 /// > @param axis 导轨方向（已归一化的单位向量）
+/// >
 /// > @param min  允许的最小偏移（沿 axis）
+/// >
 /// > @param max  允许的最大偏移（沿 axis）
-/// > @param step 界面步进；&lt;= 0 表示连续可调
+/// >
+/// > @param step 界面步进；<= 0 表示连续可调
 /// @author TACZ, USS_Shenzhou
 public record RailConfig(Vector3f axis, float min, float max, float step) {
     public RailConfig {

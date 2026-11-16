@@ -9,7 +9,7 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 /// > 支持两种写法：
-/// > - 简写字符串："auto"/"semi"/"burst" → 由 {@link FireModeEntry#ofType} 设置预定义默认值
+/// > - 简写字符串："auto"/"semi"/"burst" → 由 [FireModeEntry#ofType] 设置预定义默认值
 /// > - 完整对象：{"type": "auto", "trigger": "instant", "burst_count": 3, ...}
 /// @author TACZ, USS_Shenzhou
 public class FireModeEntrySerializer implements JsonDeserializer<FireModeEntry> {

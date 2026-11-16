@@ -21,12 +21,12 @@ import java.util.List;
 import java.util.Map;
 
 /// > 配件变体的数据驱动 index。
-/// > <p>
+/// >
 /// > 变体不是独立物品（不会被 createStack），其作用是为已存在的配件提供可切换的几何/挂点中间层。
-/// > 因此 baseItem 仅占位，{@code targets} 决定本变体挂载到哪些配件上。
-/// > <p>
-/// > 变体形态可选声明 {@code toggle}（该形态的开关能力）；关态使用的完整附件数据
-/// > {@code offData} 从本变体数据域（data/attachment_variants）解析，格式与附件 data 一致。
+/// > 因此 baseItem 仅占位，`targets` 决定本变体挂载到哪些配件上。
+/// >
+/// > 变体形态可选声明 `toggle`（该形态的开关能力）；关态使用的完整附件数据
+/// > `offData` 从本变体数据域（data/attachment_variants）解析，格式与附件 data 一致。
 /// @author TACZ, USS_Shenzhou
 // FIXME REVIEW also merged the targets field of VariantIndexPojo.
 public class VariantIndex extends CustomItemIndex<VariantData> {
@@ -36,14 +36,14 @@ public class VariantIndex extends CustomItemIndex<VariantData> {
             GunGsonHelper.GSON
     );
 
-    /// > {@code targets} 声明本变体适用于哪些配件（按配件注册 id 定向），支持跨包扩展：
+    /// > `targets` 声明本变体适用于哪些配件（按配件注册 id 定向），支持跨包扩展：
     /// > 第三方包无需改动原配件 data，只需新增一个变体 index 文件即可为其挂载变体。
     /// >
     /// > 本变体适用的配件 id 列表（定向目标）。
     @SerializedName("targets")
     private List<Identifier> targets = new ArrayList<>();
 
-    /// > 本变体形态关闭态使用的完整附件数据（{@link ToggleConfig#getOffData()} 解析结果）；
+    /// > 本变体形态关闭态使用的完整附件数据（[ToggleConfig#getOffData()] 解析结果）；
     /// > 声明了 off_data 但解析失败时回退配件基础 data（null），由数据校验输出错误提示。
     @Nullable
     private transient AttachmentData offData;

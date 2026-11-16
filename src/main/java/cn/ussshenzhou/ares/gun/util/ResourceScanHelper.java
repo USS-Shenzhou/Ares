@@ -42,12 +42,18 @@ public class ResourceScanHelper {
         return jsonElement;
     }
 
-    /// > 扫描指定目录下的所有json文件<br/>
-    /// > 与原版的scanDirectory方法的区别在于，查询结果是作为返回值返回的，而且允许注释<br/>
+    /// > 扫描指定目录下的所有json文件
+    /// >
+    /// > 与原版的scanDirectory方法的区别在于，查询结果是作为返回值返回的，而且允许注释
+    /// >
     /// > 对于相同的文件路径，只读取优先级最高的文件
+    /// >
     /// > @param pResourceManager 资源管理器
+    /// >
     /// > @param pName 目录名
+    /// >
     /// > @param pGson Gson实例
+    /// >
     /// > @return 扫描到的json文件
     public static Map<Identifier, JsonElement> scanDirectory(ResourceManager pResourceManager, String pName, Gson pGson) {
         return scanDirectory(pResourceManager, FileToIdConverter.json(pName), pGson);
@@ -82,11 +88,16 @@ public class ResourceScanHelper {
         return new ScanResult<>(output, failedIds);
     }
 
-    /// > 扫描指定目录下的所有json文件<br/>
-    /// > 与{@link #scanDirectory(ResourceManager, String, Gson)}不同的是，该方法会读取所有json文件作为列表返回
+    /// > 扫描指定目录下的所有json文件
+    /// >
+    /// > 与[#scanDirectory(ResourceManager,String,Gson)]不同的是，该方法会读取所有json文件作为列表返回
+    /// >
     /// > @param pResourceManager 资源管理器
+    /// >
     /// > @param filetoidconverter 文件路径和id的映射
+    /// >
     /// > @param pGson Gson实例
+    /// >
     /// > @return 扫描到的json文件
     public static Map<Identifier, List<JsonElement>> scanDirectoryAll(ResourceManager pResourceManager, FileToIdConverter filetoidconverter, Gson pGson) {
         return scanDirectoryAllWithFailures(pResourceManager, filetoidconverter, pGson).values();

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /// > 挂饰的数据驱动配置（data/charms/*_data.json），服务端权威并同步到客户端。
-/// > <p>
+/// >
 /// > 仅承载「行为定义」：物理参数 + 模型 layout（部件骨骼名约定）。视觉相关（模型 / 贴图 / 渲染变换）
 /// > 由客户端 display 资源承载，不在此处。
 /// @author TACZ, USS_Shenzhou
@@ -21,7 +21,7 @@ public class CharmData {
         return physics == null ? CharmPhysicsSettings.DEFAULT : physics.toSettings();
     }
 
-    /// > 取模型 layout，缺省返回 {@link CharmModelLayout#ROD_DOUBLE_RING}。
+    /// > 取模型 layout，缺省返回 [CharmModelLayout#ROD_DOUBLE_RING]。
     public CharmModelLayout getLayout() {
         return parts == null ? CharmModelLayout.ROD_DOUBLE_RING : parts.toLayout();
     }

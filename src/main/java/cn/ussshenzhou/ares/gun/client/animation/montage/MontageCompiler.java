@@ -20,13 +20,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-/// > 把 datapack 的 {@link Montage} 编译为 MAE 的 {@link AnimationMontage}。
-/// > <p>
+/// > 把 datapack 的 [Montage] 编译为 MAE 的 [AnimationMontage]。
+/// >
 /// > 蒙太奇的播放、轨道混合、section 切换、notify/clip 触发全部交由 MAE 的
-/// > {@link com.maydaymemory.mae.control.montage.AnimationMontageRunner} 执行，本类只负责数据转换。
+/// > [com.maydaymemory.mae.control.montage.AnimationMontageRunner] 执行，本类只负责数据转换。
 /// @author TACZ, USS_Shenzhou
 public class MontageCompiler {
-    /// > 编译蒙太奇定义。animationResolver 用于把动画名解析为 {@link BedrockAnimation}。
+    /// > 编译蒙太奇定义。animationResolver 用于把动画名解析为 [BedrockAnimation]。
     /// > 编译失败（无有效轨道/段）时返回 null。
     public static AnimationMontage<MontageContext> compile(Identifier montageId,
                                                            Montage definition,
@@ -138,7 +138,7 @@ public class MontageCompiler {
         return definition.tracks != null ? definition.tracks : List.of();
     }
 
-    /// > 把 datapack notify 关键帧转发为 {@link AnimationNotifyEvent} 到事件 sink。
+    /// > 把 datapack notify 关键帧转发为 [AnimationNotifyEvent] 到事件 sink。
     private record EventNotify(Identifier montageId, String trackName, String event, float keyTime)
             implements IAnimationNotify<MontageContext> {
         @Override

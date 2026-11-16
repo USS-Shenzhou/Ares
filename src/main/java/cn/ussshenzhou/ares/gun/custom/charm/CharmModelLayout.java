@@ -3,8 +3,8 @@ package cn.ussshenzhou.ares.gun.custom.charm;
 import java.util.List;
 
 /// > 挂饰模型 layout：把挂饰 bedrock 模型拆成「固定环 + 动态环 + 摆体」用于铰链摆动。
-/// > <p>
-/// > 端无关的纯数据，随 {@link CharmData} 一起加载/同步。各字段为挂饰模型内的骨骼名约定，
+/// >
+/// > 端无关的纯数据，随 [CharmData] 一起加载/同步。各字段为挂饰模型内的骨骼名约定，
 /// > 渲染/物理阶段据此解析模型各部件。
 /// @author TACZ, USS_Shenzhou
 public record CharmModelLayout(

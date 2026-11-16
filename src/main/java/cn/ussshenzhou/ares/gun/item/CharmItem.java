@@ -10,9 +10,9 @@ import net.minecraft.world.item.ItemStack;
 import javax.annotation.Nonnull;
 
 /// > 基础挂饰物品，用于数据包定义的挂饰（物理装饰物）。
-/// > <p>
-/// > 走标准 {@link ICustomItem} 数据驱动管线：名称 / tooltip 由 index 驱动，配置 id 存于
-/// > {@link ICustomItem#CUSTOM_ID_TAG} NBT。
+/// >
+/// > 走标准 [ICustomItem] 数据驱动管线：名称 / tooltip 由 index 驱动，配置 id 存于
+/// > [ICustomItem#CUSTOM_ID_TAG] NBT。
 /// @author TACZ, USS_Shenzhou
 public class CharmItem extends Item implements ICustomItem<CharmIndex, CharmData> {
     public CharmItem(Properties properties) {

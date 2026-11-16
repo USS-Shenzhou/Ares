@@ -14,10 +14,11 @@ import javax.annotation.Nullable;
 
 import java.util.Comparator;
 
-/// > 数据驱动物品的动态注册表对象<br/>
+/// > 数据驱动物品的动态注册表对象
+/// >
 /// > 一般来说，你不应该直接缓存此对象，而是通过相关方法从ItemStack获取，因为index会在重载时被替换
 /// >
-/// > @param <D> 此物品index的自定义数据
+/// > @param `D` 此物品index的自定义数据
 /// @author TACZ, USS_Shenzhou
 // FIXME REVIEW merged with IndexPojo: name, tooltip, display, data, type, item_type, sort and toggle are read from JSON directly.
 // The former constructor became bind(...), which fills id, base item, display name, data and stack size after reading.
@@ -68,7 +69,8 @@ public abstract class CustomItemIndex<D> {
         this.stackSize = stackSize;
     }
 
-    /// > 获取此index的注册ID<br/>
+    /// > 获取此index的注册ID
+    /// >
     /// > @return 物品的注册ID
     @Nonnull
     public Identifier getId() {
@@ -123,7 +125,9 @@ public abstract class CustomItemIndex<D> {
     /// > 根据itemType字符串获取基础物品(命名空间按tacz补全)
     /// >
     /// > @param itemType 物品类型字符串
+    /// >
     /// > @param fallback 获取失败时的回退物品
+    /// >
     /// > @return 基础物品
     @Nullable
     public static Item getBaseItem(String itemType, Item fallback) {

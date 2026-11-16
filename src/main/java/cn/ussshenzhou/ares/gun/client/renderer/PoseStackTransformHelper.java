@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
-/// > 将完整仿射变换应用到 {@link PoseStack}，同时更新法线矩阵。
+/// > 将完整仿射变换应用到 [PoseStack]，同时更新法线矩阵。
 /// @author TACZ, USS_Shenzhou
 public class PoseStackTransformHelper {
     /* FIXME rendering

@@ -56,7 +56,7 @@ public interface IAttachment extends ICustomItem<AttachmentIndex, AttachmentData
     }
 
     /// > 读取配件「当前生效形态」的完整附件数据。
-    /// > <p>
+    /// >
     /// > 开启态 / 不可开关形态返回基础 data；关闭态优先取当前生效形态（变体优先）声明的
     /// > off_data，缺失时回退基础 data。index 不可得返回 null。
     @Nullable

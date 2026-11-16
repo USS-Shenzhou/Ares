@@ -1,12 +1,12 @@
 package cn.ussshenzhou.ares.gun.gameplay.timeline;
 
 /// > 动作许可集：表达「当前允许哪些玩法动作」的不可变位标志集合。
-/// > <p>
-/// > 命名刻意避开 {@code Capabilities}，以免与 Forge capability 混淆。
-/// > <p>
-/// > 默认全部允许；每条活跃轨道通过 {@link Builder#constrain} 逐步收紧（按位与语义）。
-/// > 由 {@link SegmentSet#gate()} 聚合所有活跃片段的约束后得到当前许可集，
-/// > operator 的输入入口据此判断动作是否放行，取代旧的 {@code GunHolderState} 布尔表。
+/// >
+/// > 命名刻意避开 `Capabilities`，以免与 Forge capability 混淆。
+/// >
+/// > 默认全部允许；每条活跃轨道通过 [Builder#constrain] 逐步收紧（按位与语义）。
+/// > 由 [SegmentSet#gate()] 聚合所有活跃片段的约束后得到当前许可集，
+/// > operator 的输入入口据此判断动作是否放行，取代旧的 `GunHolderState` 布尔表。
 /// @author TACZ, USS_Shenzhou
 public class ActionGate {
 
@@ -77,7 +77,7 @@ public class ActionGate {
         return new Builder();
     }
 
-    /// > 许可集构造器。默认全部允许，调用 {@code deny*} 逐项收紧（按位与，只能更严不能放宽）。
+    /// > 许可集构造器。默认全部允许，调用 `deny*` 逐项收紧（按位与，只能更严不能放宽）。
     public static class Builder {
         private boolean canShoot = true;
         private boolean canReload = true;

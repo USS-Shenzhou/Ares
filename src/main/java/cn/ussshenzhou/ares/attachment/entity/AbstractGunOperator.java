@@ -16,25 +16,22 @@ import java.util.EnumSet;
 import java.util.List;
 
 /// > 持枪 operator 的共享骨架：承载 per-hand 会话表、会话同步、preferredHand 路由。
-/// > <p>
-/// > 端差异由两点抽象方法收敛：
-/// > <ul>
-/// >   <li>{@link #isOperable(ItemStack)}：哪些物品可建立会话（服务端仅 {@code IGun}，客户端含独立下挂）。</li>
-/// >   <li>{@link #matches(HandGunSession, ItemStack, GunOperationSessionKind)}：会话是否仍对应当前手持物。
-/// >       服务端以实例身份（{@code ==}）为快速路径，实例被重建时回退「同槽 + 值签名」判定（权威可靠），
-/// >       客户端用值启发式（无稳定实例）。</li>
-/// > </ul>
-/// > 会话的创建 / 销毁是生命周期的唯一权威入口，全部经由 {@link #synchronizeSession(InteractionHand)}。
-/// > 但「何时触发同步」两端不同：
-/// > <ul>
-/// >   <li>服务端：{@link #tick()} 每刻 resync，且 {@link #onBeforeAccess} 在访问会话前即时同步
-/// >       （实例身份比较廉价且权威）。</li>
-/// >   <li>客户端：{@link #tick()} 不 resync、访问不自轮询；改由 {@code InventoryEventHandler}
-/// >       作为唯一检测器，在槽位 / 物品变化时调 {@code putAway}、在持枪形态切换时调 {@link #resync()}。</li>
-/// > </ul>
 /// >
-/// > @param <P> 玩家类型
-/// > @param <S> 会话类型
+/// > 端差异由两点抽象方法收敛：
+/// > - [#isOperable(ItemStack)]：哪些物品可建立会话（服务端仅 `IGun`，客户端含独立下挂）。
+/// > - [#matches(HandGunSession,ItemStack,GunOperationSessionKind)]：会话是否仍对应当前手持物。
+/// >   服务端以实例身份（`==`）为快速路径，实例被重建时回退「同槽 + 值签名」判定（权威可靠），
+/// >   客户端用值启发式（无稳定实例）。
+/// >
+/// > 会话的创建 / 销毁是生命周期的唯一权威入口，全部经由 [#synchronizeSession(InteractionHand)]。
+/// > 但「何时触发同步」两端不同：
+/// > - 服务端：[#tick()] 每刻 resync，且 [#onBeforeAccess] 在访问会话前即时同步
+/// >   （实例身份比较廉价且权威）。
+/// > - 客户端：[#tick()] 不 resync、访问不自轮询；改由 `InventoryEventHandler`
+/// >   作为唯一检测器，在槽位 / 物品变化时调 `putAway`、在持枪形态切换时调 [#resync()]。
+/// >
+/// > @param `P` 玩家类型\
+/// > @param `S` 会话类型
 /// @author TACZ, USS_Shenzhou
 public abstract class AbstractGunOperator<P extends Player, S extends HandGunSession> implements IGunOperator {
     protected final P player;
@@ -76,9 +73,9 @@ public abstract class AbstractGunOperator<P extends Player, S extends HandGunSes
         synchronizeSession(hand, false);
     }
 
-    /// > 会话同步。{@code forceRebuild} 为真时跳过 {@link #matches} 短路，强制拆除并重建会话，
+    /// > 会话同步。`forceRebuild` 为真时跳过 [#matches] 短路，强制拆除并重建会话，
     /// > 事件上下文（old/new）由本方法统一计算。用于「值层面无差异但确需重建」的权威事件
-    /// > （如真实换手对调两把同 id 同值枪，服务端经 {@code ServerPlayerGunCapability} 使用）。
+    /// > （如真实换手对调两把同 id 同值枪，服务端经 `ServerPlayerGunCapability` 使用）。
     protected void synchronizeSession(InteractionHand hand, boolean forceRebuild) {
         ItemStack live = player.getItemInHand(hand);
         GunOperationSessionKind expectedKind = resolveSessionKind(hand, live);
@@ -129,7 +126,7 @@ public abstract class AbstractGunOperator<P extends Player, S extends HandGunSes
         return sessions.get(hand);
     }
 
-    /// > 取会话；{@code allowEmpty} 为真且当前手无会话时，新建一个双手会话兜底。
+    /// > 取会话；`allowEmpty` 为真且当前手无会话时，新建一个双手会话兜底。
     @Nullable
     protected S ensureSession(InteractionHand hand, boolean allowEmpty) {
         beforeAccess(hand);
@@ -141,8 +138,8 @@ public abstract class AbstractGunOperator<P extends Player, S extends HandGunSes
         return session;
     }
 
-    /// > 访问会话前的同步钩子。服务端覆盖为即时 {@link #synchronizeSession}（实例身份比较廉价权威）；
-    /// > 客户端默认空实现——客户端只由 {@code InventoryEventHandler} 检测器驱动同步，访问不自轮询。
+    /// > 访问会话前的同步钩子。服务端覆盖为即时 [#synchronizeSession]（实例身份比较廉价权威）；
+    /// > 客户端默认空实现——客户端只由 `InventoryEventHandler` 检测器驱动同步，访问不自轮询。
     protected void beforeAccess(InteractionHand hand) {
     }
 
@@ -291,7 +288,7 @@ public abstract class AbstractGunOperator<P extends Player, S extends HandGunSes
         return session != null && session.isTacticalStance();
     }
 
-    /// > 与 {@link #aimingProgress()} 同一手位口径：默认读取优先手，保证散布判定的一致性。
+    /// > 与 [#aimingProgress()] 同一手位口径：默认读取优先手，保证散布判定的一致性。
     @Override
     public boolean isTacticalStance() {
         return isTacticalStance(preferredHand());

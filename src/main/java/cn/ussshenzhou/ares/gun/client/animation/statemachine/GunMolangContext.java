@@ -17,18 +17,17 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /// > 状态机的 Molang 上下文。按语义拆分命名空间：
-/// > <ul>
-/// >   <li>查询类绑定（{@code gun.} 命名空间，无副作用，返回 double）：供过渡 condition / 读状态使用，
-/// >       如 {@code gun.movement_run}、{@code gun.gameplay_reloading}。</li>
-/// >   <li>动作类绑定（{@code action.} 命名空间，有副作用，返回 double=0）：供 onEnter/onUpdate/afterTrigger 使用，
-/// >       如 {@code action.play_once('primary','run_start')}、{@code action.consume_request()}。</li>
-/// >   <li>动画 timeline 指令（{@code action.} 命名空间，有副作用）：供动画文件内嵌 timeline 使用，
-/// >       如 {@code action.notify('mag_out')}。</li>
-/// > </ul>
-/// > 标准 molang 查询（如 {@code query.anim_time}）仍保留 {@code query.} 命名空间，不可动。
+/// > - 查询类绑定（`gun.` 命名空间，无副作用，返回 double）：供过渡 condition / 读状态使用，
+/// >   如 `gun.movement_run`、`gun.gameplay_reloading`。
+/// > - 动作类绑定（`action.` 命名空间，有副作用，返回 double=0）：供 onEnter/onUpdate/afterTrigger 使用，
+/// >   如 `action.play_once('primary','run_start')`、`action.consume_request()`。
+/// > - 动画 timeline 指令（`action.` 命名空间，有副作用）：供动画文件内嵌 timeline 使用，
+/// >   如 `action.notify('mag_out')`。
+/// >
+/// > 标准 molang 查询（如 `query.anim_time`）仍保留 `query.` 命名空间，不可动。
 /// @author TACZ, USS_Shenzhou
 public class GunMolangContext extends MolangContext<GunStateContext> {
-    /// > 编译期共享引擎。动画 timeline 预编译只需类型信息（扫描 {@code @QueryBinding}），
+    /// > 编译期共享引擎。动画 timeline 预编译只需类型信息（扫描 `@QueryBinding`），
     /// > 与求值阶段的 context 实例无关，故全局复用一份，避免重复反射扫描。
     private static volatile MochaEngine<?> sharedCompileEngine;
 
@@ -42,8 +41,8 @@ public class GunMolangContext extends MolangContext<GunStateContext> {
     private double beamTimeSeconds;
 
     /// > 已告警过的「未注册属性」id（按 id 只告警一次，避免每帧刷屏）。
-    /// > <p>
-    /// > 仅记录能解析为合法 {@link Identifier} 的 id：解析失败时日志里不回显原始字符串，
+    /// >
+    /// > 仅记录能解析为合法 [Identifier] 的 id：解析失败时日志里不回显原始字符串，
     /// > 避免把数据包里的任意文本写进日志。
     private static final Set<Identifier> WARNED_UNKNOWN_ATTRIBUTES = ConcurrentHashMap.newKeySet();
 
@@ -55,8 +54,8 @@ public class GunMolangContext extends MolangContext<GunStateContext> {
     }
 
     /// > 获取动画 timeline 预编译用的共享引擎。
-    /// > <p>
-    /// > 用 {@link GunMolangContext} 类型构建，使 timeline 中的 {@code action.notify(...)}
+    /// >
+    /// > 用 [GunMolangContext] 类型构建，使 timeline 中的 `action.notify(...)`
     /// > 等命名空间绑定能在编译期解析为直接方法调用。
     public static MochaEngine<?> sharedCompileEngine() {
         MochaEngine<?> engine = sharedCompileEngine;
@@ -79,17 +78,17 @@ public class GunMolangContext extends MolangContext<GunStateContext> {
         this.timelineTrackName = trackName;
     }
 
-    /// > 注入激光束流已存活时长（秒）。供 {@code query.beam_time} 读取，驱动激光视觉表达式。
+    /// > 注入激光束流已存活时长（秒）。供 `query.beam_time` 读取，驱动激光视觉表达式。
     public void setBeamTimeSeconds(double beamTimeSeconds) {
         this.beamTimeSeconds = beamTimeSeconds;
     }
 
     /// > ==================== 激光视觉查询绑定（query. 命名空间，脱离状态机可用）====================
 
-    /// > 激光束流已存活时长（秒）。由 {@link cn.ussshenzhou.ares.gun.client.render.fx.LaserVisualResolver}
+    /// > 激光束流已存活时长（秒）。由 [cn.ussshenzhou.ares.gun.client.render.fx.LaserVisualResolver]
     /// > 每帧注入，驱动束流随时间渐变色/变宽等表现。
-    /// > <p>
-    /// > 预留：后续可按同一模式加入 {@code query.charge_progress}、{@code query.heat} 等表现驱动量。
+    /// >
+    /// > 预留：后续可按同一模式加入 `query.charge_progress`、`query.heat` 等表现驱动量。
     @QueryBinding(value = "beam_time", namespace = "query")
     public double beamTime() {
         return beamTimeSeconds;
@@ -110,7 +109,7 @@ public class GunMolangContext extends MolangContext<GunStateContext> {
     }
 
     /// > 目标瞄准视图位是否为战术拒枪姿态（0/1）。Alt+V 切换请求即翻转，不等过渡收敛，
-    /// > 便于状态机立刻起姿态；平滑混合用 {@link #aimViewSwitchProgress()}。
+    /// > 便于状态机立刻起姿态；平滑混合用 [#aimViewSwitchProgress()]。
     @QueryBinding(value = "tactical_stance", namespace = "gun")
     public double tacticalStance() {
         WeaponAnimationContext context = weaponContext();
@@ -260,7 +259,7 @@ public class GunMolangContext extends MolangContext<GunStateContext> {
         return context != null ? context.fireModeIndex() : 0.0;
     }
 
-    /// > 指定直接槽位是否安装了配件（如 {@code gun.has_attachment('tacz:scope')}）。
+    /// > 指定直接槽位是否安装了配件（如 `gun.has_attachment('tacz:scope')`）。
     /// > 供状态机按配件切换动画表现（镜/无镜开火、拉栓、桥夹换弹分流）。
     @QueryBinding(value = "has_attachment", namespace = "gun")
     public double hasAttachment(String slotId) {
@@ -268,10 +267,10 @@ public class GunMolangContext extends MolangContext<GunStateContext> {
         return context != null && context.hasAttachment(slotId) ? 1.0 : 0.0;
     }
 
-    /// > 指定属性的最终值（含配件 / 弹种 / 开火模式修饰）。属性 id 缺省 namespace 补 {@code tacz:}。
-    /// > <p>
+    /// > 指定属性的最终值（含配件 / 弹种 / 开火模式修饰）。属性 id 缺省 namespace 补 `tacz:`。
+    /// >
     /// > Molang 没有 null：未注册的 id 视为作者错误，返回 0 并按 id 限流告警一次。
-    /// > 判定「本枪是否有该属性」请用 {@link #hasAttribute(String)}。
+    /// > 判定「本枪是否有该属性」请用 [#hasAttribute(String)]。
     @QueryBinding(value = "attribute", namespace = "gun")
     public double attribute(String attrId) {
         WeaponAnimationContext context = weaponContext();
@@ -346,7 +345,7 @@ public class GunMolangContext extends MolangContext<GunStateContext> {
 
     /// > 幂等循环播放：已在播同一动画则跳过（不重置相位）。
     /// > 供条件性常驻轨道（如空挂静态姿势）在 onUpdate 中每帧调用，例如
-    /// > {@code action.ensure_loop('bolt_caught', 'static_bolt_caught')}。
+    /// > `action.ensure_loop('bolt_caught', 'static_bolt_caught')`。
     @QueryBinding(value = "ensure_loop", namespace = "action")
     public double ensureLoop(String track, String animation) {
         GunStateContext context = getEntity();
@@ -377,9 +376,9 @@ public class GunMolangContext extends MolangContext<GunStateContext> {
     }
 
     /// > 在指定轨道播放一次动画并按期望时长变速对齐玩法时长（如 reload）。播完停止。
-    /// > <p>
-    /// > 第三参 expectedSeconds 由调用方传玩法权威时长（&lt;=0 表示原速），如
-    /// > {@code action.play_scaled('base','reload_empty', gun.reload_expected_seconds)}。
+    /// >
+    /// > 第三参 expectedSeconds 由调用方传玩法权威时长（<=0 表示原速），如
+    /// > `action.play_scaled('base','reload_empty', gun.reload_expected_seconds)`。
     /// > 时长 / loop / notify 全部读自动画文件，无需 montage。
     @QueryBinding(value = "play_scaled", namespace = "action")
     public double playScaled(String track, String animation, double expectedSeconds) {
@@ -401,10 +400,10 @@ public class GunMolangContext extends MolangContext<GunStateContext> {
     }
 
     /// > 在指定轨道播放 montage 驱动的一次性动作。
-    /// > <p>
-    /// > 第四参 expectedDurationSeconds 用于按期望时长变速对齐 gameplayTicks；省略或 &lt;=0 表示原速。
-    /// > 内容包可写 {@code action.play_montage('reload','tacz:m16/reload_empty','main')}
-    /// > 或 {@code action.play_montage('reload','tacz:m16/reload_empty','main', gun.reload_expected_seconds)}。
+    /// >
+    /// > 第四参 expectedDurationSeconds 用于按期望时长变速对齐 gameplayTicks；省略或 <=0 表示原速。
+    /// > 内容包可写 `action.play_montage('reload','tacz:m16/reload_empty','main')`
+    /// > 或 `action.play_montage('reload','tacz:m16/reload_empty','main', gun.reload_expected_seconds)`。
     @QueryBinding(value = "play_montage", namespace = "action")
     public double playMontage(String track, String montageId, String section, double expectedDurationSeconds) {
         GunStateContext context = getEntity();
@@ -493,10 +492,10 @@ public class GunMolangContext extends MolangContext<GunStateContext> {
 
     /// > ==================== 动画 timeline 指令（动画文件内嵌 timeline 用）====================
 
-    /// > 触发一个具名动画事件（如 {@code action.notify('mag_out')}）。
-    /// > <p>
+    /// > 触发一个具名动画事件（如 `action.notify('mag_out')`）。
+    /// >
     /// > 由动画文件内嵌 timeline 关键帧驱动，转发到注入的事件 sink。事件定位信息（montage/track）
-    /// > 由播放后端通过 {@link #configureTimeline} 预先注入。
+    /// > 由播放后端通过 [#configureTimeline] 预先注入。
     @QueryBinding(value = "notify", namespace = "action")
     public double notifyAction(String event) {
         if (event != null && !event.isBlank()) {

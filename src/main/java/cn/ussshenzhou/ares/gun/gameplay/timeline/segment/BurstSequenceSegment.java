@@ -26,6 +26,7 @@ public class BurstSequenceSegment extends ActionSegment {
     private boolean afterSequenceStarted = false;
 
     /// > @param burstInterval  后续发间隔（tick，由编排层从 FireModeEntry 推导）
+    /// >
     /// > @param tailCooldownMs 全部打完后的尾随闭锁窗口（毫秒，由编排层传入）
     public BurstSequenceSegment(int followUpCount, int burstInterval, long tailCooldownMs, boolean clientDriven,
                                 TriggerStrategy.FireCallback followUpFire, Runnable afterSequence) {

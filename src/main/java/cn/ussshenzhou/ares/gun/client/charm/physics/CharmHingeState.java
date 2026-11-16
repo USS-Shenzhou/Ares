@@ -5,7 +5,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 /// > 吊环铰链扭转状态（自源挂饰模组移植，仅依赖 JOML）。
-/// > <p>
+/// >
 /// > 在主摆动之上叠加一层「松动吊环」的扭转：用弱弹簧把扭转角拉向可见目标角，同时保留角动量，
 /// > 让吊环随挂饰摆动而轻微旋转。
 /// @author TACZ, USS_Shenzhou

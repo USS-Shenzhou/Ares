@@ -17,14 +17,14 @@ import java.util.Locale;
 import java.util.Map;
 
 /// > 挂饰防穿模：从枪体几何提取锚点骨骼附近的 cube，转成「锚点骨骼局部空间」的碰撞盒（OBB）。
-/// > <p>
-/// > 用 <b>bind pose（静态、不含动画）</b> 计算并按 {@code (枪 display id, 锚点骨骼名, 关注中心量化)} 缓存：
+/// >
+/// > 用 **bind pose（静态、不含动画）** 计算并按 `(枪 display id, 锚点骨骼名, 关注中心量化)` 缓存：
 /// > 枪上各骨骼的相对位姿在 bind pose 下固定，动画带来的相对偏移很小，挂饰防穿模追求观感而非绝对精确，
 /// > 故每帧复用同一份碰撞盒即可，省去逐帧遍历整把枪所有 cube 的开销，也避免动画抖动。
-/// > 资源重载时 {@link #clearCache()}。
-/// > <p>
+/// > 资源重载时 [#clearCache()]。
+/// >
 /// > 物理在锚点骨骼局部空间（方块单位）推进，故碰撞盒变换为
-/// > {@code anchorInvBind × boneBind × cubeRotation}：把 cube 局部 AABB 连同其自身旋转一起变到锚点骨骼空间。
+/// > `anchorInvBind × boneBind × cubeRotation`：把 cube 局部 AABB 连同其自身旋转一起变到锚点骨骼空间。
 /// > 枪体 cube 通常远多于上限，按「到关注中心（挂饰静止质点）的距离」保留最近的若干个——挂饰只会扫到
 /// > 锚点附近区域，远处的大主体盒对防穿模无意义。
 /// @author TACZ, USS_Shenzhou
@@ -41,8 +41,11 @@ public class CharmCollisionExtractor {
     /// > 取某枪在指定锚点骨骼局部空间下、关注中心附近的枪体碰撞盒列表（缓存）。
     /// >
     /// > @param gunDisplayId 枪 display id（缓存键，区分不同枪）
+    /// >
     /// > @param gunModel     枪模型（提供 bind pose 静态骨骼变换与几何）
+    /// >
     /// > @param anchorBone   挂饰结合到的锚点骨骼名（碰撞盒变换到此骨骼局部空间）
+    /// >
     /// > @param focusCenter  关注中心（锚点骨骼局部空间，方块）：挂饰静止质点，按到它的距离保留最近的盒
     public static List<CharmCollisionBox> get(Identifier gunDisplayId, BedrockGunModel gunModel,
                                               String anchorBone, Vector3f focusCenter) {

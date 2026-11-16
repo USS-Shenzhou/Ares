@@ -13,13 +13,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /// > 以属性 id 为键的 JSON 对象反序列化。
-/// > <p>
-/// > 键统一走 {@link AttributeIdHelper#tryParse}（缺省 namespace 补 {@code tacz:}，非法键直接报错），
-/// > 值按字段声明的值类型交回 Gson 解析——因此同一适配器可服务 {@code Map<Identifier, Double>}
-/// > 与 {@code Map<Identifier, GunAttributeModifier>} 两种形状。
-/// > <p>
-/// > 用 {@code @JsonAdapter} 挂在具体字段上。自定义解析器（如 {@code FireModeEntrySerializer}）
-/// > 可复用 {@link #read}。
+/// >
+/// > 键统一走 [AttributeIdHelper#tryParse]（缺省 namespace 补 `tacz:`，非法键直接报错），
+/// > 值按字段声明的值类型交回 Gson 解析——因此同一适配器可服务 `Map<Identifier, Double>`
+/// > 与 `Map<Identifier, GunAttributeModifier>` 两种形状。
+/// >
+/// > 用 `@JsonAdapter` 挂在具体字段上。自定义解析器（如 `FireModeEntrySerializer`）
+/// > 可复用 [#read]。
 /// @author TACZ, USS_Shenzhou
 public class AttributeIdMapDeserializer implements JsonDeserializer<Map<Identifier, Object>> {
     @Override

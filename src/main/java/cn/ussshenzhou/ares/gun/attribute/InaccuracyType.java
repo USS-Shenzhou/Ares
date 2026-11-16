@@ -29,6 +29,7 @@ public enum InaccuracyType {
     /// > 获取当前的不准确度状态
     /// >
     /// > @param livingEntity 射手
+    /// >
     /// > @return 不准度情况
     public static InaccuracyType getInaccuracyType(LivingEntity livingEntity) {
         float aimingProgress = IGunOperator.asGunHolder(livingEntity)

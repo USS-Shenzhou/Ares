@@ -15,11 +15,16 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
-/// > TODO: 枪械持有者能力接口<br/>
-/// > 默认有三种实现，服务端玩家实现，负责实际的逻辑处理<br/>
-/// > 客户端LocalPlayer实现，负责第一人称动画和逻辑处理，以及通知服务端<br/>
-/// > 客户端其他实体实现，负责第三人称动画，被动接受服务端的状态更新<br/>
-/// > 默认仅附加给玩家，其他模组的实体（甚至不一定是实体）若有特殊需求，也可自行实现这个接口并注册能力<br/>
+/// > TODO: 枪械持有者能力接口
+/// >
+/// > 默认有三种实现，服务端玩家实现，负责实际的逻辑处理
+/// >
+/// > 客户端LocalPlayer实现，负责第一人称动画和逻辑处理，以及通知服务端
+/// >
+/// > 客户端其他实体实现，负责第三人称动画，被动接受服务端的状态更新
+/// >
+/// > 默认仅附加给玩家，其他模组的实体（甚至不一定是实体）若有特殊需求，也可自行实现这个接口并注册能力
+/// >
 /// > 应该还得提供一种默认的服务端其他实体实现，纯服务端控制
 /// @author TACZ, USS_Shenzhou
 public interface IGunOperator {
@@ -34,6 +39,7 @@ public interface IGunOperator {
 
     /// > 获取当前活跃的持枪者状态集合（多状态可并存，如 bolt 窗口期同时有 BOLT_ACTION 与 FIRE_COOLDOWN）。
     /// > 空集表示空闲（等价于旧的 NORMAL）。消费方应以「成员查询」方式读取，不再依赖单一优先级状态。
+    /// >
     /// > @return 活跃状态集合（不可变或只读语义，调用方不应修改）
     @Nonnull
     default EnumSet<GunHolderState> getActiveStates() {
@@ -62,6 +68,7 @@ public interface IGunOperator {
     void tick();
 
     /// > 持枪者开始拔枪的操作
+    /// >
     /// > @param newStack 新的枪械物品堆
     default void draw(ItemStack newStack) {
         draw(InteractionHand.MAIN_HAND, newStack);
@@ -70,6 +77,7 @@ public interface IGunOperator {
     void draw(InteractionHand hand, ItemStack newStack);
 
     /// > 持枪者开始收枪的操作，收枪完成后自动触发 draw
+    /// >
     /// > @param pendingStack 收枪完成后要切入的物品堆
     default void putAway(ItemStack pendingStack) {
         putAway(InteractionHand.MAIN_HAND, pendingStack);
@@ -91,7 +99,7 @@ public interface IGunOperator {
 
     void fire(InteractionHand hand);
 
-    /// > 持枪者松开扳机（蓄力 / 延迟触发的松手发射）。默认空实现，客户端 {@code LocalGunOperator} 覆写为
+    /// > 持枪者松开扳机（蓄力 / 延迟触发的松手发射）。默认空实现，客户端 `LocalGunOperator` 覆写为
     /// > 起松手发射并随 C2S 上报蓄力原始量；服务端由 C2S 权威处理，不经此入口。
     default void fireRelease() {
         fireRelease(InteractionHand.MAIN_HAND);
@@ -101,6 +109,7 @@ public interface IGunOperator {
     }
 
     /// > 获取上次开火的时间戳
+    /// >
     /// > @return 上次开火时间戳，单位毫秒
     long getLastFireTime();
 
@@ -138,6 +147,7 @@ public interface IGunOperator {
         return "none";
     }
     /// > 获取当前持有的枪械物品堆
+    /// >
     /// > @return 枪械物品堆
     default ItemStack getCurrentItem() {
         return getCurrentItem(InteractionHand.MAIN_HAND);

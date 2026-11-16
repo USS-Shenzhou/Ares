@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 /// > 枪械「挂饰结合数据」NBT 读写的唯一集中点。
-/// > <p>
-/// > 按设计文档约定：本期单挂饰，但 NBT 结构为多挂饰预留——根键 {@code TaczCharms} 下用
-/// > {@code charms} list 承载（本期长度恒为 1），读写按集合处理。后续放开多挂饰只需放开
-/// > {@link #MAX_CHARMS} 上限，NBT 结构与遍历代码不动。跨版本 NBT 风险全部收敛于此类。
+/// >
+/// > 按设计文档约定：本期单挂饰，但 NBT 结构为多挂饰预留——根键 `TaczCharms` 下用
+/// > `charms` list 承载（本期长度恒为 1），读写按集合处理。后续放开多挂饰只需放开
+/// > [#MAX_CHARMS] 上限，NBT 结构与遍历代码不动。跨版本 NBT 风险全部收敛于此类。
 /// @author TACZ, USS_Shenzhou
 public class GunCharmDataHelper {
     /// > 本期单挂饰上限。后续放开多挂饰时调大即可。

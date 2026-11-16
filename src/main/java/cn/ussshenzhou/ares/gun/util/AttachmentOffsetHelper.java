@@ -4,11 +4,11 @@ import cn.ussshenzhou.ares.gun.init.ModDataComponents;
 import net.minecraft.world.item.ItemStack;
 
 /// > 配件导轨微调偏移的 NBT 存取（双端共用）。
-/// > <p>
+/// >
 /// > 偏移直接写入配件自身的 ItemStack NBT，随配件实例移动；
-/// > 多层树场景下由 {@link AttachmentTreeHelper} 的自底向上回写机制序列化到顶层枪械。
-/// > <p>
-/// > 第一阶段仅存单轴标量偏移（沿槽位 {@link cn.ussshenzhou.ares.gun.item.RailConfig#axis}）。
+/// > 多层树场景下由 [AttachmentTreeHelper] 的自底向上回写机制序列化到顶层枪械。
+/// >
+/// > 第一阶段仅存单轴标量偏移（沿槽位 [cn.ussshenzhou.ares.gun.item.RailConfig#axis]）。
 /// @author TACZ, USS_Shenzhou
 public class AttachmentOffsetHelper {
     /// > 写入沿导轨方向的偏移标量。

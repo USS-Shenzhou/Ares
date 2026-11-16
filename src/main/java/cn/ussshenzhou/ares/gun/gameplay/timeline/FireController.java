@@ -17,9 +17,9 @@ import java.util.function.LongConsumer;
 import java.util.function.Supplier;
 
 /// > 常驻开火控制器：承载 trigger 策略与射击片段编排，本身不投影状态、不进入 SegmentSet。
-/// > <p>
-/// > 出膛后的编排决策（起 burst / 起拉栓窗口 / 即时补膛）收口到 {@link #orchestrateAfterShot(boolean)}，
-/// > 是后续脚本编排（{@code fire.plan} 的 {@code afterShot}）的接入点。
+/// >
+/// > 出膛后的编排决策（起 burst / 起拉栓窗口 / 即时补膛）收口到 [#orchestrateAfterShot(boolean)]，
+/// > 是后续脚本编排（`fire.plan` 的 `afterShot`）的接入点。
 /// @author TACZ, USS_Shenzhou
 public class FireController implements BoltCoordinator, FireAfterShotOps, FirePreShotOps {
 
@@ -27,26 +27,26 @@ public class FireController implements BoltCoordinator, FireAfterShotOps, FirePr
     private static final long BURST_TAIL_COOLDOWN_MS = 200;
 
     /// > 端相关副作用回调。控制器只负责时序编排，不直接知道客户端/服务端细节。
-    /// > <p>
-    /// > 双端各提供各自需要的回调，用 {@link Builder} 构造。哪端提供哪个见各字段注释；
+    /// >
+    /// > 双端各提供各自需要的回调，用 [Builder] 构造。哪端提供哪个见各字段注释；
     /// > 端差异只体现在这些回调上，时序骨架由控制器双端共享推导。
     public static class Hooks {
         /// > 主发出膛副作用（必填）。客户端：播放动画/音效/后坐力 + 预消耗弹药 + 发 C2S；服务端：生成弹丸。
         public final TriggerStrategy.FireCallback fireBullet;
-        /// > 客户端专属：burst 后续发自驱回调（客户端按间隔本地驱动）。服务端为 {@code null}。
+        /// > 客户端专属：burst 后续发自驱回调（客户端按间隔本地驱动）。服务端为 `null`。
         @Nullable
         public final Runnable burstShot;
         /// > 主发出膛后的端副作用（可选）。客户端：muzzle-flash 时间戳 / 阻冲刺；服务端：扣 shootTimePool / 记时。
         @Nullable
         public final Runnable postPrimaryFire;
-        /// > 服务端专属：burst 后续发的权威发射（由 C2S 后续发包逐发驱动）。客户端为 {@code null}。
+        /// > 服务端专属：burst 后续发的权威发射（由 C2S 后续发包逐发驱动）。客户端为 `null`。
         @Nullable
         public final TriggerStrategy.FireCallback burstFollowUpFire;
-        /// > 补膛权威副作用（可选）。服务端：写 chamber；客户端：{@code null}（不写 NBT，服务端权威同步）。
+        /// > 补膛权威副作用（可选）。服务端：写 chamber；客户端：`null`（不写 NBT，服务端权威同步）。
         @Nullable
         public final Runnable reChamber;
         /// > 拉栓窗口启动时的副作用（客户端用：起自愈屏蔽锁，避免 bolt 窗口结束后被 tryAutoChamber 重复补偿触发）。
-        /// > 参数为本次 bolt 窗口时长（毫秒）。服务端不需要，为 {@code null}。
+        /// > 参数为本次 bolt 窗口时长（毫秒）。服务端不需要，为 `null`。
         @Nullable
         public final LongConsumer onBoltStart;
 
@@ -126,13 +126,13 @@ public class FireController implements BoltCoordinator, FireAfterShotOps, FirePr
     private final Hooks hooks;
     private final TriggerStrategy trigger;
     /// > burst 后续发是否由客户端自驱（true=客户端本地按间隔驱动；false=服务端由 C2S 后续发包驱动）。
-    /// > 由端注入的 {@link Hooks#burstShot} 是否存在决定：只有客户端会提供该自驱回调。
+    /// > 由端注入的 [Hooks#burstShot] 是否存在决定：只有客户端会提供该自驱回调。
     private final boolean clientBurstDriven;
-    /// > 出膛后编排决策器：内置默认（{@link AfterShotDecider#builtin()}）或脚本驱动（{@code fire.plan} 的 afterShot）。
-    /// > 由 {@link #orchestrateAfterShot(boolean)} 调用。
+    /// > 出膛后编排决策器：内置默认（[AfterShotDecider#builtin()]）或脚本驱动（`fire.plan` 的 afterShot）。
+    /// > 由 [#orchestrateAfterShot(boolean)] 调用。
     private final AfterShotDecider afterShotDecider;
-    /// > 出膛前门禁决策器：内置默认（{@link PreShotDecider#allowAll()} 恒放行）或脚本驱动（{@code fire.plan} 的 canFire）。
-    /// > 由 {@link #canFire(ItemStack)} 在内置判定通过后调用。
+    /// > 出膛前门禁决策器：内置默认（[PreShotDecider#allowAll()] 恒放行）或脚本驱动（`fire.plan` 的 canFire）。
+    /// > 由 [#canFire(ItemStack)] 在内置判定通过后调用。
     private final PreShotDecider preShotDecider;
 
     private FireController(SegmentSet segments, Supplier<ItemStack> gunSupplier, FireModeEntry mode,
@@ -156,15 +156,15 @@ public class FireController implements BoltCoordinator, FireAfterShotOps, FirePr
         return create(segments, gunSupplier, data, hooks, null, null, null);
     }
 
-    /// > 构建开火控制器。{@code afterShotDecider} 为 null 时用内置默认编排（零脚本回退）；
-    /// > 声明了 {@code fire_plan_script} 时由 session 传入脚本驱动的决策器。
+    /// > 构建开火控制器。`afterShotDecider` 为 null 时用内置默认编排（零脚本回退）；
+    /// > 声明了 `fire_plan_script` 时由 session 传入脚本驱动的决策器。
     public static FireController create(SegmentSet segments, Supplier<ItemStack> gunSupplier, GunData data,
                                         Hooks hooks, @Nullable AfterShotDecider afterShotDecider) {
         return create(segments, gunSupplier, data, hooks, afterShotDecider, null, null);
     }
 
-    /// > 构建开火控制器（含出膛前门禁）。{@code afterShotDecider} / {@code preShotDecider} 为 null 时分别用
-    /// > 内置默认（出膛后编排 / 恒放行门禁），等价零脚本行为；声明了 {@code fire_plan_script} 时由 session
+    /// > 构建开火控制器（含出膛前门禁）。`afterShotDecider` / `preShotDecider` 为 null 时分别用
+    /// > 内置默认（出膛后编排 / 恒放行门禁），等价零脚本行为；声明了 `fire_plan_script` 时由 session
     /// > 传入脚本驱动的决策器。两者独立：只声明 canFire 的脚本不影响出膛后编排，反之亦然。
     public static FireController create(SegmentSet segments, Supplier<ItemStack> gunSupplier, GunData data,
                                         Hooks hooks, @Nullable AfterShotDecider afterShotDecider,
@@ -172,9 +172,9 @@ public class FireController implements BoltCoordinator, FireAfterShotOps, FirePr
         return create(segments, gunSupplier, data, hooks, afterShotDecider, preShotDecider, null);
     }
 
-    /// > 构建开火控制器（完整重载，含触发策略供给器）。{@code triggerProvider} 为 null 时用内置默认
-    /// > （{@link TriggerStrategyProvider#builtin()} 按 fire mode 走三策略），等价零脚本行为；声明了
-    /// > {@code fire.plan} 的 {@code trigger} 时由 session 传入脚本驱动供给器。三者互不依赖，各自独立探测装配。
+    /// > 构建开火控制器（完整重载，含触发策略供给器）。`triggerProvider` 为 null 时用内置默认
+    /// > （[TriggerStrategyProvider#builtin()] 按 fire mode 走三策略），等价零脚本行为；声明了
+    /// > `fire.plan` 的 `trigger` 时由 session 传入脚本驱动供给器。三者互不依赖，各自独立探测装配。
     public static FireController create(SegmentSet segments, Supplier<ItemStack> gunSupplier, GunData data,
                                         Hooks hooks, @Nullable AfterShotDecider afterShotDecider,
                                         @Nullable PreShotDecider preShotDecider,
@@ -256,8 +256,8 @@ public class FireController implements BoltCoordinator, FireAfterShotOps, FirePr
         startBoltWindow(null);
     }
 
-    /// > {@link BoltCoordinator} 入口：起拉栓窗口，窗口结束时执行 {@code onWindowEnd}（如换弹补膛）。
-    /// > 无窗口时退化为即时执行 {@code onWindowEnd}。
+    /// > [BoltCoordinator] 入口：起拉栓窗口，窗口结束时执行 `onWindowEnd`（如换弹补膛）。
+    /// > 无窗口时退化为即时执行 `onWindowEnd`。
     @Override
     public void startBoltWindow(@Nullable Runnable onWindowEnd) {
         if (boltActionTicks > 0) {
@@ -308,11 +308,11 @@ public class FireController implements BoltCoordinator, FireAfterShotOps, FirePr
         return ShootResult.SUCCESS;
     }
 
-    /// > 出膛成功后的编排决策：委托 {@link AfterShotDecider}（内置默认或脚本驱动）。
-    /// > <p>
-    /// > 这是开火编排的核心决策点，收口了原先散在 {@code firePrimary} 尾部与
-    /// > {@code startBoltAfterSequence} / {@code startBoltOrRechamber} 的分支。脚本编排
-    /// > （{@code fire.plan} 的 {@code afterShot}）经 {@link FireAfterShotOps} 在此接入。
+    /// > 出膛成功后的编排决策：委托 [AfterShotDecider]（内置默认或脚本驱动）。
+    /// >
+    /// > 这是开火编排的核心决策点，收口了原先散在 `firePrimary` 尾部与
+    /// > `startBoltAfterSequence` / `startBoltOrRechamber` 的分支。脚本编排
+    /// > （`fire.plan` 的 `afterShot`）经 [FireAfterShotOps] 在此接入。
     /// >
     /// > @param shouldBoltAfterShot 单发模式下本发是否应拉栓（据 bolt 类型与余弹推导）
     private void orchestrateAfterShot(boolean shouldBoltAfterShot) {
@@ -397,7 +397,7 @@ public class FireController implements BoltCoordinator, FireAfterShotOps, FirePr
     }
 
     /// > 启动拉栓窗口（boltActionTicks>0）并执行补膛，或在无窗口时即时补膛。
-    /// > 起窗口时统一触发 {@link Hooks#onBoltStart} 设自愈屏蔽锁，避免窗口结束后被自愈重复补偿。
+    /// > 起窗口时统一触发 [Hooks#onBoltStart] 设自愈屏蔽锁，避免窗口结束后被自愈重复补偿。
     private void startBoltOrRechamber() {
         if (boltActionTicks > 0) {
             segments.add(new BoltSegment(boltActionTicks, hooks.reChamber));

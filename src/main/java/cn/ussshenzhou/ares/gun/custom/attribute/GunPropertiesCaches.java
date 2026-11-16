@@ -34,17 +34,16 @@ import java.util.List;
 import java.util.Map;
 
 /// > 枪械属性缓存：由「枪械数据 + 配件树 + 弹种 + 开火模式」派生的属性值。
-/// > <p>
-/// > <b>缓存契约</b>：
-/// > <ul>
-/// >   <li>修饰来源是封闭集合：枪械基础属性、配件树（含开关与变体形态）、下挂武器、弹种层、开火模式层。
-/// >       新增来源必须同时登记到 {@link #from(ItemStack)} 的收集链与失效责任里。</li>
-/// >   <li>缓存按 {@link ItemStack} 实例身份区分（{@code weakKeys} 即 identity 比较）：实例换了就重算，
-/// >       实例没换则沿用旧值。</li>
-/// >   <li>因此<b>写入方负责失效</b>：任何就地改写会影响上述来源的 NBT 之后，必须调用
-/// >       {@link #invalidateCache(ItemStack)}。现有写入方：{@code AmmoDataHelper.setAmmoId/clearAmmoId}、
-/// >       {@code FireModeHelper.setFireModeIndex}、{@code AttachmentTreeHelper.writeBack}。</li>
-/// > </ul>
+/// >
+/// > **缓存契约**：
+/// > - 修饰来源是封闭集合：枪械基础属性、配件树（含开关与变体形态）、下挂武器、弹种层、开火模式层。
+/// >   新增来源必须同时登记到 [#from(ItemStack)] 的收集链与失效责任里。
+/// > - 缓存按 [ItemStack] 实例身份区分（`weakKeys` 即 identity 比较）：实例换了就重算，
+/// >   实例没换则沿用旧值。
+/// > - 因此**写入方负责失效**：任何就地改写会影响上述来源的 NBT 之后，必须调用
+/// >   [#invalidateCache(ItemStack)]。现有写入方：`AmmoDataHelper.setAmmoId/clearAmmoId`、
+/// >   `FireModeHelper.setFireModeIndex`、`AttachmentTreeHelper.writeBack`。
+///
 /// @author TACZ, USS_Shenzhou
 public class GunPropertiesCaches implements IGunProperties {
     public static final GunPropertiesCaches EMPTY = new GunPropertiesCaches(ImmutableMap.of(), ImmutableMap.of(), 0, null);
@@ -66,9 +65,9 @@ public class GunPropertiesCaches implements IGunProperties {
     private final Map<Identifier, ItemStack> attachments;
     private final Map<Identifier, CachedValue> cachedAttribute;
     private final int magLevel;
-    /// > 解析出的已安装下挂武器副本（无则为 null）。随宿主缓存生命周期存活：宿主 {@link ItemStack} 实例
+    /// > 解析出的已安装下挂武器副本（无则为 null）。随宿主缓存生命周期存活：宿主 [ItemStack] 实例
     /// > 一变（服务端同步重建 / 换枪）即随缓存一起失效重解析，故永远反映宿主最新 NBT。
-    /// > <p>
+    /// >
     /// > 该副本由宿主 NBT 反序列化得到，与宿主 NBT 解耦。客户端预判可原地改写其弹量（纯表现，
     /// > 服务端同步重建缓存自愈）；调用方不应将其当作权威写入通道（权威落地走服务端 working copy）。
     @Nullable
@@ -87,14 +86,14 @@ public class GunPropertiesCaches implements IGunProperties {
     }
 
     /// > 属性最终值。未注册的属性返回 0（调用方传的都是内置常量；脚本 / 状态机读值请用
-    /// > {@link #getAttributeOrNull(Identifier)}，它能区分「未注册」与「值为 0」）。
+    /// > [#getAttributeOrNull(Identifier)]，它能区分「未注册」与「值为 0」）。
     @Override
     public double getAttribute(Identifier attr) {
         Double value = getAttributeOrNull(attr);
         return value != null ? value : 0;
     }
 
-    /// > 属性最终值：未注册的属性返回 null；已注册但本枪无来源时回落注册基准值（{@code default}）。
+    /// > 属性最终值：未注册的属性返回 null；已注册但本枪无来源时回落注册基准值（`default`）。
     @Nullable
     @Override
     public Double getAttributeOrNull(Identifier attr) {
@@ -127,7 +126,7 @@ public class GunPropertiesCaches implements IGunProperties {
     }
 
     /// > 缓存的已安装下挂武器副本（无则 null）。随宿主缓存生命周期存活，宿主实例变化时随缓存失效重解析。
-    /// > <p>
+    /// >
     /// > 客户端预判可原地改写其弹量（纯表现）；非权威写入通道。
     @Nullable
     @Override
@@ -239,9 +238,9 @@ public class GunPropertiesCaches implements IGunProperties {
     }
 
     /// > 收集所有提供属性修饰的配件物品堆。
-    /// > <p>
-    /// > 从枪械直接槽位出发，对任意 {@link IAttachmentHolder} 递归收集其子配件，
-    /// > 深度以 {@link IAttachmentHolder#MAX_ATTACHMENT_DEPTH} 兜底防止异常数据导致无限递归。
+    /// >
+    /// > 从枪械直接槽位出发，对任意 [IAttachmentHolder] 递归收集其子配件，
+    /// > 深度以 [IAttachmentHolder#MAX_ATTACHMENT_DEPTH] 兜底防止异常数据导致无限递归。
     private static List<ItemStack> collectModifierSources(Map<Identifier, ItemStack> directSlots) {
         List<ItemStack> result = Lists.newArrayList();
         for (ItemStack stack : directSlots.values()) {

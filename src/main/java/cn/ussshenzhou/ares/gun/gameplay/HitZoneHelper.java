@@ -5,13 +5,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
 /// > 根据命中点 Y 坐标判定身体部位。
-/// > <p>
+/// >
 /// > 默认判定（基于实体高度比例）：
-/// > <ul>
-/// >   <li>HEAD:  眼睛高度 - 0.1 ~ 实体顶部</li>
-/// >   <li>CHEST: 实体高度 × 0.4 ~ 眼睛高度 - 0.1</li>
-/// >   <li>LIMB:  实体底部 ~ 实体高度 × 0.4</li>
-/// > </ul>
+/// > - HEAD:  眼睛高度 - 0.1 ~ 实体顶部
+/// > - CHEST: 实体高度 × 0.4 ~ 眼睛高度 - 0.1
+/// > - LIMB:  实体底部 ~ 实体高度 × 0.4
+///
 /// @author TACZ, USS_Shenzhou
 public class HitZoneHelper {
     public static HitZone determine(LivingEntity target, Vec3 hitPos) {

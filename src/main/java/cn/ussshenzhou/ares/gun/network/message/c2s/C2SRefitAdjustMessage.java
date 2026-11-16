@@ -16,7 +16,9 @@ import net.minecraft.world.item.ItemStack;
 /// > 改装界面导轨微调请求（C2S，服务端权威）。
 /// >
 /// > @param slotIndex 枪械所在的背包槽位索引
+/// >
 /// > @param path      目标槽位路径（多层树，末端为要微调的槽位）
+/// >
 /// > @param offset    沿导轨方向的偏移标量
 /// @author TACZ, USS_Shenzhou
 @NetPacket(modid = Ares.MOD_ID)

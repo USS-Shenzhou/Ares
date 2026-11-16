@@ -25,7 +25,7 @@ import net.neoforged.neoforge.client.settings.KeyModifier;
 import net.neoforged.bus.api.SubscribeEvent;
 
 /// > 下挂武器模式切换按键：在主武器模式（PRIMARY）和下挂武器模式（UNDER_BARREL）之间切换。
-/// > 仅在安装了下挂武器时有效。快慢机切换由 {@link FireModeSwitchKey} 独立处理。
+/// > 仅在安装了下挂武器时有效。快慢机切换由 [FireModeSwitchKey] 独立处理。
 /// @author TACZ, USS_Shenzhou
 @EventBusSubscriber(modid = Ares.MOD_ID, value = Dist.CLIENT)
 public class UnderBarrelToggleKey {

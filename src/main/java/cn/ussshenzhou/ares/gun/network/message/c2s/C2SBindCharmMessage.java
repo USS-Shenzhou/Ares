@@ -22,17 +22,23 @@ import net.minecraft.world.item.ItemStackTemplate;
 import org.joml.Vector3f;
 
 /// > 改装界面绑定挂饰请求（C2S，服务端权威）。
-/// > <p>
-/// > 客户端在改装界面拾取枪体 cube 解出 {@code boneName} / {@code localHit} / {@code localNormal} /
-/// > {@code localOffset}（骨骼局部空间），连同被选挂饰所在背包槽位发往服务端。服务端校验后取出 1 个
-/// > 挂饰、归还旧挂饰（若有），并把结合数据写入枪械 NBT（{@link GunCharmDataHelper}）。
+/// >
+/// > 客户端在改装界面拾取枪体 cube 解出 `boneName` / `localHit` / `localNormal` /
+/// > `localOffset`（骨骼局部空间），连同被选挂饰所在背包槽位发往服务端。服务端校验后取出 1 个
+/// > 挂饰、归还旧挂饰（若有），并把结合数据写入枪械 NBT（[GunCharmDataHelper]）。
 /// >
 /// > @param gunSlotIndex 枪械所在背包槽位索引
+/// >
 /// > @param charmInvSlot 被选挂饰所在背包槽位索引
+/// >
 /// > @param displayId    枪械 display id（绑定时记录，用于渲染端校验模型一致）
+/// >
 /// > @param boneName     结合到枪体的骨骼名
+/// >
 /// > @param localHit     骨骼局部命中点（像素）
+/// >
 /// > @param localNormal  局部命中面法线（单位向量）
+/// >
 /// > @param localOffset  局部附加偏移（像素，沿法线离面）
 /// @author TACZ, USS_Shenzhou
 @NetPacket(modid = Ares.MOD_ID)

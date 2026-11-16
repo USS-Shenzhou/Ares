@@ -19,14 +19,14 @@ import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 /// > 抛壳的第一人称表现渲染（视图空间冻结帧）。
-/// > <p>
-/// > 弹壳生成（{@link #spawn}）时冻结「当前帧第一人称完整 pose × 抛壳窗骨骼」的视图矩阵，弹壳在该冻结
-/// > 坐标系内做匀变速直线运动 + 三轴匀角速度旋转（运动学移植自 legacy {@code ShellRender}）。冻结矩阵
+/// >
+/// > 弹壳生成（[#spawn]）时冻结「当前帧第一人称完整 pose × 抛壳窗骨骼」的视图矩阵，弹壳在该冻结
+/// > 坐标系内做匀变速直线运动 + 三轴匀角速度旋转（运动学移植自 legacy `ShellRender`）。冻结矩阵
 /// > 由抛壳骨骼的视图变换给出，故弹壳的初始位置/朝向随枪体动画与持枪姿态自然同步；冻结后弹壳脱离枪体，
 /// > 跟随相机但不再随枪摆动。
-/// > <p>
+/// >
 /// > 本渲染器为全局单例（仅本机玩家第一人称抛壳）。第三人称留待后续：抛壳事件依赖第一人称动画运行时，
-/// > 第三人称需另走世界空间实体/粒子方案（见 {@link #spawnWorldStub}）。
+/// > 第三人称需另走世界空间实体/粒子方案（见 [#spawnWorldStub]）。
 /// @author TACZ, USS_Shenzhou
 public class ShellRenderer {
     private static final ShellRenderer INSTANCE = new ShellRenderer();
@@ -41,7 +41,8 @@ public class ShellRenderer {
 
     /// > 生成一枚弹壳。
     /// >
-    /// > @param frozenViewTransform 冻结的视图矩阵（{@code 第一人称完整 pose × 抛壳窗骨骼变换}）
+    /// > @param frozenViewTransform 冻结的视图矩阵（`第一人称完整 pose × 抛壳窗骨骼变换`）
+    /// >
     /// > @param config              抛壳运动配置
     public void spawn(Matrix4f frozenViewTransform, ShellEjectionConfig config) {
         if (config == null || frozenViewTransform == null) {
@@ -59,7 +60,7 @@ public class ShellRenderer {
         queue.offerLast(new ShellInstance(System.currentTimeMillis(), randomOffset, new Matrix4f(frozenViewTransform)));
     }
 
-    /// > 渲染所有存活弹壳并剔除过期者。{@code config}/{@code model}/{@code texture} 任一为空则清空队列。
+    /// > 渲染所有存活弹壳并剔除过期者。`config`/`model`/`texture` 任一为空则清空队列。
     /// >
     /// > @param packedLight 渲染光照（取枪体渲染光照）
     public void render(MultiBufferSource bufferSource, @Nullable BedrockShellModel model,

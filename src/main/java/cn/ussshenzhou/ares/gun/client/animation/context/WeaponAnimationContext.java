@@ -355,7 +355,7 @@ public class WeaponAnimationContext {
     }
 
     /// > 当前拉栓上膛期望动画时长（秒），由整枪 bolt_action_time（tick）推导。
-    /// > 内容包可用于 play_montage / play_scaled 变速对齐 gameplay bolt 窗口；&lt;=0 表示原速。
+    /// > 内容包可用于 play_montage / play_scaled 变速对齐 gameplay bolt 窗口；<=0 表示原速。
     public float boltExpectedSeconds() {
         if (!(itemStack.getItem() instanceof IGun gun)) {
             return 0.0f;
@@ -390,9 +390,9 @@ public class WeaponAnimationContext {
     }
 
     /// > 指定直接槽位是否安装了配件（不递归子槽位）。供状态机按配件切换动画表现，
-    /// > 如 kar98 装镜时播 {@code shoot_scope}/{@code bolt_scope}、挡桥夹导轨只能逐发换弹。
-    /// > <p>
-    /// > {@code slotId} 缺省 namespace 时补 {@code tacz:}。纯客户端读当前物品配件树，无副作用。
+    /// > 如 kar98 装镜时播 `shoot_scope`/`bolt_scope`、挡桥夹导轨只能逐发换弹。
+    /// >
+    /// > `slotId` 缺省 namespace 时补 `tacz:`。纯客户端读当前物品配件树，无副作用。
     public boolean hasAttachment(String slotId) {
         if (slotId == null || slotId.isBlank() || !(itemStack.getItem() instanceof IGun iGun)) {
             return false;
@@ -421,11 +421,11 @@ public class WeaponAnimationContext {
     }
 
     /// > 开始逐发换弹镜像会话（带脚本覆盖）：记录起始弹数并确定本次目标循环数。
-    /// > <p>
-    /// > {@code targetLoopsOverride >= 0} 时直接采用（脚本编排换弹路径由共享脚本给定，见 {@code reloadShellLoops}）；
-    /// > 否则回退按 {@code shell_by_shell} 数据规则预测（标准逐发枪不受影响）。
     /// >
-    /// > @param targetLoopsOverride 脚本给定的目标循环数；&lt; 0 表示无覆盖、走数据推导
+    /// > `targetLoopsOverride >= 0` 时直接采用（脚本编排换弹路径由共享脚本给定，见 `reloadShellLoops`）；
+    /// > 否则回退按 `shell_by_shell` 数据规则预测（标准逐发枪不受影响）。
+    /// >
+    /// > @param targetLoopsOverride 脚本给定的目标循环数；< 0 表示无覆盖、走数据推导
     public void beginShellReload(int targetLoopsOverride) {
         shellReloadStartAmmoCount = currentAmmoCount();
         shellReloadTargetLoops = targetLoopsOverride >= 0

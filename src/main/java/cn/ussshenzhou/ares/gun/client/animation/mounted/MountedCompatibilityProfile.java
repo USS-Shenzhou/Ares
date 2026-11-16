@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName;
 import net.minecraft.resources.Identifier;
 
 /// > 下挂组合配置（per-combo）：描述某把主枪 display 安装某个下挂时的 host overlay。
-/// > <p>
-/// > 持枪姿态必须由作者显式声明（{@link #grip}）才会启用 host overlay；operation / transitions / grip_blend
+/// >
+/// > 持枪姿态必须由作者显式声明（[#grip]）才会启用 host overlay；operation / transitions / grip_blend
 /// > 也在同一个 combo 文件中声明，避免 profile 与 overlay 模板之间来回跳转。
 /// @author TACZ, USS_Shenzhou
 public class MountedCompatibilityProfile {

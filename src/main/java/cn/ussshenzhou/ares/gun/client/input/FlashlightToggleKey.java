@@ -12,10 +12,10 @@ import net.neoforged.neoforge.client.settings.KeyModifier;
 import net.neoforged.bus.api.SubscribeEvent;
 
 /// > 枪灯（手电）开关按键。
-/// > <p>
+/// >
 /// > 按下时翻转主手枪上全部「当前生效形态声明了枪灯效果」的可开关配件（含枪自带枪灯），
 /// > 状态持久化于配件/枪自身 NBT（服务端权威 + 客户端乐观预判）。渲染判据直接读 NBT，
-/// > 不再有全局布尔状态。详见 {@link EffectToggleInput}。
+/// > 不再有全局布尔状态。详见 [EffectToggleInput]。
 /// @author TACZ, USS_Shenzhou
 @EventBusSubscriber(modid = Ares.MOD_ID, value = Dist.CLIENT)
 public class FlashlightToggleKey {

@@ -25,11 +25,11 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 
 /// > 多层配件树的安装/卸载工具（双端共用纯逻辑，服务端权威）。
-/// > <p>
+/// >
 /// > 关键点：子配件嵌在父配件的 NBT 中，深层写入必须「自底向上回写」——
 /// > 修改末端 holder 的 NBT 后，逐层 setAttachment 回写到上一层，直到顶层枪械。
-/// > 读取一律走 {@link IAttachmentHolder#getStoredAttachment}（NBT 直读），
-/// > 避免触发 {@link GunPropertiesCaches} 的只读快照缓存。
+/// > 读取一律走 [IAttachmentHolder#getStoredAttachment]（NBT 直读），
+/// > 避免触发 [GunPropertiesCaches] 的只读快照缓存。
 /// @author TACZ, USS_Shenzhou
 public class AttachmentTreeHelper {
     /// > 链条上的一层：holder 物品堆 + 在其父层用于回写的槽位。
@@ -40,8 +40,11 @@ public class AttachmentTreeHelper {
     /// > 在多层树的指定路径末端槽位安装一个配件。
     /// >
     /// > @param gun          顶层枪械物品堆（将被原地修改 NBT）
+    /// >
     /// > @param path         目标槽位路径（末端为要安装的槽位）
+    /// >
     /// > @param attachmentId 配件的注册 id
+    /// >
     /// > @return 是否安装成功
     public static boolean install(ItemStack gun, AttachmentPath path, Identifier attachmentId) {
         if (gun.isEmpty() || path.isEmpty()) {
@@ -96,12 +99,15 @@ public class AttachmentTreeHelper {
     }
 
     /// > 微调多层树指定路径末端槽位上配件的导轨偏移（服务端权威）。
-    /// > <p>
+    /// >
     /// > 偏移写入配件自身 NBT；若该槽位当前是虚拟默认（内置）件，会先实体化进 NBT 再写偏移。
     /// >
     /// > @param gun    顶层枪械物品堆（将被原地修改 NBT）
+    /// >
     /// > @param path   目标槽位路径（末端为要微调的槽位）
+    /// >
     /// > @param offset 沿导轨方向的偏移标量
+    /// >
     /// > @return 是否微调成功
     public static boolean adjust(ItemStack gun, AttachmentPath path, float offset) {
         if (gun.isEmpty() || path.isEmpty()) {
@@ -146,14 +152,17 @@ public class AttachmentTreeHelper {
     }
 
     /// > 把一个修改后的配件物品堆写回多层树指定路径末端槽位，并自底向上回写到顶层枪械（服务端权威）。
-    /// > <p>
-    /// > 与 {@link #install} 不同：此处不做安装校验（类型/高度/allow list），仅做「原位替换 + 回写」，
+    /// >
+    /// > 与 [#install] 不同：此处不做安装校验（类型/高度/allow list），仅做「原位替换 + 回写」，
     /// > 用于玩法层把对子配件（如下挂武器）的弹药/上膛等运行时修改落地到宿主 NBT。
-    /// > 调用方需保证 {@code mutated} 与该槽位原有配件同源（仅 NBT 状态变化）。
+    /// > 调用方需保证 `mutated` 与该槽位原有配件同源（仅 NBT 状态变化）。
     /// >
     /// > @param gun     顶层枪械物品堆（将被原地修改 NBT）
+    /// >
     /// > @param path    目标槽位路径（末端为承载该配件的槽位）
+    /// >
     /// > @param mutated 修改后的配件物品堆
+    /// >
     /// > @return 是否成功
     public static boolean writeAttachmentBack(ItemStack gun, AttachmentPath path, ItemStack mutated) {
         if (gun.isEmpty() || path.isEmpty() || mutated == null || mutated.isEmpty()) {
@@ -226,12 +235,15 @@ public class AttachmentTreeHelper {
     }
 
     /// > 设置（或清除）多层树指定路径末端槽位上配件的变体（服务端权威）。
-    /// > <p>
+    /// >
     /// > 变体写入该配件自身 NBT；variantId 为空表示恢复基础几何。
     /// >
     /// > @param gun       顶层枪械物品堆（将被原地修改 NBT）
+    /// >
     /// > @param path      目标槽位路径（末端槽位上的配件被设置变体）
+    /// >
     /// > @param variantId 变体 index id；为空表示清除变体
+    /// >
     /// > @return 是否成功
     public static boolean setVariant(ItemStack gun, AttachmentPath path, @Nullable Identifier variantId) {
         if (gun.isEmpty() || path.isEmpty()) {
@@ -278,14 +290,17 @@ public class AttachmentTreeHelper {
     }
 
     /// > 设置多层树指定路径末端槽位上配件的开关状态（服务端权威）。
-    /// > <p>
+    /// >
     /// > 开关仅对「当前生效形态声明了 toggle」的配件有效；切换为关闭态时校验关态数据
     /// > （当前形态的 off_data，缺失沿用形态自身数据）的子槽位仍能容纳当前已安装的子配件，
     /// > 否则拒绝切换并保持原状态，避免关态结构变化导致子配件 NBT 成孤儿。
     /// >
     /// > @param gun     顶层枪械物品堆（将被原地修改 NBT）
+    /// >
     /// > @param path    目标槽位路径（末端槽位上的配件被切换）
+    /// >
     /// > @param enabled 目标开关状态
+    /// >
     /// > @return 是否成功
     public static boolean setToggle(ItemStack gun, AttachmentPath path, boolean enabled) {
         if (gun.isEmpty() || path.isEmpty()) {
@@ -367,13 +382,15 @@ public class AttachmentTreeHelper {
         return index.getOffData();
     }
 
-    /// > 遍历整棵配件树（深度受 {@link IAttachmentHolder#MAX_ATTACHMENT_DEPTH} 约束），
+    /// > 遍历整棵配件树（深度受 [IAttachmentHolder#MAX_ATTACHMENT_DEPTH] 约束），
     /// > 收集「当前生效形态声明了指定效果开关」的配件（双端共用）。
-    /// > <p>
+    /// >
     /// > 按键翻转为同一组目标各取反一次；改装界面/渲染判据也可基于本遍历。
     /// >
     /// > @param gun     顶层枪械物品堆
+    /// >
     /// > @param effect  目标效果（laser / flashlight）
+    /// >
     /// > @param consumer 回调（末端槽位路径, 配件物品堆）
     public static void forEachEffectToggleable(ItemStack gun, String effect,
                                                BiConsumer<AttachmentPath, ItemStack> consumer) {
@@ -403,14 +420,18 @@ public class AttachmentTreeHelper {
     }
 
     /// > 写入（或清除）多层树指定路径末端槽位上瞄具的倍率状态（服务端权威）。
-    /// > <p>
-    /// > 倍率写入该配件自身 NBT（{@link ZoomHelper}）：档位索引 + 无级进度（0~1，范围外 = 清除）。
-    /// > 档位数服务端不可知，越界由客户端消费端 {@code % length} 兜底。
+    /// >
+    /// > 倍率写入该配件自身 NBT（[ZoomHelper]）：档位索引 + 无级进度（0~1，范围外 = 清除）。
+    /// > 档位数服务端不可知，越界由客户端消费端 `% length` 兜底。
     /// >
     /// > @param gun         顶层枪械物品堆（将被原地修改 NBT）
+    /// >
     /// > @param path        目标槽位路径（末端槽位上的瞄具被写入）
-    /// > @param zoomIndex   有级档位索引（&gt;= 0）
+    /// >
+    /// > @param zoomIndex   有级档位索引（>= 0）
+    /// >
     /// > @param zoomProgress 无级进度（0~1 生效；其余清除无级进度）
+    /// >
     /// > @return 是否成功
     public static boolean setZoom(ItemStack gun, AttachmentPath path, int zoomIndex, float zoomProgress) {
         if (gun.isEmpty() || path.isEmpty() || zoomIndex < 0) {
@@ -452,15 +473,18 @@ public class AttachmentTreeHelper {
     }
 
     /// > 设置（或清除）多层树指定路径末端槽位上的适配器（服务端权威）。
-    /// > <p>
+    /// >
     /// > 适配器选择写入该槽位所属 holder 的 NBT，独立于该槽是否装有子配件（空槽也可设）。
-    /// > <p>
+    /// >
     /// > 冲突检测：若该槽已装有配件，且应用新适配器后的有效 allow list 不再兼容已装配件类型，则拒绝
     /// > （要求玩家先卸下配件）。
     /// >
     /// > @param gun       顶层枪械物品堆（将被原地修改 NBT）
+    /// >
     /// > @param path      目标槽位路径（末端为要设置适配器的槽位）
+    /// >
     /// > @param adapterId 适配器 index id；为空表示清除适配器
+    /// >
     /// > @return 是否成功
     public static boolean setSlotAdapter(ItemStack gun, AttachmentPath path, @Nullable Identifier adapterId) {
         if (gun.isEmpty() || path.isEmpty()) {
@@ -516,8 +540,8 @@ public class AttachmentTreeHelper {
     }
 
     /// > 解析从枪到目标父 holder 的链条。
-    /// > <p>
-    /// > 路径 {@code [a, b, c]} 表示：枪的 a 槽 → 配件的 b 槽 → 配件的 c 槽。
+    /// >
+    /// > 路径 `[a, b, c]` 表示：枪的 a 槽 → 配件的 b 槽 → 配件的 c 槽。
     /// > 末端槽位 c 是「目标槽位」，其父 holder 是「枪.a → 配件.b」所定位的那个配件。
     /// > 因此链条包含：枪（顶层）、枪.a 上的配件、(枪.a).b 上的配件……直到 path 倒数第二段所定位的 holder。
     /// >
@@ -578,8 +602,8 @@ public class AttachmentTreeHelper {
     }
 
     /// > 沿路径解析出目标 holder 物品堆（只读，供界面/查询使用）。
-    /// > <p>
-    /// > 与 {@link #resolveChain} 不同，这里把整条路径都视为「进入」，返回路径末端槽位上的那个 holder。
+    /// >
+    /// > 与 [#resolveChain] 不同，这里把整条路径都视为「进入」，返回路径末端槽位上的那个 holder。
     /// > 空路径返回枪本身。路径非法或中途为空返回 null。
     @Nullable
     public static ItemStack resolveHolderStack(ItemStack gun, AttachmentPath path) {
@@ -603,9 +627,9 @@ public class AttachmentTreeHelper {
     }
 
     /// > 根据注册 id 构建一个配件物品堆（带 CustomItemId）。
-    /// > <p>
+    /// >
     /// > 优先按普通配件解析；若不存在则尝试按下挂武器（under_barrel）解析。
-    /// > <p>
+    /// >
     /// > 注意：仅做 createStack + setCustomId，不读取属性缓存，可安全用于虚拟默认件的惰性构建。
     @Nullable
     public static ItemStack buildAttachment(Identifier attachmentId) {

@@ -19,7 +19,7 @@ public class FireModeHelper {
     }
 
     /// > 写入开火模式索引。开火模式是属性修饰来源之一，写入方负责让属性缓存失效
-    /// > （契约见 {@link GunPropertiesCaches}）。
+    /// > （契约见 [GunPropertiesCaches]）。
     public static void setFireModeIndex(ItemStack gun, int index) {
         if (gun.isEmpty()) {
             return;
@@ -59,7 +59,7 @@ public class FireModeHelper {
     }
 
     /// > 当前触发方式是否需要「松手发射」（非 instant，即 charge / delayed / 脚本 trigger）。
-    /// > 用于客户端按键：需要松手发射时在扳机 falling-edge 调 {@code op.fireRelease(hand)}。
+    /// > 用于客户端按键：需要松手发射时在扳机 falling-edge 调 `op.fireRelease(hand)`。
     /// > 找不到模式数据时默认返回 false（即时触发，无需松手发射）。
     public static boolean currentTriggerNeedsRelease(ItemStack gun) {
         if (gun.isEmpty()) {

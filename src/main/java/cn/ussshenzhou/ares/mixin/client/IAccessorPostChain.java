@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import java.util.List;
 
-/// > 暴露原版 {@link PostChain} 的私有 {@code passes} 列表，供枪口火光后处理在每帧动态注入 uniform。
+/// > 暴露原版 [PostChain] 的私有 `passes` 列表，供枪口火光后处理在每帧动态注入 uniform。
 /// @author TACZ, USS_Shenzhou
 @Mixin(PostChain.class)
 public interface IAccessorPostChain {

@@ -9,16 +9,15 @@ import cn.ussshenzhou.ares.gun.gameplay.timeline.StepSequence;
 import cn.ussshenzhou.ares.gun.gameplay.timeline.Timer;
 import javax.annotation.Nullable;
 
-/// > 换弹片段：投影 {@link GunHolderState#RELOADING} 并收紧门禁。
-/// > <p>
-/// > 本片段是<b>纯计时机构，零副作用</b>：
-/// > <ul>
-/// >   <li>服务端：用 {@link StepSequence} 驱动编排层注入的 Step 任务链（intro/loop/end 或单段弹匣），
-/// >       相位时长与副作用全在 Step 里，片段只推进计时与流转。打断（{@link #cancel()}）硬停序列，
-/// >       已产生的副作用保留、未到点的不触发。</li>
-/// >   <li>客户端：纯 {@link Timer} ms 倒计时（表现），无副作用。</li>
-/// > </ul>
-/// > 打断策略由 {@link ReloadPolicy}（数据推导）提供，不再依赖有状态的 behavior 实例。
+/// > 换弹片段：投影 [GunHolderState#RELOADING] 并收紧门禁。
+/// >
+/// > 本片段是**纯计时机构，零副作用**：
+/// > - 服务端：用 [StepSequence] 驱动编排层注入的 Step 任务链（intro/loop/end 或单段弹匣），
+/// >   相位时长与副作用全在 Step 里，片段只推进计时与流转。打断（[#cancel()]）硬停序列，
+/// >   已产生的副作用保留、未到点的不触发。
+/// > - 客户端：纯 [Timer] ms 倒计时（表现），无副作用。
+/// >
+/// > 打断策略由 [ReloadPolicy]（数据推导）提供，不再依赖有状态的 behavior 实例。
 /// @author TACZ, USS_Shenzhou
 public class ReloadSegment extends ActionSegment {
 
@@ -32,12 +31,10 @@ public class ReloadSegment extends ActionSegment {
     @Nullable
     private final Timer timer;
     private final ReloadPolicy policy;
-    /// > 序列 / 倒计时自然结束时触发的完成回调（可为 null）。<b>仅自然结束触发，{@link #cancel()} 打断不触发。</b>
-    /// > <ul>
-    /// >   <li>服务端：脚本编排路径在链跑完后统一触发 {@code ON_RELOAD_COMPLETE} 钩子与完成事件（响应层接力）。</li>
-    /// >   <li>客户端：换弹完成后接续表现编排（如起自愈拉栓屏蔽锁 {@code AutoChamberRequestSegment}，
-    /// >       避免服务端补膛尚未同步回来时被 {@code tryAutoChamber} 立即多补一次拉栓）。</li>
-    /// > </ul>
+    /// > 序列 / 倒计时自然结束时触发的完成回调（可为 null）。**仅自然结束触发，[#cancel()] 打断不触发。**
+    /// > - 服务端：脚本编排路径在链跑完后统一触发 `ON_RELOAD_COMPLETE` 钩子与完成事件（响应层接力）。
+    /// > - 客户端：换弹完成后接续表现编排（如起自愈拉栓屏蔽锁 `AutoChamberRequestSegment`，
+    /// >   避免服务端补膛尚未同步回来时被 `tryAutoChamber` 立即多补一次拉栓）。
     @Nullable
     private final Runnable onComplete;
 
@@ -55,7 +52,7 @@ public class ReloadSegment extends ActionSegment {
     }
 
     /// > 服务端换弹片段（带完成回调）：用 StepSequence 驱动注入的 Step 任务链，序列自然结束时触发
-    /// > {@code onComplete}（打断不触发）。脚本编排路径用它接力响应层（完成钩子 / 事件）。
+    /// > `onComplete`（打断不触发）。脚本编排路径用它接力响应层（完成钩子 / 事件）。
     public static ReloadSegment server(StepSequence.Step initialStep, ReloadPolicy policy,
                                        @Nullable Runnable onComplete) {
         StepSequence sequence = new StepSequence();
@@ -68,8 +65,8 @@ public class ReloadSegment extends ActionSegment {
         return client(durationMs, policy, null);
     }
 
-    /// > 客户端换弹片段（带完成回调）：纯 ms 倒计时表现，倒计时自然结束时触发 {@code onComplete}
-    /// > （{@link #cancel()} 打断不触发）。供客户端在换弹完成后接续表现编排（如起自愈拉栓屏蔽锁）。
+    /// > 客户端换弹片段（带完成回调）：纯 ms 倒计时表现，倒计时自然结束时触发 `onComplete`
+    /// > （[#cancel()] 打断不触发）。供客户端在换弹完成后接续表现编排（如起自愈拉栓屏蔽锁）。
     public static ReloadSegment client(long durationMs, ReloadPolicy policy, @Nullable Runnable onComplete) {
         Timer timer = new Timer();
         timer.start(Math.max(durationMs, 1));

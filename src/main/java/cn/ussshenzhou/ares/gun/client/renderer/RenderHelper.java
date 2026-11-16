@@ -6,8 +6,8 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 
 /// > 模板缓冲（stencil）开关工具。
-/// > <p>
-/// > 不考虑 OptiFine 兼容：Forge 的 {@link net.minecraft.client.renderer.RenderTarget#enableStencil()}
+/// >
+/// > 不考虑 OptiFine 兼容：Forge 的 [net.minecraft.client.renderer.RenderTarget#enableStencil()]
 /// > 是公开 API，可让主 framebuffer 申请 8 位 stencil 附件，无需 mixin。
 /// @author TACZ, USS_Shenzhou
 public class RenderHelper {

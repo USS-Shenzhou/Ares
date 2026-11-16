@@ -133,8 +133,8 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
 
     /// > 解析本次渲染应使用的 display。第一人称下取对应手活跃动画实例的「生效 display」
     /// > （双持时为按手单手变体，模型骨架与该实例 pose 一致）；否则回退按物品取的本体 display。
-    /// > <p>
-    /// > 这保证渲染所用的 {@link BedrockGunModel} 与动画实例 pose 的目标模型是同一对象，
+    /// >
+    /// > 这保证渲染所用的 [BedrockGunModel] 与动画实例 pose 的目标模型是同一对象，
     /// > 避免双持时主/副手套用了错误骨架（双手模型 vs 单手模型）。
     @Nullable
     private GunDisplayInstance resolveRenderDisplay(ItemStack stack, ItemDisplayContext ctx) {
@@ -273,7 +273,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
 
     /* FIXME rendering
     /// > 渲染枪械模型（v2 instance），应用动画 pose 并完成几何 + 手臂渲染。
-    /// > <p>
+    /// >
     /// > 若装有需要模板缓冲渲染的瞄具，会在枪体之前先渲染瞄具并写入 stencil，
     /// > 随后据此剔除「镜片内」区域的枪体几何（仅长筒镜 / 组合镜需要剔除）。
     @Override
@@ -340,7 +340,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
 
     /* FIXME rendering
     /// > 结束镜内剔除：在配件渲染完成后强制 flush 并关闭 / 清空 stencil。
-    /// > 与 {@link #renderModel} 中开启的 stencil 测试配对，调用方需保证 stencil 测试仍生效。
+    /// > 与 [#renderModel] 中开启的 stencil 测试配对，调用方需保证 stencil 测试仍生效。
     private void finishStencilCulling(MultiBufferSource bufferSource) {
         if (!gunStencilCulling) {
             return;
@@ -362,7 +362,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /// > 顺序 = 槽位声明顺序（LinkedHashMap）。收集直接安装在枪械槽位上的全部匹配瞄具
     /// > （不含套件子配件），全部通过统一的单 stencil 会话编排渲染：sight 的分划板 / 镜面内容
     /// > 恒常驻（无开镜之分）；完整的模板圆仅作用于当前激活（主视角）的 scope，其余 scope 视为
-    /// > 非瞄准状态（见 {@link ScopeStencilRenderer}）。
+    /// > 非瞄准状态（见 [ScopeStencilRenderer]）。
     /// >
     /// > @param bindMounts 瞄准定位使用静态挂点，避免视点取逆与动画约束重复抵消枪体动画；实体渲染使用动态挂点。
     private List<ScopeStencilRenderer.Scope> collectAllStencilScopes(ItemStack stack, BedrockGunModel model,
@@ -448,12 +448,12 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /// > 配件的有效渲染数据：考虑配件变体（replace 模式换整模型）后的最终模型与贴图，
     /// > 以及变体声明的 overlay 叠加模型 / 下游挂点偏移。
     /// >
-    /// > @param model         用于渲染本配件几何的模型（replace 变体则为变体模型）
-    /// > @param texture       对应贴图
-    /// > @param baseDisplay   基础配件 display（子槽位 / scope_view 等结构以此为准）
-    /// > @param overlayModel  变体 overlay 模式下要额外叠加渲染的模型；无则 null
-    /// > @param overlayTexture overlay 模型贴图；无则 null
-    /// > @param overlayBone   overlay 模型挂载到 model 的骨骼名；无则 null
+    /// > @param model         用于渲染本配件几何的模型（replace 变体则为变体模型）\
+    /// > @param texture       对应贴图\
+    /// > @param baseDisplay   基础配件 display（子槽位 / scope_view 等结构以此为准）\
+    /// > @param overlayModel  变体 overlay 模式下要额外叠加渲染的模型；无则 null\
+    /// > @param overlayTexture overlay 模型贴图；无则 null\
+    /// > @param overlayBone   overlay 模型挂载到 model 的骨骼名；无则 null\
     /// > @param mountOffset   变体对下游（子挂点 / 瞄准视点）施加的额外平移；无则 null
     private record AttachmentRenderData(BedrockAttachmentModel model, Identifier texture,
                                         AttachmentDisplayInstance baseDisplay,
@@ -630,7 +630,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     */
 
     /* FIXME rendering
-    /// > 收集第一人称 active 枪灯（受配件/枪开关状态门控），写入 {@link FirstPersonPoseCache}
+    /// > 收集第一人称 active 枪灯（受配件/枪开关状态门控），写入 [FirstPersonPoseCache]
     /// > 供 AFTER_LEVEL 阶段的手电后处理使用。优先枪自身配置，其次配件树中第一个 active 枪灯；
     /// > 屏幕后处理单灯合成，多灯只取第一个。
     private void collectFirstPersonFlashlightViews(PoseStack poseStack, BedrockGunModel model, ItemStack gunStack,
@@ -724,13 +724,12 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
 
     /* FIXME rendering
     /// > 收集第一人称镭射指示器（受配件/枪开关状态门控）的视图几何。
-    /// > 能量束（开火激光）由 {@link #collectFirstPersonLaserBeams} 单独收集，不受镭射开关门控。
-    /// > <p>
+    /// > 能量束（开火激光）由 [#collectFirstPersonLaserBeams] 单独收集，不受镭射开关门控。
+    /// >
     /// > 镭射 provider 变换链：
-    /// > <ul>
-    /// >   <li>配件镭射：{@code poseStack × gunSlotMount × attachmentLaserBone}</li>
-    /// >   <li>枪自身镭射：{@code poseStack × gunLaserBone}</li>
-    /// > </ul>
+    /// > - 配件镭射：`poseStack × gunSlotMount × attachmentLaserBone`
+    /// > - 枪自身镭射：`poseStack × gunLaserBone`
+    /// >
     /// > 这样镭射与当前帧 bob/sway/动画完全共用同一套矩阵，不再经过 LevelStage 缓存链路。
     private void collectFirstPersonLaserViews(PoseStack poseStack, BedrockGunModel model, ItemStack gunStack,
                                               GunDisplayInstance displayInstance, InteractionHand hand,
@@ -778,11 +777,11 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
         }
     }
 
-    /// > 递归收集单个配件节点及其子配件中的镭射源（与 {@link #renderAttachmentNode} 的挂点链一致）。
+    /// > 递归收集单个配件节点及其子配件中的镭射源（与 [#renderAttachmentNode] 的挂点链一致）。
     /// >
-    /// > @param viewBase       枪模型视图变换（poseStack.last().pose()）
-    /// > @param mountTransform 该节点在其宿主坐标系下的挂点变换（含导轨偏移/变体抬高）
-    /// > @param attachment     当前配件物品堆
+    /// > @param viewBase       枪模型视图变换（poseStack.last().pose()）\
+    /// > @param mountTransform 该节点在其宿主坐标系下的挂点变换（含导轨偏移/变体抬高）\
+    /// > @param attachment     当前配件物品堆\
     /// > @param remaining      剩余可递归深度，兜底防止异常数据导致无限递归
     private void collectLaserNode(Matrix4f viewBase, Matrix4f mountTransform, ItemStack attachment, LocalPlayer player,
                                   List<LaserDrawEntry> out, int remaining) {
@@ -830,7 +829,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     */
 
     /* FIXME rendering
-    /// > 按枪口循环收集第一人称能量束视图（主枪 / 下挂由 {@code underBarrel} 区分来源）。
+    /// > 按枪口循环收集第一人称能量束视图（主枪 / 下挂由 `underBarrel` 区分来源）。
     private void collectFirstPersonLaserBeams(PoseStack poseStack, BedrockGunModel model, GunDisplayInstance display,
                                               InteractionHand hand, boolean underBarrel, List<LaserDrawEntry> out) {
         for (int muzzleIndex = 0; muzzleIndex < display.getMuzzleBones().size(); muzzleIndex++) {
@@ -854,9 +853,9 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
 
     /* FIXME rendering
     /// > 收集第一人称能量束视图：本机玩家持枪时若该手有活跃束流，用当前帧枪口骨骼视图变换取起点、
-    /// > 服务端权威命中点为终点（与枪体 bob/sway/动画同步）。起点骨骼取 {@code muzzle_flash}
+    /// > 服务端权威命中点为终点（与枪体 bob/sway/动画同步）。起点骨骼取 `muzzle_flash`
     /// > （与曳光弹/枪口粒子同源）。按当前渲染手取对应束流，双持时主副手各画各的；
-    /// > 其他玩家/第三人称由 {@code LaserBeamHandler} 走世界空间路径。
+    /// > 其他玩家/第三人称由 `LaserBeamHandler` 走世界空间路径。
     private void collectFirstPersonLaserBeam(PoseStack poseStack, BedrockGunModel model, GunDisplayInstance display,
                                              InteractionHand hand, MuzzleReference source, List<LaserDrawEntry> out) {
         LocalPlayer player = Minecraft.getInstance().player;
@@ -910,10 +909,10 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     */
 
     /* FIXME rendering
-    /// > 由 {@code FirstPersonRenderHandler} 在渲染物品前调用。此时 poseStack 尚未叠加
+    /// > 由 `FirstPersonRenderHandler` 在渲染物品前调用。此时 poseStack 尚未叠加
     /// > 第一人称定位变换，仅作为「渲染粒子时的基准坐标系」捕获下来（粒子渲染也使用同一基准）。
-    /// > <p>
-    /// > 真正的 emitter 创建与枪口绑定延迟到 {@link #afterRender} 完成——那里 poseStack 已含完整
+    /// >
+    /// > 真正的 emitter 创建与枪口绑定延迟到 [#afterRender] 完成——那里 poseStack 已含完整
     /// > 定位变换，可取到枪口骨骼的真实视图矩阵。
     @Override
     public void updateParticleEmitterTransforms(FirstPersonParticleSystem system, PoseStack poseStack, InteractionHand hand) {
@@ -931,7 +930,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
 
     /* FIXME rendering
     /// > 立即渲染指定手的活跃粒子，模板测试仍生效（调用方必须保证处于 stencil 开启区间）。
-    /// > 渲染基准取 {@link #updateParticleEmitterTransforms} 捕获的 base pose——emitterTransform
+    /// > 渲染基准取 [#updateParticleEmitterTransforms] 捕获的 base pose——emitterTransform
     /// > 是相对该基准的变换，直接使用已叠加定位的 poseStack 会双重变换导致粒子错位。
     private void renderParticlesInStencilWindow(InteractionHand hand, MultiBufferSource bufferSource,
                                                 int light, float partialTicks) {
@@ -946,12 +945,12 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     */
 
     /* FIXME rendering
-    /// > 生成并绑定动画 {@code particle_effects} 关键帧触发的枪口粒子（火光/枪烟）。
-    /// > <p>
-    /// > 坐标空间换算：渲染粒子时 {@code BillboardHelper} 用 {@code 基准pose × emitterTransform}，
-    /// > 而枪口在视图中的真实矩阵为 {@code poseStack(已定位) × 骨骼矩阵}。令二者相等可得
-    /// > {@code emitterTransform = 基准pose⁻¹ × poseStack × 骨骼矩阵}；世界对齐变换用于脱离枪口
-    /// > 飘散的粒子（如枪烟），为 {@code 相机旋转⁻¹ × poseStack × 骨骼矩阵}。
+    /// > 生成并绑定动画 `particle_effects` 关键帧触发的枪口粒子（火光/枪烟）。
+    /// >
+    /// > 坐标空间换算：渲染粒子时 `BillboardHelper` 用 `基准pose × emitterTransform`，
+    /// > 而枪口在视图中的真实矩阵为 `poseStack(已定位) × 骨骼矩阵`。令二者相等可得
+    /// > `emitterTransform = 基准pose⁻¹ × poseStack × 骨骼矩阵`；世界对齐变换用于脱离枪口
+    /// > 飘散的粒子（如枪烟），为 `相机旋转⁻¹ × poseStack × 骨骼矩阵`。
     private void spawnAndBindMuzzleParticles(PoseStack poseStack, BedrockGunModel model, ItemStack stack, InteractionHand hand) {
         if (!HAS_CAPTURED_RENDER_POSE.contains(hand)) {
             return;
@@ -1017,11 +1016,11 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     */
 
     /* FIXME rendering
-    /// > 消费动画 {@code shell_eject} 事件生成弹壳，并渲染所有存活弹壳。
-    /// > <p>
-    /// > 坐标基准：此处 {@code poseStack} 已含完整第一人称定位变换，{@code poseStack × 抛壳窗骨骼}即抛壳口
-    /// > 在视图空间的真实变换，作为弹壳的冻结起点矩阵交给 {@link ShellRenderer}。抛壳窗骨骼名约定为
-    /// > {@code shell}（窗 0）/ {@code shell_N}（窗 N），缺失时回退枪口骨骼。
+    /// > 消费动画 `shell_eject` 事件生成弹壳，并渲染所有存活弹壳。
+    /// >
+    /// > 坐标基准：此处 `poseStack` 已含完整第一人称定位变换，`poseStack × 抛壳窗骨骼`即抛壳口
+    /// > 在视图空间的真实变换，作为弹壳的冻结起点矩阵交给 [ShellRenderer]。抛壳窗骨骼名约定为
+    /// > `shell`（窗 0）/ `shell_N`（窗 N），缺失时回退枪口骨骼。
     private void spawnAndRenderShells(PoseStack poseStack, BedrockGunModel model, ItemStack stack,
                                       GunDisplayInstance display, MultiBufferSource bufferSource, int light, InteractionHand hand) {
         GunDisplayInstance.ShellEjectionConfig config = display.getShellEjection();
@@ -1125,9 +1124,9 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /* FIXME rendering
     /// > 递归渲染单个配件节点及其子配件。
     /// >
-    /// > @param mountTransform 该节点在父坐标系下的安装点变换
-    /// > @param remaining      剩余可递归深度，兜底防止异常数据导致无限递归
-    /// > @param gunModel       宿主枪模型（原厂配件的几何/子槽位骨骼寄生于此）
+    /// > @param mountTransform 该节点在父坐标系下的安装点变换\
+    /// > @param remaining      剩余可递归深度，兜底防止异常数据导致无限递归\
+    /// > @param gunModel       宿主枪模型（原厂配件的几何/子槽位骨骼寄生于此）\
     /// > @param gunDisplay     宿主枪 display（原厂配件的子槽位 display 复用此处）
     private void renderAttachmentNode(ItemStack gunStack, Identifier gunDisplayId, ItemStack attachmentStack,
                                       Matrix4f mountTransform, PoseStack poseStack, MultiBufferSource bufferSource,
@@ -1247,12 +1246,12 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
 
     /* FIXME rendering
     /// > 处理某槽位上的适配器：渲染适配器 overlay 小模型，并返回叠加适配器 mount_offset 之后的子配件落点变换。
-    /// > <p>
+    /// >
     /// > 未选适配器、适配器目标无效或 display 缺失时，原样返回 slotTransform。
     /// >
-    /// > @param holderStack   该槽位所属的宿主物品堆（适配器选择存于此）
-    /// > @param slotId        槽位 id
-    /// > @param slotTransform 子配件原始落点变换（已含导轨偏移等）
+    /// > @param holderStack   该槽位所属的宿主物品堆（适配器选择存于此）\
+    /// > @param slotId        槽位 id\
+    /// > @param slotTransform 子配件原始落点变换（已含导轨偏移等）\
     /// > @return 应用适配器偏移后的子配件落点变换
     private Matrix4f applySlotAdapter(ItemStack holderStack, Identifier slotId, Matrix4f slotTransform,
                                       PoseStack poseStack, MultiBufferSource bufferSource, int light) {
@@ -1364,7 +1363,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     }
 
     /// > 「同一持有物」语义：忽略弹药 / 配件等 NBT 变化，仅比较枪械自定义 ID。
-    /// > <p>
+    /// >
     /// > SBM 用此判定是否需要重建渲染实例（重掏）。默认实现只比 Item 类，会把「同格子换成另一把
     /// > 不同 ID 的枪」误判为同一把而不重建（渲染旧枪）；此处按 customId 比较修正。
     @Override
@@ -1413,7 +1412,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
 
     /// > 渲染变体键：当前生效 display 对象本身。双持⇄单持切换会令同一把枪在双手 base 与按手单手
     /// > 变体之间切换，返回的 display 实例随之变化，SBM 据此经统一 put_away→draw 通路重建渲染实例。
-    /// > 与 {@link GunAnimationInstance#effectiveDisplay()} 的解析口径保持一致。
+    /// > 与 [GunAnimationInstance#effectiveDisplay()] 的解析口径保持一致。
     @Override
     @Nullable
     public Object getRenderVariantKey(ItemStack stack, InteractionHand hand) {
@@ -1445,7 +1444,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
         MathUtil.applyMatrixLerp(idleViewMatrix, aimViewMatrix, idleViewMatrix, smoothT);
 
         /// > 改装定位：在「正常定位矩阵」与「改装视角矩阵」之间按开启进度插值。
-        /// > 改装视角矩阵来自模型的 refit_view（总览）或选中槽位的 refit_<slot>_view 骨骼。
+        /// > 改装视角矩阵来自模型的 `refit_view`（总览）或选中槽位的 `refit_<slot>_view` 骨骼。
         float openProgress = RefitTransform.getOpeningProgress();
         if (openProgress > 1.0e-3f) {
             Matrix4f refitTarget = resolveRefitViewMatrix(model, stack);
@@ -1481,10 +1480,10 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
 
     /* FIXME rendering
     /// > 解析当前（含切换过渡）瞄准视点矩阵。
-    /// > <p>
+    /// >
     /// > 本体视位（机瞄 / 战术拒枪）直接取定位组骨骼在动画后的全局变换；瞄具取「静态挂点 × 附件模型
     /// > scope_view」（静态挂点避免视点取逆与动画约束重复抵消枪体动画）。过渡中在旧 / 新视点间插值；
-    /// > 无视图位（缺 display）或取不到矩阵时回退枪模型的 {@code iron_view}。
+    /// > 无视图位（缺 display）或取不到矩阵时回退枪模型的 `iron_view`。
     private Matrix4f resolveAimViewMatrix(BedrockGunModel model, ItemStack stack,
                                           @Nullable GunDisplayInstance display,
                                           LocalGunOperator.AimViewState state) {
@@ -1558,8 +1557,8 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     }
 
     /// > 在正常第一人称定位与改装定位之间直接混合刚体变换。
-    /// > <p>
-    /// > 不复用 {@link MathUtil#applyMatrixLerp}：改装视角中存在大角度骨骼，其欧拉角相对旋转在角度分支处会跳变。
+    /// >
+    /// > 不复用 [MathUtil#applyMatrixLerp]：改装视角中存在大角度骨骼，其欧拉角相对旋转在角度分支处会跳变。
     private static void applyRefitViewMatrix(Matrix4f current, Matrix4f target, float alpha) {
         interpolateRigidMatrix(current, target, current, alpha);
     }
@@ -1577,14 +1576,13 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     }
 
     /// > 解析当前改装视角对应的骨骼全局变换（枪模型空间，bind 静态）。
-    /// > <p>
-    /// > 无聚焦时用 {@code refit_view}（总览）。聚焦某槽位（含嵌套子配件）时：
-    /// > <ul>
-    /// >   <li>骨骼优先：若该槽位所属 holder 的 display 为其声明了 {@code refit_view_group} 骨骼，
-    /// >       取该骨骼在 holder 模型空间的变换，累积父挂点得到枪模型空间视角矩阵。</li>
-    /// >   <li>挂点兜底：否则用该槽位挂点位置，套用顶层段 refit 视角的旋转，合成朝向该部位的视角。</li>
-    /// > </ul>
-    /// > 任意环节失败回退到顶层 refit view，最终回退 {@code refit_view}。
+    /// >
+    /// > 无聚焦时用 `refit_view`（总览）。聚焦某槽位（含嵌套子配件）时：
+    /// > - 骨骼优先：若该槽位所属 holder 的 display 为其声明了 `refit_view_group` 骨骼，
+    /// >   取该骨骼在 holder 模型空间的变换，累积父挂点得到枪模型空间视角矩阵。
+    /// > - 挂点兜底：否则用该槽位挂点位置，套用顶层段 refit 视角的旋转，合成朝向该部位的视角。
+    /// >
+    /// > 任意环节失败回退到顶层 refit view，最终回退 `refit_view`。
     @Nullable
     private static Matrix4f resolveRefitViewMatrix(BedrockGunModel model, ItemStack stack) {
         AttachmentPath focus = RefitTransform.getFocusPath();

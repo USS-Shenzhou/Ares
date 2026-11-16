@@ -17,9 +17,11 @@ import javax.annotation.Nonnull;
 
 import java.util.Map;
 
-/// > 简单数据管理器<br>
+/// > 简单数据管理器
+/// >
 /// > 从资源包/数据包中读取json文件并解析为数据
-/// > @param <T> 数据类型
+/// >
+/// > @param `T` 数据类型
 /// @author TACZ, USS_Shenzhou
 public class JsonDataManager<T> extends SimplePreparableReloadListener<Map<Identifier, JsonElement>> {
     protected Map<Identifier, T> dataMap = Maps.newHashMap();

@@ -18,7 +18,9 @@ import javax.annotation.Nullable;
 /// > 改装界面设置槽位适配器请求（C2S，服务端权威）。
 /// >
 /// > @param slotIndex 枪械所在的背包槽位索引
+/// >
 /// > @param path      目标槽位路径（末端为要设置适配器的槽位）
+/// >
 /// > @param adapterId 适配器 index id；为空表示清除适配器
 /// @author TACZ, USS_Shenzhou
 @NetPacket(modid = Ares.MOD_ID)

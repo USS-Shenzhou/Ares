@@ -29,9 +29,9 @@ import java.util.Map;
 
 /// > 标准武器控制器。主姿态（draw/idle/reload/inspect/holster）由数据驱动的 base 状态机驱动，
 /// > movement 作为叠加层，fire 作为独立 additive 槽位。
-/// > <p>
-/// > 主状态转移、过渡混合、互斥与打断全部下沉到 base 状态机（见 {@code animations/statemachines/<id>/base.json}），
-/// > controller 只负责把玩法事件转换为状态机信号（request / fire pulse），并向 {@link WeaponAnimationContext}
+/// >
+/// > 主状态转移、过渡混合、互斥与打断全部下沉到 base 状态机（见 `animations/statemachines/<id>/base.json`），
+/// > controller 只负责把玩法事件转换为状态机信号（request / fire pulse），并向 [WeaponAnimationContext]
 /// > 同步 gameplay 状态供状态机过渡条件查询。
 /// @author TACZ, USS_Shenzhou
 // FIXME REVIEW renamed from TACZ StandardWeaponController, because StandardWeaponControllerDefinition now takes the name
@@ -82,7 +82,7 @@ public class StandardWeaponControllerRuntime implements WeaponAnimationControlle
         reload(empty, gameplayTicks, -1);
     }
 
-    /// > @param shellLoopsOverride 脚本编排换弹给定的目标逐发循环数；&lt; 0 表示无覆盖（走数据推导）。
+    /// > @param shellLoopsOverride 脚本编排换弹给定的目标逐发循环数；< 0 表示无覆盖（走数据推导）。
     public void reload(boolean empty, int gameplayTicks, int shellLoopsOverride) {
         String request = empty ? "reload_empty" : "reload_tactical";
         context.setReloadExpectedSeconds(gameplayTicks > 0 ? gameplayTicks / 20.0f : 0.0f);
@@ -137,8 +137,8 @@ public class StandardWeaponControllerRuntime implements WeaponAnimationControlle
         clearHostOverlayOperation(actionName);
     }
 
-    /// > 操作差量归零（动作结束回 idle 持枪）。仅当当前 operation 仍是 {@code actionName} 时才清除，
-    /// > 避免多动作竞态下误打断后续动作。{@code actionName} 为空时无条件清除。
+    /// > 操作差量归零（动作结束回 idle 持枪）。仅当当前 operation 仍是 `actionName` 时才清除，
+    /// > 避免多动作竞态下误打断后续动作。`actionName` 为空时无条件清除。
     public void clearHostOverlayOperation(String actionName) {
         if (hostOverlay != null) {
             hostOverlay.clearOperation(actionName);
@@ -250,7 +250,7 @@ public class StandardWeaponControllerRuntime implements WeaponAnimationControlle
 
     /// > 持枪姿态层注入（movement 之前）。grip 统一走 additive 增量缩放（layered 路线已弃用）：
     /// > 持枪姿态按过渡权重从「零增量」插到满额，weight=0 时不影响 host。
-    /// > <p>
+    /// >
     /// > 门控：下挂模式生效；切回主枪的过渡尚未结束时也需继续叠加（权重 1→0 淡出），故 isModeSwitching 时同样生效。
     private Pose applyGripOverlay(Pose basePose) {
         if (hostOverlay == null || context == null) {

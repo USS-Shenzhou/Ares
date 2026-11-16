@@ -17,18 +17,18 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
-/// > 服务端换弹的副作用任务链（{@link StepSequence.Step} 实现）。
-/// > <p>
-/// > 编排层（{@link ServerHandGunSession}）据 {@link GunData}
-/// > 构建初始 Step，交给 {@link cn.ussshenzhou.ares.gun.gameplay.timeline.segment.ReloadSegment} 用
-/// > {@link StepSequence} 驱动。时间线只负责计时与流转；本类承载全部权威副作用：
-/// > 扣背包、写 AmmoCount/AmmoId、空仓自带补膛、{@code ON_RELOAD_COMPLETE} 钩子与
-/// > {@link GunReloadEvent.Complete} 事件。
-/// > <p>
-/// > 收编原 {@code MagazineReloadBehavior} / {@code ShellByShellReloadBehavior} 的副作用部分；
+/// > 服务端换弹的副作用任务链（[StepSequence.Step] 实现）。
+/// >
+/// > 编排层（[ServerHandGunSession]）据 [GunData]
+/// > 构建初始 Step，交给 [cn.ussshenzhou.ares.gun.gameplay.timeline.segment.ReloadSegment] 用
+/// > [StepSequence] 驱动。时间线只负责计时与流转；本类承载全部权威副作用：
+/// > 扣背包、写 AmmoCount/AmmoId、空仓自带补膛、`ON_RELOAD_COMPLETE` 钩子与
+/// > [GunReloadEvent.Complete] 事件。
+/// >
+/// > 收编原 `MagazineReloadBehavior` / `ShellByShellReloadBehavior` 的副作用部分；
 /// > 相位流转改由 Step 链表达，计时交给时间线。
-/// > <p>
-/// > 目标物品以<b>实时活引用</b>（{@link Supplier}）持有而非构造时捕获实例：服务端物品实例可能被
+/// >
+/// > 目标物品以**实时活引用**（[Supplier]）持有而非构造时捕获实例：服务端物品实例可能被
 /// > 强同步边界重建（会话静默重绑、换弹续跑），每步读写必须落到当前实例上，避免写进已不在背包的旧实例。
 /// @author TACZ, USS_Shenzhou
 // FIXME REVIEW hooks and Forge events are removed.

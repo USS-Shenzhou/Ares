@@ -36,50 +36,49 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /// > 普通配件模型（v2）。配件本身无动画，仅静态渲染。
-/// > <p>
+/// >
 /// > 瞄具（scope / sight）走模板缓冲（stencil）渲染：先把目镜区域写入 stencil，
 /// > 再据此渲染镜身遮罩、分划板与镜内可视圆形区域，并在枪体渲染时排除镜片内区域，
 /// > 实现「透过瞄具看到的画面里不显示枪体几何」的效果。
-/// > <p>
+/// >
 /// > 不考虑 OptiFine / 加速渲染兼容，仅实现标准渲染路径。
 /// @author TACZ, USS_Shenzhou
 public class BedrockAttachmentModel {
     /// > 模板值位域（8 位缓冲，全枪共用一份）：
-    /// > <ul>
-    /// >   <li>{@code bit7}（{@link #OCULAR_MASK_FLAG}）：像素落在某个瞄具的目镜遮罩内；</li>
-    /// >   <li>{@code bit6}（{@link #OCULAR_WINDOW_FLAG}）：像素落在该目镜的屏幕空间镜窗内（已圆切）；</li>
-    /// >   <li>{@code bit0..5}（{@link #IDENTITY_MASK}）：目镜身份编号，mask 段与 plain 段各自独立编号。</li>
-    /// > </ul>
-    /// > 于是缓冲里只有四种值：{@code 0}（目镜外）、{@code 0x80|编号}（目镜遮罩区）、
-    /// > {@code 0xC0|编号}（镜内可视区）、{@code 1..0x3F}（红点 / 全息目镜，无镜窗）。
-    /// > 身份编号与状态位正交，故三种模板测试都能写成一次按位与：只测身份（{@link #OCULAR_IDENTITY_TEST_MASK}）、
-    /// > 只测状态（{@link #SCOPE_VIEW_CULL_MASK}）、全等（{@code 0xFF}）。
+    /// > - `bit7`（[#OCULAR_MASK_FLAG]）：像素落在某个瞄具的目镜遮罩内；
+    /// > - `bit6`（[#OCULAR_WINDOW_FLAG]）：像素落在该目镜的屏幕空间镜窗内（已圆切）；
+    /// > - `bit0..5`（[#IDENTITY_MASK]）：目镜身份编号，mask 段与 plain 段各自独立编号。
+    /// >
+    /// > 于是缓冲里只有四种值：`0`（目镜外）、`0x80|编号`（目镜遮罩区）、
+    /// > `0xC0|编号`（镜内可视区）、`1..0x3F`（红点 / 全息目镜，无镜窗）。
+    /// > 身份编号与状态位正交，故三种模板测试都能写成一次按位与：只测身份（[#OCULAR_IDENTITY_TEST_MASK]）、
+    /// > 只测状态（[#SCOPE_VIEW_CULL_MASK]）、全等（`0xFF`）。
     public static final int OCULAR_MASK_FLAG = 0x80;
     public static final int OCULAR_WINDOW_FLAG = 0x40;
 
     /// > 状态位掩码（bit7 + bit6）。
     public static final int OCULAR_STATE_MASK = OCULAR_MASK_FLAG | OCULAR_WINDOW_FLAG;
 
-    /// > 身份编号掩码：mask 段与 plain 段共用的值域（{@code 1..IDENTITY_MASK}）。
+    /// > 身份编号掩码：mask 段与 plain 段共用的值域（`1..IDENTITY_MASK`）。
     public static final int IDENTITY_MASK = 0x3F;
 
-    /// > 枪体剔除模板测试参考值 / 掩码（{@code GL_NOTEQUAL}）：模板状态位满足
-    /// > {@code (v & 0xC0) == 0xC0}（即任一瞄具圆切出的镜内可视区）时不绘制枪体（镜内无枪体），
+    /// > 枪体剔除模板测试参考值 / 掩码（`GL_NOTEQUAL`）：模板状态位满足
+    /// > `(v & 0xC0) == 0xC0`（即任一瞄具圆切出的镜内可视区）时不绘制枪体（镜内无枪体），
     /// > 其余区域正常绘制。该测试只读状态位，与身份编号、与场上有几个瞄具无关。
     public static final int SCOPE_VIEW_CULL_REF = OCULAR_STATE_MASK;
     public static final int SCOPE_VIEW_CULL_MASK = OCULAR_STATE_MASK;
 
     /// > 「命中本目镜区、无视是否已圆切」的模板测试掩码：含状态位 bit7 与全部身份位，排除 bit6。
-    /// > 参考值取 {@link #ocularViewValue(int)}（{@code 0xC0|编号}），该值同时充当 REPLACE 的写入值：
+    /// > 参考值取 [#ocularViewValue(int)]（`0xC0|编号`），该值同时充当 REPLACE 的写入值：
     /// > 已在镜窗内的像素再次命中时写回同值（幂等），侧瞄切换过渡中两个镜的圆切重叠绘制也安全。
     public static final int OCULAR_IDENTITY_TEST_MASK = OCULAR_MASK_FLAG | IDENTITY_MASK;
 
-    /// > 目镜遮罩区的模板值：{@code 0x80|身份编号}。
+    /// > 目镜遮罩区的模板值：`0x80|身份编号`。
     public static int ocularMaskValue(int identity) {
         return OCULAR_MASK_FLAG | (identity & IDENTITY_MASK);
     }
 
-    /// > 圆切（镜内可视区）的模板值：由目镜遮罩值 {@code 0x80|编号} 映射为 {@code 0xC0|编号}。
+    /// > 圆切（镜内可视区）的模板值：由目镜遮罩值 `0x80|编号` 映射为 `0xC0|编号`。
     /// > bit7 与目镜区一致，bit6 置 1 区分「圆内 / 圆外环」；身份编号保留，使每个瞄具的圆内值唯一，
     /// > 分划板仅在自己的圆内绘制，不会漏画进旁边镜子的镜内窗口。
     public static int ocularViewValue(int ocularValue) {
@@ -204,19 +203,21 @@ public class BedrockAttachmentModel {
 
     /// > 分配本附件目镜的模板值：有遮罩（scope 类，规则 = 是 scope 目镜 或 附件非纯红点）目镜在前，
     /// > 无遮罩（红点 / 全息）目镜在后。
-    /// > <p>
-    /// > 身份编号稠密递增（1, 2, 3...，上限 {@link #IDENTITY_MASK}）并由调用方跨附件串接，因此整把枪上
-    /// > 每个目镜都有唯一编号：目镜区值 = {@code 0x80|编号}（见 {@link #ocularMaskValue(int)}），
-    /// > 圆内专属值 = {@code 0xC0|编号}（见 {@link #ocularViewValue(int)}）。圆切选区掩码是常量
-    /// > {@link #OCULAR_IDENTITY_TEST_MASK}（只测状态位 bit7 与身份位、不测 bit6），因此「本目镜区，
+    /// >
+    /// > 身份编号稠密递增（1, 2, 3...，上限 [#IDENTITY_MASK]）并由调用方跨附件串接，因此整把枪上
+    /// > 每个目镜都有唯一编号：目镜区值 = `0x80|编号`（见 [#ocularMaskValue(int)]），
+    /// > 圆内专属值 = `0xC0|编号`（见 [#ocularViewValue(int)]）。圆切选区掩码是常量
+    /// > [#OCULAR_IDENTITY_TEST_MASK]（只测状态位 bit7 与身份位、不测 bit6），因此「本目镜区，
     /// > 无论是否已圆切」可被精确命中，激活镜的分划板 / 圆切不会泄露进侧瞄。
-    /// > 无遮罩（sight）目镜取 plain 段编号 {@code 1..0x3F}，无圆切、不设高位。
-    /// > <p>
+    /// > 无遮罩（sight）目镜取 plain 段编号 `1..0x3F`，无圆切、不设高位。
+    /// >
     /// > 编号耗尽时（同一把枪装了几十个目镜）按无遮罩目镜降级：宁可没有圆切与黑罩，也不产生越界值——
-    /// > 越界值会落进 {@code (v & 0xC0) == 0xC0} 而被当成镜窗剔除枪体，留下「无分划板的黑洞」。
+    /// > 越界值会落进 `(v & 0xC0) == 0xC0` 而被当成镜窗剔除枪体，留下「无分划板的黑洞」。
     /// >
     /// > @param maskIdStart  本附件可用的 mask 段编号起点（应由调用方从 1 起、跨附件连续递增）
+    /// >
     /// > @param plainIdStart 本附件可用的 plain 段编号起点（应由调用方从 1 起、跨附件连续递增）
+    /// >
     /// > @return 下一附件可用的编号起点
     public OcularIdRange allocateOcularIds(int maskIdStart, int plainIdStart, List<OcularSlot> maskOut, List<OcularSlot> plainOut) {
         for (int i = 0; i < ocularIndices.size(); i++) {
@@ -275,7 +276,7 @@ public class BedrockAttachmentModel {
     */
 
     /* FIXME rendering
-    /// > 渲染镜身。{@code afterStencil} 为 true 时（纯红点路径）模板测试已关闭，直接渲染；
+    /// > 渲染镜身。`afterStencil` 为 true 时（纯红点路径）模板测试已关闭，直接渲染；
     /// > 否则仅在模板值 = 0 的区域渲染（镜片外），stencilOp 需保持 KEEP。
     public void renderScopeBody(PoseStack poseStack, MultiBufferSource.BufferSource bufferSource,
                                 RenderType quadType, RenderType triangleType, int light, boolean afterStencil) {
@@ -290,12 +291,12 @@ public class BedrockAttachmentModel {
     */
 
     /* FIXME rendering
-    /// > 对有遮罩目镜执行屏幕空间圆形切出：{@code stencilFunc(EQUAL, 0xC0|编号, 0x80|0x3F)}——掩码含状态位
-    /// > bit7 与全部身份位、排除 bit6，因此只命中**本目镜**的目镜区（{@code 0x80|编号}）与已切出的镜窗
-    /// > （{@code 0xC0|编号}）：其他瞄具身份编号不同、红点段 bit7 为 0，都不会被命中，激活镜的圆切 /
-    /// > 分划板不会污染侧瞄；REPLACE 写入该目镜的圆内专属值 {@code 0xC0|编号} →
-    /// > 圆内 = 圆内专属值，圆外环保持 {@code 0x80|编号}。同一目镜的圆切测试与写入值由
-    /// > {@link #ocularViewValue(int)} 统一推导（掩码不测 bit6，写入值由 ref 兼任）。
+    /// > 对有遮罩目镜执行屏幕空间圆形切出：`stencilFunc(EQUAL, 0xC0|编号, 0x80|0x3F)`——掩码含状态位
+    /// > bit7 与全部身份位、排除 bit6，因此只命中**本目镜**的目镜区（`0x80|编号`）与已切出的镜窗
+    /// > （`0xC0|编号`）：其他瞄具身份编号不同、红点段 bit7 为 0，都不会被命中，激活镜的圆切 /
+    /// > 分划板不会污染侧瞄；REPLACE 写入该目镜的圆内专属值 `0xC0|编号` →
+    /// > 圆内 = 圆内专属值，圆外环保持 `0x80|编号`。同一目镜的圆切测试与写入值由
+    /// > [#ocularViewValue(int)] 统一推导（掩码不测 bit6，写入值由 ref 兼任）。
     /// > 调用方需已设置：stencilOp REPLACE、colorMask(false)、depthMask(false)、position shader。
     /// > 深度测试禁用：圆切线（z=-90 视深处）只写模板，不受场景深度影响。
     public void renderStencilCircles(List<OcularSlot> maskSlots, PoseStack poseStack, float rad) {
@@ -318,7 +319,7 @@ public class BedrockAttachmentModel {
 
     /* FIXME rendering
     /// > 仅渲染指定目镜的遮罩玻璃（不渲染分划板），用于**非激活窗口**的瞄具：在屏幕圆切之前先行
-    /// > 盖上整片目镜黑罩。此时该目镜区仍为 {@code 0x80|编号}（未被激活镜的圆切改写——圆切掩码只命中
+    /// > 盖上整片目镜黑罩。此时该目镜区仍为 `0x80|编号`（未被激活镜的圆切改写——圆切掩码只命中
     /// > 激活镜自身的身份编号），玻璃条件必然命中；之后圆切若改写该区域，玻璃颜色已锁定，
     /// > 不会出现「未激活镜透出世界 / 漏画分划板」。
     public void renderOcularGlass(List<OcularSlot> maskSlots,
@@ -340,9 +341,9 @@ public class BedrockAttachmentModel {
     */
 
     /* FIXME rendering
-    /// > 渲染遮罩与分划板：{@code renderGlass} 为 true 时（激活窗口）画圆外环黑罩（原值 {@code 0x80|编号}）；
-    /// >  圆内专属值 {@code 0xC0|编号} 处渲染分划板（各镜唯一，不会漏画进其他镜的圆内）；
-    /// >  无遮罩目镜 = 整片分划板（plain 段编号 {@code 1..IDENTITY_MASK}），与 {@code renderGlass} 无关。
+    /// > 渲染遮罩与分划板：`renderGlass` 为 true 时（激活窗口）画圆外环黑罩（原值 `0x80|编号`）；
+    /// >  圆内专属值 `0xC0|编号` 处渲染分划板（各镜唯一，不会漏画进其他镜的圆内）；
+    /// >  无遮罩目镜 = 整片分划板（plain 段编号 `1..IDENTITY_MASK`），与 `renderGlass` 无关。
     public void renderMasksAndDivisions(List<OcularSlot> maskSlots, List<OcularSlot> plainSlots,
                                         PoseStack poseStack, MultiBufferSource.BufferSource bufferSource,
                                         RenderType quadType, RenderType triangleType, int light, boolean renderGlass) {
@@ -389,9 +390,9 @@ public class BedrockAttachmentModel {
     */
 
     /* FIXME rendering
-    /// > 把指定目镜写入 stencil 缓冲（不写颜色 / 深度）。写入用 {@code GREATER + REPLACE}：只覆盖比自身小的值，
+    /// > 把指定目镜写入 stencil 缓冲（不写颜色 / 深度）。写入用 `GREATER + REPLACE`：只覆盖比自身小的值，
     /// > 等价于「重叠处编号大者胜出」的全序规则，因此与实际遍历顺序无关（无需排序）。
-    /// > <p>
+    /// >
     /// > 模板几何与深度无关：写入期间禁用深度测试，避免瞄准近景时目镜几何因深度
     /// > 测试失败而不绘制、模板值漏写（漏写会让镜身盖满目镜 → 镜内全黑）。
     public void renderOcularStencilValues(List<OcularSlot> slots, PoseStack poseStack,
@@ -459,9 +460,9 @@ public class BedrockAttachmentModel {
 
     /* FIXME rendering
     /// > 立即渲染单个骨骼（含其子树）并强制 flush，使 stencil 状态与实际绘制同步。
-    /// > <p>
-    /// > 调用前 {@code poseStack} 应处于配件安装点坐标系；本方法会把它推进到目标骨骼的
-    /// > 父骨骼全局坐标系，再交由 {@link TreeBedrockModel#renderBone} 应用骨骼自身变换。
+    /// >
+    /// > 调用前 `poseStack` 应处于配件安装点坐标系；本方法会把它推进到目标骨骼的
+    /// > 父骨骼全局坐标系，再交由 [TreeBedrockModel#renderBone] 应用骨骼自身变换。
     private void renderBoneImmediate(int boneIndex, PoseStack poseStack, MultiBufferSource.BufferSource bufferSource,
                                      RenderType quadType, RenderType triangleType, int light) {
         if (boneIndex < 0) {
@@ -494,8 +495,8 @@ public class BedrockAttachmentModel {
     */
 
     /* FIXME rendering
-    /// > 强制提交缓冲。光影（Iris）下普通的 {@code endBatch(RenderType)} 不会立即绘制，
-    /// > 必须通过 {@link OculusCompat#endBatch} 调用其全量 flush，才能让模板缓冲状态与绘制同步。
+    /// > 强制提交缓冲。光影（Iris）下普通的 `endBatch(RenderType)` 不会立即绘制，
+    /// > 必须通过 [OculusCompat#endBatch] 调用其全量 flush，才能让模板缓冲状态与绘制同步。
     private static void flush(MultiBufferSource.BufferSource bufferSource, RenderType quadType, RenderType triangleType) {
         if (!OculusCompat.endBatch(bufferSource)) {
             bufferSource.endBatch(quadType);
@@ -505,7 +506,7 @@ public class BedrockAttachmentModel {
     */
 
     /* FIXME rendering
-    /// > 取骨骼中心点在当前 {@code poseStack} 空间下的位置（用于屏幕空间圆心定位）。
+    /// > 取骨骼中心点在当前 `poseStack` 空间下的位置（用于屏幕空间圆心定位）。
     private Vector3f getBoneCenter(PoseStack poseStack, int boneIndex) {
         Matrix4f matrix = new Matrix4f(poseStack.last().pose()).mul(instance.getGlobalTransform(boneIndex));
         return matrix.getTranslation(new Vector3f());

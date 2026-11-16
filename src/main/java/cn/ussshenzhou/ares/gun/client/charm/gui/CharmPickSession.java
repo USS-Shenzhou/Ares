@@ -6,10 +6,10 @@ import javax.annotation.Nullable;
 import java.util.Comparator;
 
 /// > 改装界面挂饰拾取态的客户端状态机（纯客户端意图，绑定走服务端权威）。
-/// > <p>
+/// >
 /// > 持有「是否处于拾取态」「当前选定的挂饰 id 及其背包槽位」「当前 hover 命中的 cube」。
-/// > 渲染器据 {@link #isActive()} 决定是否填充 {@link CharmCubeScreenCache}；界面据
-/// > {@link #hovered()} 画反馈、左键确认时发绑定消息。
+/// > 渲染器据 [#isActive()] 决定是否填充 [CharmCubeScreenCache]；界面据
+/// > [#hovered()] 画反馈、左键确认时发绑定消息。
 /// @author TACZ, USS_Shenzhou
 public class CharmPickSession {
     private static boolean active;

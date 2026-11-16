@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Map;
 
 /// > 变体 / 适配器的反查工具（双端共用）。
-/// > <p>
-/// > 变体与适配器都是独立的数据驱动 index，通过 {@code targets} 定向到宿主。
-/// > 本工具基于 {@link TimelessHelperS#getAllIndexes} 反查「某配件有哪些变体」「某宿主槽位有哪些适配器」，
+/// >
+/// > 变体与适配器都是独立的数据驱动 index，通过 `targets` 定向到宿主。
+/// > 本工具基于 [TimelessHelperS#getAllIndexes] 反查「某配件有哪些变体」「某宿主槽位有哪些适配器」，
 /// > 天然支持跨包扩展（第三方包新增 index 即被纳入）。
-/// > <p>
+/// >
 /// > 这些 index 集合在每次资源重载时整体替换，规模很小（仅改装界面 / 校验时查询），故不额外建缓存。
 /// @author TACZ, USS_Shenzhou
 // FIXME REVIEW renamed from AdapterRegistry.

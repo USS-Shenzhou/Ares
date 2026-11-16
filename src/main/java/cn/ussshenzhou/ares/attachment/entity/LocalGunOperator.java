@@ -24,10 +24,10 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /// > 客户端 LocalPlayer 持枪能力：第一人称表现 + 预判，并通知服务端。
-/// > <p>
-/// > 客户端没有稳定的物品实例可追踪（任何 NBT 变化都会让网络层重建新 {@code ItemStack} 实例），
-/// > 故会话身份只能用<b>值启发式</b>判定（同 Item + 同 gun 自定义 id，忽略弹药 / 配件 NBT）。
-/// > 会话同步不自轮询，由 {@code InventoryEventHandler} 作为唯一检测器驱动。
+/// >
+/// > 客户端没有稳定的物品实例可追踪（任何 NBT 变化都会让网络层重建新 `ItemStack` 实例），
+/// > 故会话身份只能用**值启发式**判定（同 Item + 同 gun 自定义 id，忽略弹药 / 配件 NBT）。
+/// > 会话同步不自轮询，由 `InventoryEventHandler` 作为唯一检测器驱动。
 /// @author TACZ, USS_Shenzhou
 public class LocalGunOperator extends AbstractGunOperator<Player, ClientHandGunSession> {
     /// > 拒枪姿态上报对账：最近一次已上报的值，未变化则不再发包。
@@ -55,10 +55,10 @@ public class LocalGunOperator extends AbstractGunOperator<Player, ClientHandGunS
         return DualWieldHelper.sameHeldGun(session.stack(), live) && session.kind() == expectedKind;
     }
 
-    /// > 客户端会话<b>跨切枪持久存活</b>，不按枪 id 销毁重建。
-    /// > <p>
+    /// > 客户端会话**跨切枪持久存活**，不按枪 id 销毁重建。
+    /// >
     /// > 切换（同位换枪 / 双持移除副手致 kind 变 / 切空手）统一让现有会话起收枪窗口
-    /// > （{@link ClientHandGunSession#requestSwitch()}），窗口跑完后由 {@link #onPutAwayComplete}
+    /// > （[ClientHandGunSession#requestSwitch()]），窗口跑完后由 [#onPutAwayComplete]
     /// > 按「实时手持物」落地（重建为新形态并掏枪，或移除会话）。窗口期内目标再变不重启窗口，
     /// > 结束时读实时值天然吸收（含「切空手收一半又拿枪」的场景）。
     @Override
@@ -85,8 +85,8 @@ public class LocalGunOperator extends AbstractGunOperator<Player, ClientHandGunS
         current.requestSwitch();
     }
 
-    /// > 收枪窗口结束后的落地（在 operator tick 迭代之外执行，{@code draw} 的 clear 安全）。
-    /// > 按<b>实时手持物</b>决定结果：变空手则移除会话；否则按当前形态重绑并掏枪。
+    /// > 收枪窗口结束后的落地（在 operator tick 迭代之外执行，`draw` 的 clear 安全）。
+    /// > 按**实时手持物**决定结果：变空手则移除会话；否则按当前形态重绑并掏枪。
     private void onPutAwayComplete(InteractionHand hand) {
         ClientHandGunSession session = sessions.get(hand);
         if (session == null) {
@@ -120,7 +120,7 @@ public class LocalGunOperator extends AbstractGunOperator<Player, ClientHandGunS
     }
 
     /// > 拒枪姿态对账（每 tick）：姿态影响散布且服务端权威，故只在姿态变化时上报一次。
-    /// > <p>
+    /// >
     /// > 除 Alt+V 请求外，这里还兜住「配件增删导致视图位列表变化、索引被动钳制」以及收枪 / 换手等隐式变化。
     /// > 复位由服务端自身生命周期处理，客户端不额外发复位包，避免与权威复位乱序。
     private void reconcileAimStance() {
@@ -167,16 +167,14 @@ public class LocalGunOperator extends AbstractGunOperator<Player, ClientHandGunS
         }
     }
 
-    /// > 强制主手切换（绕过值启发式 {@link #matches}）。
-    /// > <p>
+    /// > 强制主手切换（绕过值启发式 [#matches]）。
+    /// >
     /// > 客户端无稳定物品实例，「切 hotbar 格子 / 同格子换成同 id 另一把枪」无法靠值判出
-    /// > （gunId、kind 都可能不变，但确实是另一把枪）。{@code InventoryEventHandler} 作为外部检测器
+    /// > （gunId、kind 都可能不变，但确实是另一把枪）。`InventoryEventHandler` 作为外部检测器
     /// > 已确定发生了切换，故此处直接令现有会话起收枪窗口，不再经 matches 短路。
-    /// > <ul>
-    /// >   <li>主手有会话 → 起收枪窗口（{@link ClientHandGunSession#requestSwitch()}），
-    /// >       落地延后到收枪结束，按实时手持物掏新枪。</li>
-    /// >   <li>主手无会话 → 退化为常规同步（空手→持枪直接掏枪 / 空手→空手无操作）。</li>
-    /// > </ul>
+    /// > - 主手有会话 → 起收枪窗口（[ClientHandGunSession#requestSwitch()]），
+    /// >   落地延后到收枪结束，按实时手持物掏新枪。
+    /// > - 主手无会话 → 退化为常规同步（空手→持枪直接掏枪 / 空手→空手无操作）。
     public void forceSwitch(InteractionHand hand) {
         ClientHandGunSession current = sessions.get(hand);
         if (current == null) {
@@ -187,7 +185,7 @@ public class LocalGunOperator extends AbstractGunOperator<Player, ClientHandGunS
     }
 
     /// > 立刻丢弃并按当前主 / 副手物品重建客户端会话，不播放收枪过渡。
-    /// > 用于创造模式物品栏这类会重建 {@link ItemStack} 实例的强同步边界。
+    /// > 用于创造模式物品栏这类会重建 [ItemStack] 实例的强同步边界。
     public void forceRebuildSessions() {
         for (InteractionHand hand : InteractionHand.values()) {
             ClientHandGunSession current = sessions.remove(hand);
@@ -252,7 +250,7 @@ public class LocalGunOperator extends AbstractGunOperator<Player, ClientHandGunS
     }
 
     /// > 当前（目标）瞄准视图位是否为战术拒枪姿态。
-    /// > <p>
+    /// >
     /// > 切换请求即按目标视图位翻转，不等过渡收敛：动画状态机需要立刻起姿态，服务端也需要尽早拿到
     /// > 权威散布口径。
     @Override

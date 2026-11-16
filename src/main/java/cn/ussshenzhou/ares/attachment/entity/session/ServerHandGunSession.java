@@ -41,34 +41,34 @@ import java.util.Optional;
 public class ServerHandGunSession extends HandGunSession {
     private final ServerPlayer player;
 
-    /// > 下挂模式工作副本：进入 {@link GunModuleMode#UNDER_BARREL} 时从宿主配件树解析出的下挂武器副本。
-    /// > <p>
-    /// > 下挂武器嵌在宿主 NBT 里没有稳定的活引用，故玩法（开火/换弹/上膛）全部在这个<b>稳定副本实例</b>上
-    /// > 读写，再于 tick 边界经 {@link #commitMountedWorkingCopy()} 自底向上回写宿主。
-    /// > PRIMARY 模式下为 {@code null}，{@link #activeStack()} 退回宿主活引用。
+    /// > 下挂模式工作副本：进入 [GunModuleMode#UNDER_BARREL] 时从宿主配件树解析出的下挂武器副本。
+    /// >
+    /// > 下挂武器嵌在宿主 NBT 里没有稳定的活引用，故玩法（开火/换弹/上膛）全部在这个**稳定副本实例**上
+    /// > 读写，再于 tick 边界经 [#commitMountedWorkingCopy()] 自底向上回写宿主。
+    /// > PRIMARY 模式下为 `null`，[#activeStack()] 退回宿主活引用。
     @Nullable
     private ItemStack mountedWorkingCopy;
-    /// > 下挂武器在宿主配件树中的槽位路径，配合 {@link AttachmentTreeHelper#writeAttachmentBack} 回写。
+    /// > 下挂武器在宿主配件树中的槽位路径，配合 [AttachmentTreeHelper#writeAttachmentBack] 回写。
     @Nullable
     private AttachmentPath mountedPath;
     public long lastShootTimestamp = -1;
     public long lastTickTimestamp = -1;
     private boolean isAiming = false;
-    /// > 战术拒枪姿态（服务端权威）：由 C2S 上报写入，决定瞄准散布取 {@code inaccuracy_tactical}
-    /// > 还是 {@code inaccuracy_aim}。复位点与 {@link #isAiming} 对齐（掏枪 / 收枪）。
+    /// > 战术拒枪姿态（服务端权威）：由 C2S 上报写入，决定瞄准散布取 `inaccuracy_tactical`
+    /// > 还是 `inaccuracy_aim`。复位点与 [#isAiming] 对齐（掏枪 / 收枪）。
     private boolean tacticalStance = false;
     private int shotCounter = 0;
     private final SegmentSet tracks = new SegmentSet();
     @Nullable
     private FireController fireController;
     private long shootTimePool = 0;
-    /// > 当前生效的射击间隔（毫秒）缓存：{@code shootTimePool} 门控 / 扣减 / 上限均读它，避免每 tick 求值脚本。
-    /// > 掏枪与每发出膛后经 {@link #refreshFireInterval()} 重算。
+    /// > 当前生效的射击间隔（毫秒）缓存：`shootTimePool` 门控 / 扣减 / 上限均读它，避免每 tick 求值脚本。
+    /// > 掏枪与每发出膛后经 [#refreshFireInterval()] 重算。
     private long currentFireIntervalMs = 120;
-    /// > 会话创建 / 掏枪时绑定的<b>活引用</b>（非副本）。服务端物品栏权威，
-    /// > 槽位 {@code ItemStack} 实例在物品未被换走期间保持同一对象，
-    /// > operator 用 {@code boundInstance == player.getItemInHand(hand)} 做实例身份快速路径。
-    /// > 实例被重建（如创造物品栏等强同步边界）但值签名不变时，经 {@link #rebindInstance} 静默重绑。
+    /// > 会话创建 / 掏枪时绑定的**活引用**（非副本）。服务端物品栏权威，
+    /// > 槽位 `ItemStack` 实例在物品未被换走期间保持同一对象，
+    /// > operator 用 `boundInstance == player.getItemInHand(hand)` 做实例身份快速路径。
+    /// > 实例被重建（如创造物品栏等强同步边界）但值签名不变时，经 [#rebindInstance] 静默重绑。
     private ItemStack boundInstance;
     /// > 会话创建 / 掏枪时主手选中的热键槽索引（副手无槽位概念，恒 -1）。
     /// > 实例重建时配合值签名做「同槽同值」判定，避免把真实换枪误判为同一把。
@@ -99,7 +99,7 @@ public class ServerHandGunSession extends HandGunSession {
     }
 
     /// > 当前玩法操作的目标物品堆：下挂模式返回下挂工作副本，否则返回宿主活引用。
-    /// > <p>
+    /// >
     /// > 开火/换弹/上膛/弹药记账等一切玩法读写都应经此方法，从而在下挂模式下作用于下挂武器自身。
     @Override
     public ItemStack activeStack() {
@@ -109,7 +109,7 @@ public class ServerHandGunSession extends HandGunSession {
         return getCurrentItem();
     }
 
-    /// > 当前玩法目标的 {@link GunData}（兼容下挂武器）。
+    /// > 当前玩法目标的 [GunData]（兼容下挂武器）。
     @Nullable
     private GunData activeData() {
         return MountedWeaponHelper.resolveGunData(activeStack());
@@ -505,7 +505,7 @@ public class ServerHandGunSession extends HandGunSession {
         return currentFireIntervalMs;
     }
 
-    /// > 重算当前射击间隔缓存：由当前枪械 RPM 属性推导（{@code 60000 / RPM}），反映当前枪械最新只读状态。
+    /// > 重算当前射击间隔缓存：由当前枪械 RPM 属性推导（`60000 / RPM`），反映当前枪械最新只读状态。
     /// > 掏枪与每发出膛后调用；每 tick 的 pool 门控读缓存值。
     // FIXME REVIEW the fire interval only comes from RPM (AttributeDataHelper.shootIntervalMs), also in
     // ClientHandGunSession.computeCooldownMs.

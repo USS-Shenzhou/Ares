@@ -14,8 +14,8 @@ import com.maydaymemory.mae.control.montage.AnimationMontageRunner;
 import com.maydaymemory.mae.control.montage.AnimationMontageSection;
 import net.minecraft.resources.Identifier;
 
-/// > 单个动画槽的运行时，内部由 MAE 的 {@link AnimationMontageRunner} 驱动。
-/// > <p>
+/// > 单个动画槽的运行时，内部由 MAE 的 [AnimationMontageRunner] 驱动。
+/// >
 /// > 蒙太奇的播放进度、section 切换、轨道分层混合、notify/clip 触发全部交给 MAE，
 /// > 本类只负责：按预期时长计算播放速度、把 sound clip 转发到事件 sink、向 controller 暴露查询接口。
 /// @author TACZ, USS_Shenzhou
@@ -110,8 +110,8 @@ public class MontageSlotRuntime {
         }
     }
 
-    /// > 消费本帧新触发的 {@code particle_effects} 关键帧，转发到事件 sink。
-    /// > 与 {@link #emitSoundEvents()} 同构：仅入队请求，发射器创建由渲染层完成。
+    /// > 消费本帧新触发的 `particle_effects` 关键帧，转发到事件 sink。
+    /// > 与 [#emitSoundEvents()] 同构：仅入队请求，发射器创建由渲染层完成。
     private void emitParticleEvents() {
         Iterable<Keyframe<ParticleEffectData>> particles = runner.clip(BedrockAnimation.PARTICLE_CHANNEL_NAME);
         if (particles == null) {

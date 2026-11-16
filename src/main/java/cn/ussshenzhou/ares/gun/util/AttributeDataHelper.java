@@ -8,16 +8,15 @@ import net.minecraft.world.item.ItemStack;
 import javax.annotation.Nullable;
 
 /// > 属性读取助手（脚本 / 状态机 / 玩法共用）。
-/// > <p>
-/// > 语义见 {@code docs/draft/attribute-system.md} 第三节：
-/// > <ul>
-/// >   <li>未注册的属性返回 {@code null}（区分"未注册"与"值为 0"）；</li>
-/// >   <li>已注册但本枪无来源时返回注册基准值（{@code default}）；</li>
-/// >   <li>属性 id 缺省 namespace 补 {@code tacz:}，与 {@code gun.has_attachment} 等同款约定。</li>
-/// > </ul>
+/// >
+/// > 语义见 `docs/draft/attribute-system.md` 第三节：
+/// > - 未注册的属性返回 `null`（区分"未注册"与"值为 0"）；
+/// > - 已注册但本枪无来源时返回注册基准值（`default`）；
+/// > - 属性 id 缺省 namespace 补 `tacz:`，与 `gun.has_attachment` 等同款约定。
+///
 /// @author TACZ, USS_Shenzhou
 public class AttributeDataHelper {
-    /// > 解析属性 id。缺省 namespace 补 {@code tacz:}；空白或非法返回 null。
+    /// > 解析属性 id。缺省 namespace 补 `tacz:`；空白或非法返回 null。
     @Nullable
     public static Identifier parseId(@Nullable String rawId) {
         if (rawId == null || rawId.isBlank()) {
@@ -55,7 +54,7 @@ public class AttributeDataHelper {
 
     /// > ==================== 属性 -> 玩法语义 ====================
 
-    /// > 基准射击间隔（毫秒）：{@code 60000 / RPM}；无有效 RPM（含枪械不可用）时回退 120。
+    /// > 基准射击间隔（毫秒）：`60000 / RPM`；无有效 RPM（含枪械不可用）时回退 120。
     public static long shootIntervalMs(@Nullable ItemStack stack) {
         Double rpm = getAttribute(stack, GunAttributes.RPM);
         if (rpm == null || rpm <= 0) {
@@ -64,7 +63,7 @@ public class AttributeDataHelper {
         return (long) (60000.0 / rpm);
     }
 
-    /// > 持枪移速倍率：{@code 1 - weight * 0.01}（重量每点降低 1% 移速）；枪械不可用时为 1。
+    /// > 持枪移速倍率：`1 - weight * 0.01`（重量每点降低 1% 移速）；枪械不可用时为 1。
     public static double moveSpeedMultiplier(@Nullable ItemStack stack) {
         Double weight = getAttribute(stack, GunAttributes.WEIGHT);
         return weight == null ? 1.0 : 1.0 - weight * 0.01;

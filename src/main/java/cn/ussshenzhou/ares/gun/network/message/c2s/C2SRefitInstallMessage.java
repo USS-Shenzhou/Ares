@@ -17,7 +17,9 @@ import net.minecraft.world.item.ItemStack;
 /// > 改装界面安装配件请求（C2S，服务端权威）。
 /// >
 /// > @param slotIndex    枪械所在的背包槽位索引
+/// >
 /// > @param path         目标槽位路径（多层树）
+/// >
 /// > @param attachmentId 要安装的配件注册 id
 /// @author TACZ, USS_Shenzhou
 @NetPacket(modid = Ares.MOD_ID)

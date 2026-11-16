@@ -170,14 +170,17 @@ public class ShootHelper {
         return ShootResult.SUCCESS;
     }
 
-    /// > 把 {@link ProjectileContext} 的通用射前字段设置到飞行弹丸上，并按给定角度发射。
-    /// > <p>
-    /// > 供 {@link ProjectileProvider#fire} 默认实现使用。抽出为静态方法后，实体类与 hitscan
-    /// > 类走同一发射入口，{@link #fireProjectiles} 循环不再区分弹丸种类。
+    /// > 把 [ProjectileContext] 的通用射前字段设置到飞行弹丸上，并按给定角度发射。
+    /// >
+    /// > 供 [ProjectileProvider#fire] 默认实现使用。抽出为静态方法后，实体类与 hitscan
+    /// > 类走同一发射入口，[#fireProjectiles] 循环不再区分弹丸种类。
     /// >
     /// > @param projectile 待设置的弹丸实体
+    /// >
     /// > @param ctx        射前上下文
+    /// >
     /// > @param yaw        已散布调整的偏航角
+    /// >
     /// > @param pitch      已散布调整的俯仰角
     public static void applyCommonFields(AbstractGunProjectile projectile, ProjectileContext ctx,
                                          float yaw, float pitch) {

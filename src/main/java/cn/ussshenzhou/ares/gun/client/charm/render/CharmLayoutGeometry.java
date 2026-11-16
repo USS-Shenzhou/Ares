@@ -11,10 +11,10 @@ import java.util.Map;
 import java.util.Optional;
 
 /// > 挂饰分层几何缓存（对接 SimpleBedrockModel v2）。
-/// > <p>
+/// >
 /// > 从挂饰模型按 layout 解析各部件骨骼（anchor / fixedPivot / dynamicPivot / body）在 bind pose 下的
 /// > pivot 偏移，并据「forward 轴对齐命中面法线」朝向把这些偏移旋转到锚点骨骼局部空间，得到
-/// > {@link cn.ussshenzhou.ares.gun.client.charm.CharmLayerPlacement#fromAnchor} 所需的各层偏移。
+/// > [cn.ussshenzhou.ares.gun.client.charm.CharmLayerPlacement#fromAnchor] 所需的各层偏移。
 /// > 结果按 (模型 id, 法线量化, forward 轴量化) 缓存，资源重载时清空。
 /// @author TACZ, USS_Shenzhou
 public class CharmLayoutGeometry {

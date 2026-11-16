@@ -14,9 +14,9 @@ import java.lang.reflect.Type;
 import java.util.Locale;
 
 /// > 导轨微调配置的反序列化。
-/// > <p>
-/// > 形如 {@code {"axis": "z", "min": -0.05, "max": 0.05, "step": 0.005}}。
-/// > {@code axis} 支持 "x"/"y"/"z" 简写或三元数组 {@code [x, y, z]}。
+/// >
+/// > 形如 `{"axis": "z", "min": -0.05, "max": 0.05, "step": 0.005}`。
+/// > `axis` 支持 "x"/"y"/"z" 简写或三元数组 `[x, y, z]`。
 /// @author TACZ, USS_Shenzhou
 public class RailConfigSerializer implements JsonDeserializer<RailConfig> {
     @Override

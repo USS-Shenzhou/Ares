@@ -16,21 +16,22 @@ import java.util.List;
 import java.util.Map;
 
 /// > 槽位适配器对槽位声明的「覆盖」纯逻辑（双端共用，服务端权威校验复用）。
-/// > <p>
+/// >
 /// > 适配器不改变槽位 id / name / default / required，只可能改写：
-/// > <ul>
-/// >   <li>{@code allowTypes}：放宽或收紧可安装类型；</li>
-/// >   <li>{@code rail}：附加或替换导轨微调配置。</li>
-/// > </ul>
-/// > 应用后返回一个新的有效 {@link AttachmentSlot}，供安装校验 / 渲染挂点 / 屏幕投影统一使用。
+/// > - `allowTypes`：放宽或收紧可安装类型；
+/// > - `rail`：附加或替换导轨微调配置。
+/// >
+/// > 应用后返回一个新的有效 [AttachmentSlot]，供安装校验 / 渲染挂点 / 屏幕投影统一使用。
 /// @author TACZ, USS_Shenzhou
 public class AttachmentSlotHelper {
     /// > 对整组槽位应用 holder 上已选的适配器覆盖，返回新的有效槽位映射。
-    /// > <p>
+    /// >
     /// > holder 未写入任何适配器选择时，原样返回 slots，零额外开销。
     /// >
     /// > @param holder 容纳这些槽位的宿主物品堆（枪 / 父配件）
+    /// >
     /// > @param slots  原始槽位映射
+    /// >
     /// > @return 应用适配器覆盖后的槽位映射（无变化时返回原映射）
     public static Map<Identifier, AttachmentSlot> applyAdapters(ItemStack holder,
                                                                       Map<Identifier, AttachmentSlot> slots) {
@@ -56,11 +57,13 @@ public class AttachmentSlotHelper {
     }
 
     /// > 把指定适配器对槽位的覆盖应用到 base 槽位上，返回有效槽位。
-    /// > <p>
+    /// >
     /// > adapterId 为空、对应 index 不存在、或无任何覆盖时，原样返回 base。
     /// >
     /// > @param base      原始槽位声明
+    /// >
     /// > @param adapterId 选中的适配器 id（可空）
+    /// >
     /// > @return 应用覆盖后的有效槽位（无变化时返回 base 本身）
     public static AttachmentSlot apply(AttachmentSlot base, Identifier adapterId) {
         if (base == null || adapterId == null) {

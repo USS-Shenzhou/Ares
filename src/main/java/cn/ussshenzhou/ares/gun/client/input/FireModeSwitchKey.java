@@ -26,7 +26,7 @@ import net.neoforged.neoforge.client.settings.KeyModifier;
 import net.neoforged.bus.api.SubscribeEvent;
 
 /// > 快慢机切换按键：在枪械的开火模式（fireModes）之间循环切换。
-/// > 下挂武器模式切换由 {@link UnderBarrelToggleKey} 独立处理。
+/// > 下挂武器模式切换由 [UnderBarrelToggleKey] 独立处理。
 /// @author TACZ, USS_Shenzhou
 @EventBusSubscriber(modid = Ares.MOD_ID, value = Dist.CLIENT)
 public class FireModeSwitchKey {

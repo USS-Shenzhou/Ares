@@ -72,7 +72,7 @@ public class CrosshairRenderer {
         graphics.fill(cx - half, cy - half, cx + half, cy + half, color);
     }
 
-    /// > 当前有效散布（度）：姿态散布与瞄准散布按瞄准进度平滑过渡，避免 {@link InaccuracyType} 的二值跳变。
+    /// > 当前有效散布（度）：姿态散布与瞄准散布按瞄准进度平滑过渡，避免 [InaccuracyType] 的二值跳变。
     private static float effectiveInaccuracy(LocalPlayer player, ItemStack stack) {
         GunPropertiesCaches cache = GunPropertiesCaches.of(stack);
         float aimProgress = IGunOperator.asGunHolder(player).map(IGunOperator::aimingProgress).orElse(0f);

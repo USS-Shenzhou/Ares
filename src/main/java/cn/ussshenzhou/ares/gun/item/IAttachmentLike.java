@@ -14,7 +14,9 @@ import java.util.Optional;
 /// @author TACZ, USS_Shenzhou
 public interface IAttachmentLike {
     /// > 尝试将物品堆转换为配件类物品
+    /// >
     /// > @param stack 物品堆
+    /// >
     /// > @return 如果是配件类物品（IAttachment）返回对应接口，否则返回 null
     @Nullable
     static IAttachmentLike asAttachmentLike(ItemStack stack) {
@@ -28,7 +30,9 @@ public interface IAttachmentLike {
     }
 
     /// > 尝试将物品堆转换为配件类物品（Optional 形式）
+    /// >
     /// > @param stack 物品堆
+    /// >
     /// > @return Optional 包装的配件类物品
     @Nonnull
     static Optional<IAttachmentLike> of(@Nullable ItemStack stack) {
@@ -42,13 +46,17 @@ public interface IAttachmentLike {
     }
 
     /// > 获取配件类型
+    /// >
     /// > @param attachment 配件物品堆
+    /// >
     /// > @return 配件类型，如果不是有效配件则返回 NONE 类型
     @Nonnull
     AttachmentType getType(ItemStack attachment);
 
     /// > 获取配件提供的枪械属性修改器
+    /// >
     /// > @param attachment 配件物品堆
+    /// >
     /// > @return 属性修改器映射
     Map<Identifier, List<GunAttributeModifier>> getModifiers(ItemStack attachment);
 }

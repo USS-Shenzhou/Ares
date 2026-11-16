@@ -18,11 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /// > 快捷键翻转枪械配件树上指定效果的开关状态请求（C2S，服务端权威）。
-/// > <p>
+/// >
 /// > 服务端对枪自身效果键（若该枪有对应效果 display）与配件树中全部「当前生效形态声明了
 /// > 该效果」的可开关配件逐个取反，随后随物品栏同步下发权威状态（客户端预写自愈）。
 /// >
 /// > @param slotIndex 枪械所在的背包槽位索引
+/// >
 /// > @param effect    目标效果（laser / flashlight）
 /// @author TACZ, USS_Shenzhou
 @NetPacket(modid = Ares.MOD_ID)

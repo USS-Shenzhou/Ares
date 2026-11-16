@@ -14,12 +14,11 @@ import java.util.Objects;
 /// >
 /// > Note: storage key must be derived from slot id (not from type id) to avoid conflicts.
 /// >
-/// > <p>内置模块支持：
-/// > <ul>
-/// >   <li>{@code defaultAttachment}：该槽位的默认（内置）配件 id。未写入 NBT 时虚拟回退到该件。</li>
-/// >   <li>{@code required}：必填槽。不允许卸成空，卸载只能回退到默认件。</li>
-/// >   <li>{@code rail}：导轨微调配置。声明后已安装配件可沿导轨方向滑动（见 {@link RailConfig}）。</li>
-/// > </ul>
+/// > 内置模块支持：
+/// > - `defaultAttachment`：该槽位的默认（内置）配件 id。未写入 NBT 时虚拟回退到该件。
+/// > - `required`：必填槽。不允许卸成空，卸载只能回退到默认件。
+/// > - `rail`：导轨微调配置。声明后已安装配件可沿导轨方向滑动（见 [RailConfig]）。
+///
 /// @author TACZ, USS_Shenzhou
 public record AttachmentSlot(
         Identifier id,

@@ -5,9 +5,9 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 /// > 挂饰每帧外力换算（自源挂饰模组移植，仅依赖 JOML）。
-/// > <p>
+/// >
 /// > 把视角重力、相机加速度、锚点惯性等「视图空间」外力换算到锚点骨骼局部空间，喂给
-/// > {@link CharmPhysicsState}。本期自由摆动主要用 {@link #viewPitchGravity}。
+/// > [CharmPhysicsState]。本期自由摆动主要用 [#viewPitchGravity]。
 /// @author TACZ, USS_Shenzhou
 public class CharmFrameForces {
     private static final float VISUAL_GRAVITY_SCALE = 3.0f;
