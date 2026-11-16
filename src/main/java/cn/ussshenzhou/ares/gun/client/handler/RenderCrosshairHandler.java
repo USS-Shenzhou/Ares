@@ -14,11 +14,9 @@ import cn.ussshenzhou.ares.gun.TimelessHelperC;
 import cn.ussshenzhou.ares.gun.item.IGun;
 */
 import cn.ussshenzhou.ares.Ares;
-import cn.ussshenzhou.ares.gun.capability.GunHolderState;
-import cn.ussshenzhou.ares.gun.capability.HandGunSession;
-import cn.ussshenzhou.ares.gun.capability.IGunOperator;
-import cn.ussshenzhou.ares.gun.config.ClientConfig;
-import net.minecraft.client.Minecraft;
+import cn.ussshenzhou.ares.attachment.entity.GunHolderState;
+import cn.ussshenzhou.ares.attachment.entity.HandGunSession;
+import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;

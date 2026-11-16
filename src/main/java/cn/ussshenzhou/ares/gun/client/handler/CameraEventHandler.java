@@ -2,7 +2,7 @@ package cn.ussshenzhou.ares.gun.client.handler;
 
 import net.neoforged.fml.common.EventBusSubscriber;
 import cn.ussshenzhou.ares.Ares;
-import cn.ussshenzhou.ares.gun.capability.IGunOperator;
+import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.gun.item.IGun;
 import cn.ussshenzhou.ares.gun.client.util.AimFovHelper;
 import cn.ussshenzhou.ares.gun.custom.GunRecoil;

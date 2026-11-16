@@ -1,7 +1,7 @@
 package cn.ussshenzhou.ares.gun.attribute;
 
 import com.google.gson.annotations.SerializedName;
-import cn.ussshenzhou.ares.gun.capability.IGunOperator;
+import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 

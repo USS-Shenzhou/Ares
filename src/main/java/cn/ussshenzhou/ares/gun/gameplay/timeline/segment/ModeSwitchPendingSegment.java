@@ -1,5 +1,6 @@
 package cn.ussshenzhou.ares.gun.gameplay.timeline.segment;
 
+import cn.ussshenzhou.ares.attachment.entity.GunHolderState;
 import cn.ussshenzhou.ares.gun.gameplay.timeline.ActionGate;
 import cn.ussshenzhou.ares.gun.gameplay.timeline.ActionSegment;
 import cn.ussshenzhou.ares.gun.gameplay.timeline.SegmentToken;
@@ -12,7 +13,7 @@ import cn.ussshenzhou.ares.gun.gameplay.timeline.Timer;
 /// > 本片段计时到期后自然消失解锁，玩家可再次按键。
 /// > <p>
 /// > 锁定期间禁止开火 / 换弹 / 检视 / 再次切换，与 {@link ModeTransitionSegment} 门禁一致。
-/// > 不投影 {@link cn.ussshenzhou.ares.gun.capability.GunHolderState}（纯门禁，不占用 isIdle）。
+/// > 不投影 {@link GunHolderState}（纯门禁，不占用 isIdle）。
 /// @author TACZ, USS_Shenzhou
 public class ModeSwitchPendingSegment extends ActionSegment {
 

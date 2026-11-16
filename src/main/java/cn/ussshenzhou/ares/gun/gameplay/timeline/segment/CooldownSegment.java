@@ -1,6 +1,6 @@
 package cn.ussshenzhou.ares.gun.gameplay.timeline.segment;
 
-import cn.ussshenzhou.ares.gun.capability.GunHolderState;
+import cn.ussshenzhou.ares.attachment.entity.GunHolderState;
 import cn.ussshenzhou.ares.gun.gameplay.timeline.ActionGate;
 import cn.ussshenzhou.ares.gun.gameplay.timeline.ActionSegment;
 import cn.ussshenzhou.ares.gun.gameplay.timeline.CooldownProvider;

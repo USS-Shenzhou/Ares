@@ -1,11 +1,12 @@
 package cn.ussshenzhou.ares.gun.client.renderer.animation;
 
+import cn.ussshenzhou.ares.attachment.entity.LocalGunOperator;
 import com.github.mcmodderanchor.simplebedrockmodel.v1.client.animation.IFPAnimationInstance;
 import com.maydaymemory.mae.basic.DummyPose;
 import com.maydaymemory.mae.basic.Pose;
 import cn.ussshenzhou.ares.gun.TimelessHelperC;
-import cn.ussshenzhou.ares.gun.capability.GunModuleMode;
-import cn.ussshenzhou.ares.gun.capability.IGunOperator;
+import cn.ussshenzhou.ares.attachment.entity.GunModuleMode;
+import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.gun.item.IGun;
 import cn.ussshenzhou.ares.gun.client.animation.mounted.HostOverlayBridge;
 import cn.ussshenzhou.ares.gun.client.animation.runtime.AnimationRuntime;
@@ -99,7 +100,7 @@ public class GunAnimationInstance implements IFPAnimationInstance {
         /// > 下挂卸载时强制结束可能进行中的模式切换过渡，避免卡在客户端锁定态。
         lastModuleMode = GunModuleMode.PRIMARY;
         IGunOperator.asGunHolder(player).ifPresent(op -> {
-            if (op instanceof cn.ussshenzhou.ares.gun.capability.LocalGunOperator localOp) {
+            if (op instanceof LocalGunOperator localOp) {
                 localOp.clearModeTransition();
             }
         });
@@ -294,7 +295,7 @@ public class GunAnimationInstance implements IFPAnimationInstance {
         float durationSeconds = animationRuntime.playHostOverlayTransition(toUnderBarrel);
         if (durationSeconds > 0) {
             IGunOperator.asGunHolder(player).ifPresent(op -> {
-                if (op instanceof cn.ussshenzhou.ares.gun.capability.LocalGunOperator localOp) {
+                if (op instanceof LocalGunOperator localOp) {
                     localOp.extendModeTransition((long) (durationSeconds * 1000));
                 }
             });

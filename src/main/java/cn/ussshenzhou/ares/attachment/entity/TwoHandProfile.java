@@ -1,4 +1,4 @@
-package cn.ussshenzhou.ares.gun.capability;
+package cn.ussshenzhou.ares.attachment.entity;
 
 /// > 双手持枪形态：能力全开，属性 / 时长恒等（即现状行为）。
 /// @author TACZ, USS_Shenzhou

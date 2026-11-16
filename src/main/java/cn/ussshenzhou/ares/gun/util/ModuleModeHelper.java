@@ -1,6 +1,6 @@
 package cn.ussshenzhou.ares.gun.util;
 
-import cn.ussshenzhou.ares.gun.capability.GunModuleMode;
+import cn.ussshenzhou.ares.attachment.entity.GunModuleMode;
 import cn.ussshenzhou.ares.gun.init.ModDataComponents;
 import net.minecraft.world.item.ItemStack;
 

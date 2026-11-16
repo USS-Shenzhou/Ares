@@ -1,5 +1,6 @@
 package cn.ussshenzhou.ares.gun.gameplay.timeline.segment;
 
+import cn.ussshenzhou.ares.attachment.entity.GunHolderState;
 import cn.ussshenzhou.ares.gun.gameplay.timeline.ActionGate;
 import cn.ussshenzhou.ares.gun.gameplay.timeline.ActionSegment;
 import cn.ussshenzhou.ares.gun.gameplay.timeline.SegmentToken;
@@ -12,7 +13,7 @@ import cn.ussshenzhou.ares.gun.gameplay.timeline.Timer;
 /// > 服务端 moduleMode 立即翻转、不动网络协议。
 /// > <p>
 /// > 时长由动画侧回填（{@link #extend(long)} 仅允许延长，不缩短）。过渡结束后轨道自然消失。
-/// > 不投影 {@link cn.ussshenzhou.ares.gun.capability.GunHolderState}（过渡不是持枪者状态，纯门禁与进度）。
+/// > 不投影 {@link GunHolderState}（过渡不是持枪者状态，纯门禁与进度）。
 /// @author TACZ, USS_Shenzhou
 public class ModeTransitionSegment extends ActionSegment {
 

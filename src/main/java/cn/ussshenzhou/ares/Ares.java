@@ -2,7 +2,7 @@ package cn.ussshenzhou.ares;
 
 import cn.ussshenzhou.ares.gun.config.ClientConfig;
 import cn.ussshenzhou.ares.gun.init.ModAttachmentTypes;
-import cn.ussshenzhou.ares.gun.init.ModCapabilities;
+import cn.ussshenzhou.ares.attachment.ModAttachments;
 import cn.ussshenzhou.ares.gun.init.ModCustomItemTypes;
 import cn.ussshenzhou.ares.gun.init.ModDataComponents;
 import cn.ussshenzhou.ares.gun.init.ModEntities;
@@ -27,7 +27,7 @@ public class Ares {
         ModItems.ITEMS.register(modEventBus);
         ModItems.TABS.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
-        ModCapabilities.ATTACHMENT_TYPES.register(modEventBus);
+        ModAttachments.ATTACHMENT_TYPES.register(modEventBus);
         modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
         SimpleBedrockModel.init(modEventBus, modContainer);
     }

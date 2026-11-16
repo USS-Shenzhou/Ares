@@ -1,10 +1,7 @@
-package cn.ussshenzhou.ares.gun.capability;
+package cn.ussshenzhou.ares.attachment.entity;
 
-import cn.ussshenzhou.ares.gun.capability.GunOperationSessionKind;
-import cn.ussshenzhou.ares.gun.capability.WieldProfile;
 import cn.ussshenzhou.ares.gun.gameplay.ShootResult;
 import cn.ussshenzhou.ares.gun.item.IGun;
-import cn.ussshenzhou.ares.gun.capability.session.ServerHandGunSession;
 import cn.ussshenzhou.ares.gun.util.HeldGunHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;

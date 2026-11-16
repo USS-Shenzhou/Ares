@@ -4,7 +4,7 @@ import cn.ussshenzhou.ares.gun.client.ClientSetup;
 import cn.ussshenzhou.ares.Ares;
 import net.neoforged.fml.common.EventBusSubscriber;
 import com.mojang.blaze3d.platform.InputConstants;
-import cn.ussshenzhou.ares.gun.capability.IGunOperator;
+import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.gun.util.HeldGunHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;

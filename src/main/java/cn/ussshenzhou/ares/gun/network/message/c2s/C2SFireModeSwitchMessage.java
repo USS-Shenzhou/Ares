@@ -1,13 +1,14 @@
 package cn.ussshenzhou.ares.gun.network.message.c2s;
 
 import cn.ussshenzhou.ares.Ares;
+import cn.ussshenzhou.ares.attachment.entity.GunModuleMode;
 import cn.ussshenzhou.t88.network.annotation.ServerHandler;
 import cn.ussshenzhou.t88.network.annotation.Decoder;
 import cn.ussshenzhou.t88.network.annotation.Encoder;
 import cn.ussshenzhou.t88.network.annotation.NetPacket;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import cn.ussshenzhou.ares.gun.capability.IGunOperator;
-import cn.ussshenzhou.ares.gun.capability.ServerPlayerGunCapability;
+import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
+import cn.ussshenzhou.ares.attachment.entity.ServerPlayerGunCapability;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -51,8 +52,8 @@ public class C2SFireModeSwitchMessage {
                 serverOp.switchCombinedMode(hand, modeIndex);
             } else {
                 op.setModuleMode(hand, modeIndex == UNDER_BARREL_MODE
-                        ? cn.ussshenzhou.ares.gun.capability.GunModuleMode.UNDER_BARREL
-                        : cn.ussshenzhou.ares.gun.capability.GunModuleMode.PRIMARY);
+                        ? GunModuleMode.UNDER_BARREL
+                        : GunModuleMode.PRIMARY);
             }
         });
     }

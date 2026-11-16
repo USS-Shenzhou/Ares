@@ -1,13 +1,13 @@
 package cn.ussshenzhou.ares.gun.client.animation.context;
 
 import cn.ussshenzhou.ares.Ares;
-import cn.ussshenzhou.ares.gun.capability.GunHolderState;
-import cn.ussshenzhou.ares.gun.capability.GunModuleMode;
-import cn.ussshenzhou.ares.gun.capability.IGunOperator;
+import cn.ussshenzhou.ares.attachment.entity.GunHolderState;
+import cn.ussshenzhou.ares.attachment.entity.GunModuleMode;
+import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.gun.item.AttachmentSlot;
 import cn.ussshenzhou.ares.gun.item.IGun;
 
-import cn.ussshenzhou.ares.gun.capability.LocalGunOperator;
+import cn.ussshenzhou.ares.attachment.entity.LocalGunOperator;
 import cn.ussshenzhou.ares.gun.client.animation.mounted.HostOverlayBridge;
 import cn.ussshenzhou.ares.gun.client.resource.display.GunDisplayInstance;
 import cn.ussshenzhou.ares.gun.custom.gun.BoltType;

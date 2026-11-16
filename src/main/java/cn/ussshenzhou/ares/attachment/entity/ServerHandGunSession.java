@@ -1,10 +1,6 @@
-package cn.ussshenzhou.ares.gun.capability.session;
+package cn.ussshenzhou.ares.attachment.entity;
 
 import cn.ussshenzhou.ares.gun.attribute.GunAttributes;
-import cn.ussshenzhou.ares.gun.capability.GunHolderState;
-import cn.ussshenzhou.ares.gun.capability.GunModuleMode;
-import cn.ussshenzhou.ares.gun.capability.HandGunSession;
-import cn.ussshenzhou.ares.gun.capability.WieldProfile;
 import cn.ussshenzhou.ares.gun.gameplay.MuzzleReference;
 import cn.ussshenzhou.ares.gun.gameplay.ShootResult;
 import cn.ussshenzhou.ares.gun.item.AttachmentPath;

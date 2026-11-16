@@ -1,10 +1,10 @@
 package cn.ussshenzhou.ares.gun.handler;
 
 import cn.ussshenzhou.ares.Ares;
-import cn.ussshenzhou.ares.gun.capability.GunHolderState;
-import cn.ussshenzhou.ares.gun.capability.IGunOperator;
+import cn.ussshenzhou.ares.attachment.entity.GunHolderState;
+import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.gun.item.IGun;
-import cn.ussshenzhou.ares.gun.capability.ServerPlayerGunCapability;
+import cn.ussshenzhou.ares.attachment.entity.ServerPlayerGunCapability;
 import cn.ussshenzhou.ares.gun.util.AttributeDataHelper;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;

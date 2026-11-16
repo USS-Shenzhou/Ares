@@ -5,7 +5,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import cn.ussshenzhou.ares.gun.attribute.InaccuracyType;
 import cn.ussshenzhou.ares.gun.custom.attribute.GunPropertiesCaches;
-import cn.ussshenzhou.ares.gun.capability.IGunOperator;
+import cn.ussshenzhou.ares.capability.IGunOperator;
 import cn.ussshenzhou.ares.gun.item.IGun;
 import cn.ussshenzhou.ares.gun.config.ClientConfig;
 import net.minecraft.client.Minecraft;

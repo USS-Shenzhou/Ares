@@ -1,8 +1,8 @@
 package cn.ussshenzhou.ares.gun.handler;
 
 import cn.ussshenzhou.ares.Ares;
-import cn.ussshenzhou.ares.gun.capability.IGunOperator;
-import cn.ussshenzhou.ares.gun.capability.ServerPlayerGunCapability;
+import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
+import cn.ussshenzhou.ares.attachment.entity.ServerPlayerGunCapability;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;

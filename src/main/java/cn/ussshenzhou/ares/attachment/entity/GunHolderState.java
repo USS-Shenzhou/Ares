@@ -1,4 +1,4 @@
-package cn.ussshenzhou.ares.gun.capability;
+package cn.ussshenzhou.ares.attachment.entity;
 
 /// > 持枪者状态枚举，为了平衡体验，可能不是所有状态都会在服务端体现
 /// @author TACZ, USS_Shenzhou

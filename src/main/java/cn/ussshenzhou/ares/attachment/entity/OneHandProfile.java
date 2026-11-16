@@ -1,4 +1,4 @@
-package cn.ussshenzhou.ares.gun.capability;
+package cn.ussshenzhou.ares.attachment.entity;
 
 /// > 单手双持形态：禁用瞄准 / 检视 / 模块模式切换。
 /// > <p>

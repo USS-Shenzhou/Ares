@@ -1,4 +1,4 @@
-package cn.ussshenzhou.ares.gun.capability;
+package cn.ussshenzhou.ares.attachment.entity;
 
 import cn.ussshenzhou.ares.gun.gameplay.ShootResult;
 import net.minecraft.world.InteractionHand;

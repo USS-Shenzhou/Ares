@@ -1,5 +1,6 @@
 package cn.ussshenzhou.ares.gun.gameplay.reload;
 
+import cn.ussshenzhou.ares.attachment.entity.ServerHandGunSession;
 import cn.ussshenzhou.ares.gun.custom.attribute.GunPropertiesCaches;
 import cn.ussshenzhou.ares.gun.custom.gun.BoltType;
 import cn.ussshenzhou.ares.gun.custom.gun.GunData;
@@ -18,7 +19,7 @@ import java.util.function.Supplier;
 
 /// > 服务端换弹的副作用任务链（{@link StepSequence.Step} 实现）。
 /// > <p>
-/// > 编排层（{@link cn.ussshenzhou.ares.gun.capability.session.ServerHandGunSession}）据 {@link GunData}
+/// > 编排层（{@link ServerHandGunSession}）据 {@link GunData}
 /// > 构建初始 Step，交给 {@link cn.ussshenzhou.ares.gun.gameplay.timeline.segment.ReloadSegment} 用
 /// > {@link StepSequence} 驱动。时间线只负责计时与流转；本类承载全部权威副作用：
 /// > 扣背包、写 AmmoCount/AmmoId、空仓自带补膛、{@code ON_RELOAD_COMPLETE} 钩子与

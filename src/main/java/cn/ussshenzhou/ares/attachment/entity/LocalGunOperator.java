@@ -1,12 +1,8 @@
-package cn.ussshenzhou.ares.gun.capability;
+package cn.ussshenzhou.ares.attachment.entity;
 
-import cn.ussshenzhou.ares.gun.capability.GunModuleMode;
-import cn.ussshenzhou.ares.gun.capability.GunOperationSessionKind;
-import cn.ussshenzhou.ares.gun.capability.WieldProfile;
 import cn.ussshenzhou.ares.gun.item.AttachmentPath;
 import cn.ussshenzhou.ares.gun.item.IGun;
 import cn.ussshenzhou.ares.gun.item.IMountedWeapon;
-import cn.ussshenzhou.ares.gun.capability.session.ClientHandGunSession;
 import cn.ussshenzhou.ares.gun.client.resource.display.AttachmentDisplayInstance;
 import cn.ussshenzhou.ares.gun.client.util.AimFovHelper;
 import cn.ussshenzhou.ares.gun.client.util.AimView;

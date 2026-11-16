@@ -60,3 +60,4 @@ NeoForge已禁止任何形式的OnlyIn。约定通过包名client或者类名后
 - 原文件中的注释使用Markdown引用格式（`/// > `）保留，不翻译、不改写。
 - `@author`：原文件有`@author`时照抄，并在末尾加上`USS_Shenzhou`；原文件没有时，写`@author TACZ, USS_Shenzhou`；不来自TACZ的新文件只写`@author USS_Shenzhou`。
 - 从TACZ移植的文件，如果相对原文件只有package和import的变化、元素重命名、单纯去除功能，执行`git add`，以便区分移植文件与改动过的文件。
+- 不作移植：弹种切换、退弹、资源同步、外部枪包、Json Hook、Lua、Javascript、

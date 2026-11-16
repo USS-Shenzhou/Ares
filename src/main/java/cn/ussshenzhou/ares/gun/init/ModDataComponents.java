@@ -1,7 +1,7 @@
 package cn.ussshenzhou.ares.gun.init;
 
 import cn.ussshenzhou.ares.Ares;
-import cn.ussshenzhou.ares.gun.capability.GunModuleMode;
+import cn.ussshenzhou.ares.attachment.entity.GunModuleMode;
 import cn.ussshenzhou.ares.gun.custom.charm.GunCharmData;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;

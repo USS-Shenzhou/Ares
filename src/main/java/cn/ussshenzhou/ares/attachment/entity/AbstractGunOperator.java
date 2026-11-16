@@ -1,13 +1,5 @@
-package cn.ussshenzhou.ares.gun.capability;
+package cn.ussshenzhou.ares.attachment.entity;
 
-import cn.ussshenzhou.ares.gun.capability.GunHolderState;
-import cn.ussshenzhou.ares.gun.capability.GunModuleMode;
-import cn.ussshenzhou.ares.gun.capability.GunOperationSessionKind;
-import cn.ussshenzhou.ares.gun.capability.HandGunSession;
-import cn.ussshenzhou.ares.gun.capability.IGunOperator;
-import cn.ussshenzhou.ares.gun.capability.OneHandProfile;
-import cn.ussshenzhou.ares.gun.capability.TwoHandProfile;
-import cn.ussshenzhou.ares.gun.capability.WieldProfile;
 import cn.ussshenzhou.ares.gun.util.HeldGunHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;

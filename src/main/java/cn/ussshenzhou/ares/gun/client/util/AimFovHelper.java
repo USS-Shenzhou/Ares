@@ -1,10 +1,10 @@
 package cn.ussshenzhou.ares.gun.client.util;
 
 import cn.ussshenzhou.ares.gun.TimelessHelperC;
-import cn.ussshenzhou.ares.gun.capability.IGunOperator;
+import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.gun.item.IGun;
-import cn.ussshenzhou.ares.gun.capability.LocalGunOperator;
-import cn.ussshenzhou.ares.gun.capability.session.ClientHandGunSession.ZoomPrediction;
+import cn.ussshenzhou.ares.attachment.entity.LocalGunOperator;
+import cn.ussshenzhou.ares.attachment.entity.ClientHandGunSession.ZoomPrediction;
 import cn.ussshenzhou.ares.gun.client.resource.display.AttachmentDisplayInstance;
 import cn.ussshenzhou.ares.gun.client.resource.display.GunDisplayInstance;
 import cn.ussshenzhou.ares.gun.util.math.MathUtil;
