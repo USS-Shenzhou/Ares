@@ -1,0 +1,75 @@
+{
+  "entryStateId": "draw",
+  "onInit": "(gun.fire_mode_index == 1) ? action.play_loop('selector', 'static_semi') : action.play_loop('selector', 'static_auto')",
+  "states": [
+    {
+      "id": "draw",
+      "name": "draw",
+      "pose": { "tracks": ["base", "selector"] },
+      "onEnter": "action.play_once('base', 'draw')"
+    },
+    {
+      "id": "idle",
+      "name": "idle",
+      "pose": { "tracks": ["base", "selector", "bolt_caught"] },
+      "onUpdate": "gun.bolt_caught ? action.ensure_loop('bolt_caught', 'static_bolt_caught') : action.ensure_stop('bolt_caught')"
+    },
+    {
+      "id": "reload_empty",
+      "name": "reload_empty",
+      "pose": { "tracks": ["base", "selector"] }
+    },
+    {
+      "id": "reload_tactical",
+      "name": "reload_tactical",
+      "pose": { "tracks": ["base", "selector"] }
+    },
+    {
+      "id": "inspect",
+      "name": "inspect",
+      "pose": { "tracks": ["base", "selector"] }
+    },
+    {
+      "id": "fire_mode_switch",
+      "name": "fire_mode_switch",
+      "pose": { "track": "base" }
+    },
+    {
+      "id": "bolt",
+      "name": "bolt",
+      "pose": { "tracks": ["base", "selector"] }
+    },
+    {
+      "id": "holster",
+      "name": "holster",
+      "pose": { "tracks": ["base", "selector"] }
+    }
+  ],
+  "transitions": [
+    { "id": "draw_to_idle", "from": { "kind": "state", "stateId": "draw" }, "to": { "kind": "state", "stateId": "idle" }, "condition": "gun.track_end('base')", "afterTrigger": "action.play_loop('base', 'static_idle')", "duration": 0.1, "easing": "LINEAR" },
+    { "id": "draw_to_holster", "from": { "kind": "state", "stateId": "draw" }, "to": { "kind": "state", "stateId": "holster" }, "condition": "gun.request('holster')", "afterTrigger": "action.consume_request(); action.play_once('base', 'put_away')", "duration": 0.1, "easing": "LINEAR" },
+
+    { "id": "idle_to_holster", "from": { "kind": "state", "stateId": "idle" }, "to": { "kind": "state", "stateId": "holster" }, "condition": "gun.request('holster')", "afterTrigger": "action.consume_request(); action.play_once('base', 'put_away')", "duration": 0.1, "easing": "LINEAR" },
+    { "id": "idle_to_reload_empty", "from": { "kind": "state", "stateId": "idle" }, "to": { "kind": "state", "stateId": "reload_empty" }, "condition": "gun.request('reload_empty')", "afterTrigger": "action.consume_request(); action.play_scaled('base', 'reload_empty', gun.reload_expected_seconds)", "duration": 0.15, "easing": "LINEAR" },
+    { "id": "idle_to_reload_tactical", "from": { "kind": "state", "stateId": "idle" }, "to": { "kind": "state", "stateId": "reload_tactical" }, "condition": "gun.request('reload_tactical')", "afterTrigger": "action.consume_request(); action.play_scaled('base', 'reload_tactical', gun.reload_expected_seconds)", "duration": 0.15, "easing": "LINEAR" },
+    { "id": "idle_to_inspect", "from": { "kind": "state", "stateId": "idle" }, "to": { "kind": "state", "stateId": "inspect" }, "condition": "gun.request('inspect')", "afterTrigger": "action.consume_request(); action.play_once('base', 'inspect')", "duration": 0.15, "easing": "LINEAR" },
+    { "id": "idle_to_fire_mode_switch_auto", "from": { "kind": "state", "stateId": "idle" }, "to": { "kind": "state", "stateId": "fire_mode_switch" }, "condition": "gun.request('fire_mode_switch') && gun.fire_mode_index == 0", "afterTrigger": "action.consume_request(); action.play_once('base', 'select_auto')", "duration": 0.1, "easing": "LINEAR" },
+    { "id": "idle_to_fire_mode_switch_semi", "from": { "kind": "state", "stateId": "idle" }, "to": { "kind": "state", "stateId": "fire_mode_switch" }, "condition": "gun.request('fire_mode_switch') && gun.fire_mode_index == 1", "afterTrigger": "action.consume_request(); action.play_once('base', 'select_semi')", "duration": 0.1, "easing": "LINEAR" },
+
+    { "id": "idle_to_bolt", "from": { "kind": "state", "stateId": "idle" }, "to": { "kind": "state", "stateId": "bolt" }, "condition": "gun.gameplay_bolting", "afterTrigger": "action.play_scaled('base', 'bolt', gun.bolt_expected_seconds)", "duration": 0.05, "easing": "LINEAR" },
+    { "id": "bolt_to_idle", "from": { "kind": "state", "stateId": "bolt" }, "to": { "kind": "state", "stateId": "idle" }, "condition": "gun.track_end('base') || !gun.gameplay_bolting", "afterTrigger": "action.play_loop('base', 'static_idle')", "duration": 0.1, "easing": "LINEAR" },
+    { "id": "bolt_to_holster", "from": { "kind": "state", "stateId": "bolt" }, "to": { "kind": "state", "stateId": "holster" }, "condition": "gun.request('holster')", "afterTrigger": "action.consume_request(); action.play_once('base', 'put_away')", "duration": 0.1, "easing": "LINEAR" },
+
+    { "id": "reload_empty_to_idle", "from": { "kind": "state", "stateId": "reload_empty" }, "to": { "kind": "state", "stateId": "idle" }, "condition": "gun.track_end('base') || !gun.gameplay_reloading || gun.fire_pulse", "afterTrigger": "action.play_loop('base', 'static_idle')", "duration": 0.15, "easing": "LINEAR" },
+    { "id": "reload_empty_to_holster", "from": { "kind": "state", "stateId": "reload_empty" }, "to": { "kind": "state", "stateId": "holster" }, "condition": "gun.request('holster')", "afterTrigger": "action.consume_request(); action.play_once('base', 'put_away')", "duration": 0.1, "easing": "LINEAR" },
+
+    { "id": "reload_tactical_to_idle", "from": { "kind": "state", "stateId": "reload_tactical" }, "to": { "kind": "state", "stateId": "idle" }, "condition": "gun.track_end('base') || !gun.gameplay_reloading || gun.fire_pulse", "afterTrigger": "action.play_loop('base', 'static_idle')", "duration": 0.15, "easing": "LINEAR" },
+    { "id": "reload_tactical_to_holster", "from": { "kind": "state", "stateId": "reload_tactical" }, "to": { "kind": "state", "stateId": "holster" }, "condition": "gun.request('holster')", "afterTrigger": "action.consume_request(); action.play_once('base', 'put_away')", "duration": 0.1, "easing": "LINEAR" },
+
+    { "id": "inspect_to_idle", "from": { "kind": "state", "stateId": "inspect" }, "to": { "kind": "state", "stateId": "idle" }, "condition": "gun.track_end('base') || !gun.gameplay_inspecting || gun.fire_pulse", "afterTrigger": "action.play_loop('base', 'static_idle')", "duration": 0.15, "easing": "LINEAR" },
+    { "id": "inspect_to_holster", "from": { "kind": "state", "stateId": "inspect" }, "to": { "kind": "state", "stateId": "holster" }, "condition": "gun.request('holster')", "afterTrigger": "action.consume_request(); action.play_once('base', 'put_away')", "duration": 0.1, "easing": "LINEAR" },
+
+    { "id": "fire_mode_switch_to_idle", "from": { "kind": "state", "stateId": "fire_mode_switch" }, "to": { "kind": "state", "stateId": "idle" }, "condition": "gun.track_end('base') || gun.fire_pulse", "afterTrigger": "((gun.fire_mode_index == 1) ? action.play_loop('selector', 'static_semi') : action.play_loop('selector', 'static_auto')); action.play_loop('base', 'static_idle')", "duration": 0.1, "easing": "LINEAR" },
+    { "id": "fire_mode_switch_to_holster", "from": { "kind": "state", "stateId": "fire_mode_switch" }, "to": { "kind": "state", "stateId": "holster" }, "condition": "gun.request('holster')", "afterTrigger": "action.consume_request(); action.play_once('base', 'put_away')", "duration": 0.1, "easing": "LINEAR" }
+  ]
+}

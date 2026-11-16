@@ -1,0 +1,6 @@
+{
+  // 原厂护木：几何寄生在 m4a1 枪模型的 default_kit_barrel 骨骼中，无独立模型。
+  // 逻辑上是普通 kit_barrel 配件，作为护木接口槽的默认件。
+  "builtin": true,
+  "modifiers": {}
+}

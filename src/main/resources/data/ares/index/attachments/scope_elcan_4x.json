@@ -1,0 +1,7 @@
+{
+  "name": "ares.attachment.scope_elcan_4x.name",
+  "display": "ares:scope_elcan_4x_display",
+  "data": "ares:scope_elcan_4x_data",
+  "type": "scope",
+  "sort": 100
+}

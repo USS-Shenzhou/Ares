@@ -1,0 +1,9 @@
+{
+  "name": "ares.slot_adapter.lt01.name",
+  "display": "ares:lt01_adapter_display",
+  "data": "ares:lt01_adapter_data",
+  "targets": [
+    { "host": "ares:m4a1", "slot": "ares:scope" }
+  ],
+  "sort": 2
+}

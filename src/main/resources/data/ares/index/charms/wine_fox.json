@@ -1,0 +1,6 @@
+{
+  "name": "ares.charm.wine_fox.name",
+  "data": "ares:wine_fox_data",
+  "display": "ares:wine_fox_display",
+  "sort": 3
+}

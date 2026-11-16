@@ -1,0 +1,13 @@
+{
+  "model": "ares:attachment/laser_peq15_geo",
+  "texture": "ares:attachment/uv/laser_peq15",
+  "sounds": {
+    "install": "ares:attachments/attachment_general_b",
+    "uninstall": "ares:attachments/attachment_general_uninstall"
+  },
+  "flashlight": {
+    "bone": "laser_beam",
+    "color": "0xFFE0B0",
+    "range": 30
+  }
+}

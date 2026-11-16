@@ -1,0 +1,7 @@
+{
+  "name": "ares.ammo.12g.name",
+  "data": "ares:12g_data",
+  "display": "ares:12g_display",
+  "type": "shotgun_ammo",
+  "sort": 5
+}

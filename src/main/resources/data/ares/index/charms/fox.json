@@ -1,0 +1,6 @@
+{
+  "name": "ares.charm.fox.name",
+  "data": "ares:fox_data",
+  "display": "ares:fox_display",
+  "sort": 2
+}

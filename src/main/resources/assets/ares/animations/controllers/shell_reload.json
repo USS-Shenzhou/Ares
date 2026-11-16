@@ -1,0 +1,22 @@
+{
+  "type": "ares:standard_weapon_controller",
+  "base": "ares:shell_reload/base",
+  "layers": {
+    "movement": {
+      "type": "state_machine",
+      "machine": "ares:rifle/movement",
+      "blend": {
+        "mode": "additive",
+        "weight": 1.0
+      }
+    },
+    "fire": {
+      "type": "state_machine",
+      "machine": "ares:rifle/fire",
+      "blend": {
+        "mode": "additive",
+        "weight": 1.0
+      }
+    }
+  }
+}

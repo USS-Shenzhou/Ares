@@ -1,0 +1,7 @@
+{
+  "name": "ares.gun.ai_awp.name",
+  "display": "ares:ai_awp_display",
+  "data": "ares:ai_awp_data",
+  "tooltip": "ares.gun.ai_awp.desc",
+  "type": "sniper"
+}

@@ -1,0 +1,5 @@
+{
+  "model": "ares:attachment/adapter/lt01_geo",
+  "texture": "ares:attachment/uv/adapter/lt01_riser",
+  "mount_offset": [0, 0.125, 0]
+}

@@ -1,0 +1,13 @@
+{
+  "model": "ares:attachment/laser_peq15_geo",
+  "texture": "ares:attachment/uv/laser_peq15",
+  "sounds": {
+    "install": "ares:attachments/attachment_general_b",
+    "uninstall": "ares:attachments/attachment_general_uninstall"
+  },
+  "laser": {
+    "bone": "laser_beam",
+    "color": "0xFF6060",
+    "length": 75
+  }
+}

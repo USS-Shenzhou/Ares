@@ -1,0 +1,5 @@
+{
+  "model": "ares:attachment/sight_deltapoint_pistol_geo",
+  "texture": "ares:attachment/uv/sight_deltapoint_pistol",
+  "sight": true
+}

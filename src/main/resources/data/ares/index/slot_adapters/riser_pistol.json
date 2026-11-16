@@ -1,0 +1,9 @@
+{
+  "name": "ares.slot_adapter.riser_pistol.name",
+  "display": "ares:riser_pistol_adapter_display",
+  "data": "ares:riser_pistol_adapter_data",
+  "targets": [
+    { "host": "ares:m4a1", "slot": "ares:scope" }
+  ],
+  "sort": 1
+}

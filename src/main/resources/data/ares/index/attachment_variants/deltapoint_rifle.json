@@ -1,0 +1,9 @@
+{
+  "name": "ares.variant.deltapoint_rifle.name",
+  "display": "ares:deltapoint_rifle_display",
+  "data": "ares:deltapoint_rifle_data",
+  "targets": [
+    "ares:sight_deltapoint"
+  ],
+  "sort": 1
+}

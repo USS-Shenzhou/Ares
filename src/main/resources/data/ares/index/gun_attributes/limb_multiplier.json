@@ -1,0 +1,8 @@
+{
+  "default": 0.75,
+  "min": 0.0,
+  "max": 32767.0,
+  "reference": 1.0,
+  "positive": false,
+  "formatter": "PERCENTAGE"
+}

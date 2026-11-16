@@ -1,0 +1,26 @@
+﻿{
+  "model": "ares:gun/ai_awp_geo",
+  "texture": "ares:gun/uv/ai_awp",
+  "hud": "ares:gun/hud/ai_awp",
+  "slot": "ares:gun/slot/ai_awp",
+  "animation": "ares:ai_awp",
+  "default_animation": "ares:rifle_default",
+  // animation 动画控制器，复用已验证的步枪控制器
+  "controller": "ares:rifle",
+  "muzzle_flash": {
+    "texture": "ares:flash/common_muzzle_flash",
+    "scale": 1
+  },
+  "offhand_show": {
+    "pos": [-2, 20, 4],
+    "rotate": [0, 0, 45],
+    "scale": [0.5, 0.5, 0.5]
+  },
+  "hotbar_show": {
+    "0": {
+      "pos": [-4, 26, 3],
+      "rotate": [-90, -5, -90],
+      "scale": [0.5, 0.5, 0.5]
+    }
+  }
+}

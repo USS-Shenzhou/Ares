@@ -1,0 +1,69 @@
+{
+  "model": "ares:gun/m870_geo",
+  "texture": "ares:gun/uv/m870",
+  "lod": {
+    "model": "ares:gun/lod/m870",
+    "texture": "ares:gun/lod/m870"
+  },
+  "hud": "ares:gun/hud/m870",
+  "slot": "ares:gun/slot/m870",
+  "ammo_count_style": "normal",
+  "damage_style": "per_projectile",
+  "animation": "ares:m870",
+  "controller": "ares:shell_reload",
+  "default_animation": "ares:rifle_default",
+  "animation_pose_compositions": [
+    { "target": "draw", "base_pose": "static_idle" }
+  ],
+  "third_person_animation": "default",
+  "player_animator_3rd": "ares:rifle_default.player_animation",
+  "show_crosshair": false,
+  "transform": {
+    "scale": {
+      "thirdperson": [0.6, 0.6, 0.6],
+      "ground": [0.6, 0.6, 0.6],
+      "fixed": [1.2, 1.2, 1.2]
+    }
+  },
+  "muzzle_flash": {
+    "texture": "ares:flash/common_muzzle_flash",
+    "scale": 1.2
+  },
+  "iron_zoom": 1.2,
+  "shell": {
+    "initial_velocity": [5, 0.5, 1],
+    "random_velocity": [1, 0.5, 0.25],
+    "acceleration": [0.0, -10, 0.0],
+    "angular_velocity": [360, -960, 90],
+    "living_time": 1.0
+  },
+  "sounds": {
+    "draw": "ares:m870/m870_draw",
+    "shoot": "ares:m870/m870_shoot",
+    "shoot_3p": "ares:m870/m870_shoot_3p",
+    "silence": "ares:m870/m870_silence",
+    "silence_3p": "ares:m870/m870_silence_3p",
+    "put_away": "ares:m870/m870_put_away",
+    "melee_push": "ares:melee_stock/melee_stock_02",
+    "melee_stock": "ares:melee_stock/melee_stock_03"
+  },
+  "offhand_show": {
+    "pos": [1, 20, 3.5],
+    "rotate": [0, 0, 60],
+    "scale": [0.5, 0.5, 0.5]
+  },
+  "hotbar_show": {
+    "0": {
+      "pos": [-1, 20, 3],
+      "rotate": [-180, 0, 120],
+      "scale": [0.5, 0.5, 0.5]
+    }
+  },
+  "controllable": {
+    "semi": {
+      "low_frequency": 0.25,
+      "high_frequency": 0.5,
+      "time": 100
+    }
+  }
+}

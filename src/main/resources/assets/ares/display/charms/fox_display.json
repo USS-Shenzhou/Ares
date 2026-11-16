@@ -1,0 +1,12 @@
+{
+  "model": "ares:charm/fox",
+  "texture": "ares:charm/fox",
+  "render": {
+    "scale": [1.0, 1.0, 1.0],
+    "rotation": [0.0, 0.0, 0.0],
+    "dynamic_rotation": [0.0, 0.0, 0.0],
+    "tint": [1.0, 1.0, 1.0],
+    "forward_axis": [-1.0, 0.0, 0.0],
+    "anchor_clearance_pixels": 0.0
+  }
+}

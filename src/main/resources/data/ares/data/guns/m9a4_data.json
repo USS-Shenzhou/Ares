@@ -1,0 +1,58 @@
+{
+  // 基础属性
+  "attributes": {
+    "damage": 5.0,
+    "weight": 0.5,
+    "knockback": 0.0,
+    "ammo_speed": 200.0,
+    "inaccuracy_move": 6.0,
+    "inaccuracy_stand": 4.0,
+    "inaccuracy_sneak": 2.5,
+    "inaccuracy_lie": 2.0,
+    "inaccuracy_aim": 1.0,
+    "armor_ignore": 0.1,
+    "headshot_multiplier": 1.5,
+    "rpm": 450.0
+  },
+  // 单手枪：主副手都是单手枪时进入双持
+  "one_handed": true,
+  "projectile_type": "laser",
+  "laser": {
+    "color": [1.0, 0.0, 0.0],   // 束流颜色 RGB（每分量 0~1）
+    "max_range": 64.0,          // 最大射程（米），硬上限 256
+    "hold_ticks": 2,            // 脉冲束表现时长（tick）
+    "pierce": -1                // 穿透覆盖：>=0 覆盖枪械 PIERCE 属性，<0 = 沿用枪械属性
+  },
+  // 配件槽
+  "attachment_slots": [
+    "muzzle",
+    "laser"
+  ],
+  // 数据容器
+  "data_container": [
+    "ares:default"
+  ],
+  // 弹匣容量
+  "magazine_capacity": 15,
+  // 适用弹种列表
+  "ammos": [
+    {
+      "type": "ares:762x39",
+      "modifiers": {}
+    }
+  ],
+  // 适用弹种
+  "accepted_ammo": "ares:762x39",
+  // 开火模式：仅半自动
+  "fire_modes": [
+    "semi",
+    "auto"
+  ],
+  // 换弹方式
+  "reload_type": "magazine",
+  // 换弹总时长（tick）
+  "reload_duration": 40,
+  // 掏枪 / 收枪 / 抬起时长（秒）
+  "draw_time": 0.3,
+  "put_away_time": 0.4
+}

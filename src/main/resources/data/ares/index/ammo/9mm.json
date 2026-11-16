@@ -1,0 +1,7 @@
+{
+  "name": "ares.ammo.9mm.name",
+  "data": "ares:9mm_data",
+  "display": "ares:9mm_display",
+  "type": "pistol_ammo",
+  "sort": 2
+}

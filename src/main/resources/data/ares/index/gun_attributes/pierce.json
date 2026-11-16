@@ -1,0 +1,7 @@
+{
+  "default": 1.0,
+  "min": 0.0,
+  "max": 32767.0,
+  "reference": 5.0,
+  "positive": true
+}

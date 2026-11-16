@@ -1,0 +1,20 @@
+{
+  "slot": "ares:attachment/slot/sight_coyote",
+  // 配件的默认模型，不可为空
+  "model": "ares:kit/m4a1_kit_urgi_geo",
+  // 配件默认模型使用的材质，不可为空
+  "texture": "ares:kit/uv/m4a1_kit_urgi",
+  "sounds": {
+    "install": "ares:attachments/scope_general_c",
+    "uninstall": "ares:attachments/scope_general_c"
+  },
+  "attachment_slot_display": {
+    "ares:muzzle": {
+      "pos_group": "muzzle_pos",
+      "default_model_group": "muzzle_default",
+      "refit_view_group": "refit_muzzle_view",
+      "icon": "ares:xxx",
+      "title": "tooltip.ares.attachment.muzzle"
+    }
+  }
+}

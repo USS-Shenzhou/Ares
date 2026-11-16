@@ -1,0 +1,95 @@
+{
+  "entryStateId": "idle",
+  "onInit": "action.play_loop('idle', 'idle'); action.play_manual('walk_forward', 'walk_forward'); action.set_locomotion_phase('walk_forward', 2.0, 1.0); action.play_manual('walk_backward', 'walk_backward'); action.set_locomotion_phase('walk_backward', 2.0, 1.0); action.play_manual('walk_sideway', 'walk_sideway'); action.set_locomotion_phase('walk_sideway', 2.0, 1.0); action.play_manual('walk_aiming', 'walk_aiming'); action.set_locomotion_phase('walk_aiming', 2.0, 1.0); action.play_manual('run', 'run'); action.set_locomotion_phase('run', 2.0, 0.8); action.play_manual('run_hold', 'run_hold'); action.set_locomotion_phase('run_hold', 2.0, 0.8)",
+  "states": [
+    {
+      "id": "idle",
+      "name": "idle",
+      "pose": { "track": "idle" }
+    },
+    {
+      "id": "walk_forward",
+      "name": "walk_forward",
+      "pose": { "track": "walk_forward" }
+    },
+    {
+      "id": "walk_backward",
+      "name": "walk_backward",
+      "pose": { "track": "walk_backward" }
+    },
+    {
+      "id": "walk_sideway",
+      "name": "walk_sideway",
+      "pose": { "track": "walk_sideway" }
+    },
+    {
+      "id": "walk_aiming",
+      "name": "walk_aiming",
+      "pose": { "track": "walk_aiming" }
+    },
+    {
+      "id": "run_start",
+      "name": "run_start",
+      "pose": { "track": "run_start" }
+    },
+    {
+      "id": "run",
+      "name": "run",
+      "pose": { "track": "run" }
+    },
+    {
+      "id": "run_hold",
+      "name": "run_hold",
+      "pose": { "track": "run_hold" }
+    },
+    {
+      "id": "run_end",
+      "name": "run_end",
+      "pose": { "track": "run_end" }
+    }
+  ],
+  "transitions": [
+    { "id": "idle_to_walk_forward", "from": { "kind": "state", "stateId": "idle" }, "to": { "kind": "state", "stateId": "walk_forward" }, "condition": "gun.movement_walk_forward", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "idle_to_walk_backward", "from": { "kind": "state", "stateId": "idle" }, "to": { "kind": "state", "stateId": "walk_backward" }, "condition": "gun.movement_walk_backward", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "idle_to_walk_sideway", "from": { "kind": "state", "stateId": "idle" }, "to": { "kind": "state", "stateId": "walk_sideway" }, "condition": "gun.movement_walk_sideway", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "idle_to_walk_aiming", "from": { "kind": "state", "stateId": "idle" }, "to": { "kind": "state", "stateId": "walk_aiming" }, "condition": "gun.movement_walk_aiming", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "idle_to_run_start", "from": { "kind": "state", "stateId": "idle" }, "to": { "kind": "state", "stateId": "run_start" }, "condition": "gun.movement_run", "afterTrigger": "action.play_once('run_start', 'run_start')", "duration": 0.2, "easing": "LINEAR" },
+
+    { "id": "walk_forward_to_idle", "from": { "kind": "state", "stateId": "walk_forward" }, "to": { "kind": "state", "stateId": "idle" }, "condition": "gun.movement_idle", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "walk_forward_to_walk_backward", "from": { "kind": "state", "stateId": "walk_forward" }, "to": { "kind": "state", "stateId": "walk_backward" }, "condition": "gun.movement_walk_backward", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "walk_forward_to_walk_sideway", "from": { "kind": "state", "stateId": "walk_forward" }, "to": { "kind": "state", "stateId": "walk_sideway" }, "condition": "gun.movement_walk_sideway", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "walk_forward_to_walk_aiming", "from": { "kind": "state", "stateId": "walk_forward" }, "to": { "kind": "state", "stateId": "walk_aiming" }, "condition": "gun.movement_walk_aiming", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "walk_forward_to_run_start", "from": { "kind": "state", "stateId": "walk_forward" }, "to": { "kind": "state", "stateId": "run_start" }, "condition": "gun.movement_run", "afterTrigger": "action.play_once('run_start', 'run_start')", "duration": 0.2, "easing": "LINEAR" },
+
+    { "id": "walk_backward_to_idle", "from": { "kind": "state", "stateId": "walk_backward" }, "to": { "kind": "state", "stateId": "idle" }, "condition": "gun.movement_idle", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "walk_backward_to_walk_forward", "from": { "kind": "state", "stateId": "walk_backward" }, "to": { "kind": "state", "stateId": "walk_forward" }, "condition": "gun.movement_walk_forward", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "walk_backward_to_walk_sideway", "from": { "kind": "state", "stateId": "walk_backward" }, "to": { "kind": "state", "stateId": "walk_sideway" }, "condition": "gun.movement_walk_sideway", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "walk_backward_to_walk_aiming", "from": { "kind": "state", "stateId": "walk_backward" }, "to": { "kind": "state", "stateId": "walk_aiming" }, "condition": "gun.movement_walk_aiming", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "walk_backward_to_run_start", "from": { "kind": "state", "stateId": "walk_backward" }, "to": { "kind": "state", "stateId": "run_start" }, "condition": "gun.movement_run", "afterTrigger": "action.play_once('run_start', 'run_start')", "duration": 0.2, "easing": "LINEAR" },
+
+    { "id": "walk_sideway_to_idle", "from": { "kind": "state", "stateId": "walk_sideway" }, "to": { "kind": "state", "stateId": "idle" }, "condition": "gun.movement_idle", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "walk_sideway_to_walk_forward", "from": { "kind": "state", "stateId": "walk_sideway" }, "to": { "kind": "state", "stateId": "walk_forward" }, "condition": "gun.movement_walk_forward", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "walk_sideway_to_walk_backward", "from": { "kind": "state", "stateId": "walk_sideway" }, "to": { "kind": "state", "stateId": "walk_backward" }, "condition": "gun.movement_walk_backward", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "walk_sideway_to_walk_aiming", "from": { "kind": "state", "stateId": "walk_sideway" }, "to": { "kind": "state", "stateId": "walk_aiming" }, "condition": "gun.movement_walk_aiming", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "walk_sideway_to_run_start", "from": { "kind": "state", "stateId": "walk_sideway" }, "to": { "kind": "state", "stateId": "run_start" }, "condition": "gun.movement_run", "afterTrigger": "action.play_once('run_start', 'run_start')", "duration": 0.2, "easing": "LINEAR" },
+
+    { "id": "walk_aiming_to_idle", "from": { "kind": "state", "stateId": "walk_aiming" }, "to": { "kind": "state", "stateId": "idle" }, "condition": "gun.movement_idle", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "walk_aiming_to_walk_forward", "from": { "kind": "state", "stateId": "walk_aiming" }, "to": { "kind": "state", "stateId": "walk_forward" }, "condition": "gun.movement_walk_forward", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "walk_aiming_to_walk_backward", "from": { "kind": "state", "stateId": "walk_aiming" }, "to": { "kind": "state", "stateId": "walk_backward" }, "condition": "gun.movement_walk_backward", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "walk_aiming_to_walk_sideway", "from": { "kind": "state", "stateId": "walk_aiming" }, "to": { "kind": "state", "stateId": "walk_sideway" }, "condition": "gun.movement_walk_sideway", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "walk_aiming_to_run_start", "from": { "kind": "state", "stateId": "walk_aiming" }, "to": { "kind": "state", "stateId": "run_start" }, "condition": "gun.movement_run", "afterTrigger": "action.play_once('run_start', 'run_start')", "duration": 0.2, "easing": "LINEAR" },
+
+    { "id": "run_start_to_run", "from": { "kind": "state", "stateId": "run_start" }, "to": { "kind": "state", "stateId": "run" }, "condition": "gun.track_end('run_start')", "duration": 0.075, "easing": "LINEAR" },
+    { "id": "run_to_run_hold", "from": { "kind": "state", "stateId": "run" }, "to": { "kind": "state", "stateId": "run_hold" }, "condition": "gun.movement_run_hold", "duration": 0.18, "easing": "LINEAR" },
+    { "id": "run_to_run_end", "from": { "kind": "state", "stateId": "run" }, "to": { "kind": "state", "stateId": "run_end" }, "condition": "!gun.running_like", "afterTrigger": "action.play_once('run_end', 'run_end')", "duration": 0.1, "easing": "LINEAR" },
+    { "id": "run_hold_to_run", "from": { "kind": "state", "stateId": "run_hold" }, "to": { "kind": "state", "stateId": "run" }, "condition": "gun.movement_run", "duration": 0.1, "easing": "LINEAR" },
+    { "id": "run_hold_to_run_end", "from": { "kind": "state", "stateId": "run_hold" }, "to": { "kind": "state", "stateId": "run_end" }, "condition": "!gun.running_like", "afterTrigger": "action.play_once('run_end', 'run_end')", "duration": 0.1, "easing": "LINEAR" },
+
+    { "id": "run_end_to_run_start", "from": { "kind": "state", "stateId": "run_end" }, "to": { "kind": "state", "stateId": "run_start" }, "condition": "gun.track_end('run_end') && gun.movement_run", "afterTrigger": "action.play_once('run_start', 'run_start')", "duration": 0.05, "easing": "LINEAR" },
+    { "id": "run_end_to_idle", "from": { "kind": "state", "stateId": "run_end" }, "to": { "kind": "state", "stateId": "idle" }, "condition": "gun.track_end('run_end') && gun.movement_idle", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "run_end_to_walk_forward", "from": { "kind": "state", "stateId": "run_end" }, "to": { "kind": "state", "stateId": "walk_forward" }, "condition": "gun.track_end('run_end') && gun.movement_walk_forward", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "run_end_to_walk_backward", "from": { "kind": "state", "stateId": "run_end" }, "to": { "kind": "state", "stateId": "walk_backward" }, "condition": "gun.track_end('run_end') && gun.movement_walk_backward", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "run_end_to_walk_sideway", "from": { "kind": "state", "stateId": "run_end" }, "to": { "kind": "state", "stateId": "walk_sideway" }, "condition": "gun.track_end('run_end') && gun.movement_walk_sideway", "duration": 0.2, "easing": "LINEAR" },
+    { "id": "run_end_to_walk_aiming", "from": { "kind": "state", "stateId": "run_end" }, "to": { "kind": "state", "stateId": "walk_aiming" }, "condition": "gun.track_end('run_end') && gun.movement_walk_aiming", "duration": 0.2, "easing": "LINEAR" }
+  ]
+}

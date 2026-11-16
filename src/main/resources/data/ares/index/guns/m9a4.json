@@ -1,0 +1,8 @@
+{
+  "name": "ares.gun.m9a4.name",
+  "display": "ares:m9a4_display",
+  "data": "ares:m9a4_data",
+  "type": "pistol",
+  "tooltip": "ares.gun.m9a4.desc",
+  "sort": 10
+}

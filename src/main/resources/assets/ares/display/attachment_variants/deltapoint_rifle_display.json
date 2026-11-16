@@ -1,0 +1,6 @@
+{
+  "model": "ares:attachment/sight_deltapoint_rifle_geo",
+  "texture": "ares:attachment/uv/sight_deltapoint_rifle",
+  "sight": true,
+  "mode": "replace"
+}

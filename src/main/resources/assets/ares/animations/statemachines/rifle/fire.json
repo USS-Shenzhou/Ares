@@ -1,0 +1,21 @@
+{
+  "entryStateId": "idle",
+  "onInit": "",
+  "states": [
+    {
+      "id": "idle",
+      "name": "idle"
+    },
+    {
+      "id": "shot",
+      "name": "shot",
+      "pose": { "track": "fire" },
+      "onEnter": "action.consume_fire(); action.play_montage('fire', 'ares:rifle/fire', 'main')"
+    }
+  ],
+  "transitions": [
+    { "id": "idle_to_shot", "from": { "kind": "state", "stateId": "idle" }, "to": { "kind": "state", "stateId": "shot" }, "condition": "gun.has_unconsumed_fire", "duration": 0.0, "easing": "LINEAR" },
+    { "id": "shot_to_shot", "from": { "kind": "state", "stateId": "shot" }, "to": { "kind": "state", "stateId": "shot" }, "condition": "gun.has_unconsumed_fire", "duration": 0.0, "easing": "LINEAR" },
+    { "id": "shot_to_idle", "from": { "kind": "state", "stateId": "shot" }, "to": { "kind": "state", "stateId": "idle" }, "condition": "gun.track_end('fire')", "duration": 0.0, "easing": "LINEAR" }
+  ]
+}

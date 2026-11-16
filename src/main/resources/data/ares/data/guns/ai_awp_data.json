@@ -1,0 +1,47 @@
+{
+  "attributes": {
+    "damage": 40.0,
+    "weight": 6.5,
+    "knockback": 0.3,
+    "ammo_speed": 300.0,
+    "inaccuracy_move": 8.0,
+    "inaccuracy_stand": 3.0,
+    "inaccuracy_sneak": 1.5,
+    "inaccuracy_lie": 0.8,
+    "inaccuracy_aim": 0.05,
+    "armor_ignore": 0.6,
+    "headshot_multiplier": 2.5,
+    "rpm": 45.0
+  },
+  "bolt": "manual_action",
+  "attachment_slots": [
+    "scope",
+    "muzzle"
+  ],
+  "fire_modes": [
+    {
+      "type": "semi",
+      "auto": false
+    }
+  ],
+  "bolt_type": "manual",
+  "bolt_action_time": 25,
+  "magazine_capacity": 10,
+  "reload_duration": 64,
+  "bullet_gravity": 0.08,
+  "bullet_lifespan": 300,
+  "draw_time": 0.4,
+  "put_away_time": 0.57,
+  "accepted_ammo": "ares:762x39",
+  "ammos": [
+    {
+      "type": "ares:762x39",
+      "modifiers": {}
+    }
+  ],
+  "damage_falloff": [
+    {"distance": 50, "multiplier": 1.0},
+    {"distance": 100, "multiplier": 0.875},
+    {"distance": 200, "multiplier": 0.7}
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "name": "ares.ammo.556x45.name",
+  "data": "ares:556x45_data",
+  "display": "ares:556x45_display",
+  "type": "rifle_ammo",
+  "sort": 3
+}

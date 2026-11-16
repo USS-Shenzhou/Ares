@@ -1,0 +1,6 @@
+{
+  "name": "ares.attachment.muzzle_brake_cthulhu.name",
+  "display": "ares:muzzle_brake_cthulhu_display",
+  "data": "ares:muzzle_brake_cthulhu_data",
+  "type": "muzzle"
+}

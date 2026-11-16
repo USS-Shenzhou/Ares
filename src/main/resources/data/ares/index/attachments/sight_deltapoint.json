@@ -1,0 +1,7 @@
+{
+  "name": "ares.attachment.sight_deltapoint.name",
+  "display": "ares:sight_deltapoint_display",
+  "data": "ares:sight_deltapoint_data",
+  "type": "scope",
+  "sort": 11
+}

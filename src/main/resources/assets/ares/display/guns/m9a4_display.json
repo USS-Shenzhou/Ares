@@ -1,0 +1,62 @@
+﻿{
+  "model": "ares:gun/m9a4_geo",
+  "texture": "ares:gun/uv/m9a4",
+  "hud": "ares:gun/hud/m9a4",
+  "slot": "ares:gun/slot/m9a4",
+  "animation": "ares:m9a4",
+  "default_animation": "ares:pistol_default",
+  "controller": "ares:rifle",
+
+  // 双持时按手选用单手模型/动画/贴图：主手用 right，副手用 left。
+  // 缺省字段（controller 等）回退到顶层。
+  "one_hand": {
+    "right": {
+      "model": "ares:gun/m9a4_dual_right_geo",
+      "texture": "ares:gun/uv/m9a4_dual",
+      "animation": "ares:m9a4_right"
+    },
+    "left": {
+      "model": "ares:gun/m9a4_dual_left_geo",
+      "texture": "ares:gun/uv/m9a4_dual",
+      "animation": "ares:m9a4_left"
+    }
+  },
+
+  "ica_control_bone": "constraint",
+  "ica_strength_multiplier": 0.8,
+  "ica_bone_multipliers": {
+    "root": 0.1
+  },
+
+  "transform": {
+    "scale": {
+      "thirdperson": [0.6, 0.6, 0.6],
+      "ground": [0.6, 0.6, 0.6],
+      "fixed": [1.2, 1.2, 1.2]
+    }
+  },
+  "muzzle_flash": {
+    "texture": "ares:flash/common_muzzle_flash",
+    "scale": 0.75
+  },
+  "iron_zoom": 1.2,
+  "zoom_model_fov": 60,
+  "shell": {
+    "initial_velocity": [5, 2, 1],
+    "random_velocity": [1, 1, 0.25],
+    "acceleration": [0.0, -10, 0.0],
+    "angular_velocity": [360, -1200, 90],
+    "living_time": 1.0
+  },
+  "sounds": {
+    "shoot": "ares:ak47/ak47_shoot"
+  },
+  "attachment_slot_display": {
+    "ares:muzzle": {
+      "pos_group": "muzzle_pos"
+    },
+    "ares:laser": {
+      "pos_group": "laser_pos"
+    }
+  }
+}

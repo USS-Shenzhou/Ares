@@ -1,0 +1,159 @@
+{
+  "model": "ares:gun/m4a1_geo",
+  "texture": "ares:gun/uv/m4a1",
+  "lod": {
+    "model": "ares:gun/lod/m4a1",
+    "texture": "ares:gun/lod/m4a1"
+  },
+  "hud": "ares:gun/hud/m4a1",
+  "slot": "ares:gun/slot/m4a1",
+  "animation": "ares:m4a1",
+  "default_animation": "ares:rifle_default",
+  "controller": "ares:rifle",
+  // 状态机脚本，位于 assets/{命名空间}/scripts
+  "layers": [
+    {
+      "id": "main",
+      "source": {
+        "type": "state_machine",
+        "machine": "ares:rifle"
+      },
+      "blend": {
+        "mode": "replace"
+      }
+    },
+    {
+      "id": "movement",
+      "source": {
+        "type": "state_machine",
+        "machine": "ares:rifle_movement"
+      },
+      "blend": {
+        "mode": "additive",
+        "weight": 1.0
+      }
+    },
+    {
+      "id": "fire",
+      "source": {
+        "type": "state_machine",
+        "machine": "ares:fire"
+      },
+      "blend": {
+        "mode": "additive",
+        "weight": 1.0
+      }
+    }
+  ],
+  "use_default_animation": "rifle",
+  "third_person_animation": "default",
+
+  "ica_control_bone": "constraint",
+  "ica_strength_multiplier": 0.8,
+  "ica_bone_multipliers": {
+    "root": 0.1
+  },
+
+  "transform": {
+    "scale": {
+      "thirdperson": [0.6, 0.6, 0.6],
+      "ground": [0.6, 0.6, 0.6],
+      "fixed": [1.2, 1.2, 1.2]
+    }
+  },
+  "muzzle_flash": {
+    "texture": "ares:flash/common_muzzle_flash",
+    "scale": 0.75
+  },
+  "iron_zoom": 1.33,
+  "zoom_model_fov": 55,
+  // 战术拒枪姿态：本体第二定位组（骨骼 pivot 为占位值，按美术需求在 Blockbench 里调整）。
+  // 缺省字段回退机瞄值；未声明本块则这把枪没有拒枪位。
+  "tactical_stance": {
+    "view": "tactical_view",
+    "zoom": 1.15,
+    "model_fov": 70,
+    "zoom_model_fov": 65
+  },
+  "shell": {
+    "initial_velocity": [5, 2, 1],
+    "random_velocity": [1, 1, 0.25],
+    "acceleration": [0.0, -10, 0.0],
+    "angular_velocity": [360, -1200, 90],
+    "living_time": 1.0
+  },
+  // 激光束流视觉（表现层，非判定）。M4A1 为持续照射红束（continuous），
+  // 用 query.beam_time（持续开火秒数）驱动：雷霆彩虹——三通道正弦波各差 120° 相位，
+  // 高速循环（720°/秒 = 每 0.5s 一轮），配合光芯变粗与截面高速滚转，做躁动能量束。
+  // 每项 *_expr 优先，缺省回退同名静态值，再回退渲染端内置默认。
+  // 注意：molang 词法不支持 0x 十六进制字面量，颜色用十进制；math.sin/cos 为角度制。
+  "laser_beam": {
+    // 静态回退色（表达式失败时用）
+    "color": "FF2020",
+    // 雷霆彩虹渐变：phase = mod(beam_time*720, 360)，RGB 三通道各 +120° 相位差取正弦。
+    // 每通道 = floor(127.5 + 127.5*sin(phase[+相位]))，范围 0~255，打包 R*65536 + G*256 + B。
+    "color_expr": "math.floor(127.5 + 127.5 * math.sin(math.mod(query.beam_time * 720, 360))) * 65536 + math.floor(127.5 + 127.5 * math.sin(math.mod(query.beam_time * 720, 360) + 120)) * 256 + math.floor(127.5 + 127.5 * math.sin(math.mod(query.beam_time * 720, 360) + 240))",
+    // 白热芯半宽（米）：0.010 起步，最多 +0.006，约 0.4s 涨满。
+    "core_width": 0.020,
+    "core_width_expr": "0.020 + math.min(0.012, query.beam_time * 0.03)",
+    // 辉光壳半宽保持静态。
+    "glow_width": 0.05,
+    "glow_width_expr": "0.05 + math.min(0.024, query.beam_time * 0.06)",
+    // 方柱截面绕束轴滚转（度）：每秒转 360 度，束流持续旋拧，增强能量感。
+    "roll_expr": "query.beam_time * 360"
+  },
+  "sounds": {
+    "shoot": "ares:m4a1/m4a1_shoot",
+    "shoot_3p": "ares:m4a1/m4a1_shoot_3p",
+    "reload_empty": "ares:m4a1/m4a1_reload_empty",
+    "reload_tactical": "ares:m4a1/m4a1_reload_tactical",
+    "inspect": "ares:m4a1/m4a1_inspect",
+    "inspect_empty": "ares:m4a1/m4a1_inspect_empty",
+    "draw": "ares:m4a1/m4a1_draw",
+    "put_away": "ares:m4a1/m4a1_put_away",
+    "silence": "ares:m4a1/m4a1_silence",
+    "silence_3p": "ares:m4a1/m4a1_silence_3p",
+    "melee_push": "ares:melee_stock/melee_stock_01",
+    "melee_stock": "ares:melee_stock/melee_stock_02"
+  },
+  "offhand_show": {
+    "pos": [1, 19, 4],
+    "rotate": [0, 0, 50],
+    "scale": [0.5, 0.5, 0.5]
+  },
+  "hotbar_show": {
+    "0": {
+      "pos": [-1, 19, 3],
+      "rotate": [-180, 0, 130],
+      "scale": [0.5, 0.5, 0.5]
+    }
+  },
+  // 用于描述槽位的显示效果
+  "attachment_slot_display": {
+    "ares:muzzle": {
+      "pos_group": "muzzle_pos",
+      "default_model_group": "muzzle_default",
+      "refit_view_group": "refit_muzzle_view",
+      "icon": "ares:xxx",
+      "title": "tooltip.ares.attachment.muzzle"
+    },
+    "ares:scope": {
+      "pos_group": "scope_pos",
+      "icon": "ares:xxx",
+      "title": "tooltip.ares.attachment.scope"
+    },
+    "ares:kit_barrel": {
+      "pos_group": "kit_barrel_pos",
+      "default_model_group": "default_kit_barrel",
+      "refit_view_group": "refit_kit_barrel_view",
+      "icon": "ares:xxx",
+      "title": "tooltip.ares.attachment.stock"
+    },
+    "ares:under_barrel": {
+      "pos_group": "underbarrel_pos"
+    },
+    "ares:laser": {
+      "pos_group": "laser_pos"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  // 物理摆动参数（照搬源挂饰模组 fox 配置）
+  "physics": {
+    "mass": 0.12,
+    "rope_length": 0.013,
+    "damping": 0.035,
+    "stiffness": 0.9,
+    "solver_iterations": 8,
+    "gravity_scale": 1.25
+  },
+  // 挂饰模型各部件骨骼名（固定环 + 动态环 + 摆体）
+  "parts": {
+    "anchor": "gun_anchor",
+    "attachment": "attachment",
+    "fixed_ring": "gun_ring",
+    "dynamic_ring": "charm_ring",
+    "body": "body",
+    "collision": []
+  }
+}

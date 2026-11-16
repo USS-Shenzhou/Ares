@@ -1,0 +1,9 @@
+{
+  "slot": "ares:attachment/slot/muzzle_brake_cthulhu",
+  "model": "ares:attachment/muzzle_brake_cthulhu_geo",
+  "texture": "ares:attachment/uv/muzzle_brake_cthulhu",
+  "sounds": {
+    "install": "ares:attachments/attachment_general_a",
+    "uninstall": "ares:attachments/attachment_general_uninstall"
+  }
+}

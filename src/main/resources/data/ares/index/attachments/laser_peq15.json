@@ -1,0 +1,10 @@
+{
+  "name": "ares.attachment.laser_peq15.name",
+  "display": "ares:laser_peq15_display",
+  "data": "ares:laser_peq15_data",
+  "type": "laser",
+  "sort": 10,
+  "toggle": {
+    "effect": "laser"
+  }
+}

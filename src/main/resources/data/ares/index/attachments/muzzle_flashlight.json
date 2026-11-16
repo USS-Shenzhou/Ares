@@ -1,0 +1,10 @@
+{
+  "name": "ares.attachment.muzzle_flashlight.name",
+  "display": "ares:muzzle_flashlight_display",
+  "data": "ares:muzzle_flashlight_data",
+  "type": "light",
+  "sort": 11,
+  "toggle": {
+    "effect": "flashlight"
+  }
+}

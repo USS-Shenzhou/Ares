@@ -1,0 +1,9 @@
+{
+    "name": "ares.gun.m870.name",
+    "display": "ares:m870_display",
+    "data": "ares:m870_data",
+    "tooltip": "ares.gun.m870.desc",
+    "type": "shotgun",
+    "item_type": "modern_kinetic",
+    "sort": 1
+}

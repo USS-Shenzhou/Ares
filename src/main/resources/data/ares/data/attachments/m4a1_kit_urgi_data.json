@@ -1,0 +1,23 @@
+{
+  "modifiers": {
+    "weight": {
+      "type": "addend",
+      "amount": 0.5
+    },
+    "inaccuracy_stand": {
+      "type": "addend",
+      "amount": -0.5
+    },
+    "inaccuracy_move": {
+      "type": "percent",
+      "amount": 0.5
+    },
+    "damage": {
+      "type": "multiplier",
+      "amount": 0.5
+    }
+  },
+  "attachment_slots": [
+    "muzzle"
+  ]
+}

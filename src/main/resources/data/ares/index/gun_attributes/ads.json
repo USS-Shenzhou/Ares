@@ -1,0 +1,8 @@
+{
+  // 预留未接入：注册项已就位，暂无消费端读取（见 ROADMAP 属性接入状态）。
+  "default": 0.25,
+  "min": 0.0,
+  "max": 32767.0,
+  "reference": 3.0,
+  "positive": false
+}

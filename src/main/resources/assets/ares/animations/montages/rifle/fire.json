@@ -1,0 +1,24 @@
+{
+  "tracks": [
+    {
+      "name": "fire",
+      "additive": true,
+      "segments": [
+        {
+          "animation": "shoot"
+        }
+      ]
+    }
+  ],
+  "notifyTracks": [
+    {
+      "name": "shell",
+      "keys": [
+        {
+          "time": 0.0167,
+          "event": "shell_eject"
+        }
+      ]
+    }
+  ]
+}

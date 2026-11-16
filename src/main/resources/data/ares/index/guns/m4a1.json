@@ -1,0 +1,8 @@
+{
+  "name": "ares.gun.m4a1.name",
+  "display": "ares:m4a1_display",
+  "data": "ares:m4a1_data",
+  "type": "rifle",
+  "tooltip": "ares.gun.m4a1.desc",
+  "sort": 2
+}

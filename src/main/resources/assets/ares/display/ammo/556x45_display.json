@@ -1,0 +1,20 @@
+{
+  // 弹药本体模型与贴图
+  "model": "ares:ammo/556x45",
+  "texture": "ares:ammo/uv/556x45",
+  // GUI 格子图标
+  "slot": "ares:ammo/slot/556x45",
+  // 抛壳弹壳模型与贴图。缺一则该弹药不抛壳。
+  "shell": {
+    "model": "ares:shell/556x45_shell",
+    "texture": "ares:shell/556x45_shell"
+  },
+  // 各上下文缩放
+  "transform": {
+    "scale": {
+      "thirdperson": [0.4, 0.4, 0.4],
+      "ground": [0.4, 0.4, 0.4],
+      "fixed": [0.75, 0.75, 0.75]
+    }
+  }
+}
