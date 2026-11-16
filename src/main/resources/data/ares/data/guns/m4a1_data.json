@@ -12,7 +12,6 @@
     "inaccuracy_aim": 0.15,
     // 战术拒枪姿态散布：声明后该枪的拒枪位生效（服务端只认声明过本属性的枪）
     "inaccuracy_tactical": 1.2,
-    "armor_ignore": 0.25,
     "headshot_multiplier": 1.5,
     "rpm": 400.0
   },
@@ -56,12 +55,6 @@
   // 适用弹种列表
   "ammos": [
     {
-      "type": "ares:762x39",
-      "modifiers": {
-
-      }
-    },
-    {
       "type": "ares:556x45",
       "modifiers": {}
     }
@@ -73,7 +66,7 @@
   ],
 
   // 适用弹种
-  "accepted_ammo": "ares:762x39",
+  "accepted_ammo": "ares:556x45",
 
   "projectile_type": "laser",
   "laser": {
@@ -96,8 +89,6 @@
     "tracer_count_interval": 0,
     // 额外伤害的内容，为空则表示没有任何额外伤害计算内容
     "extra_damage": {
-      // 护甲穿透率，默认为 0，也就是没有穿甲伤害
-      "armor_ignore": 0.25,
       // 爆头伤害 x1.5
       "head_shot_multiplier": 1.5,
       // 距离-伤害分段常函数

@@ -87,6 +87,7 @@ public class ClientHandGunSession extends HandGunSession {
     /// > 瞄准进度（纯客户端表现插值，0~1）。每 tick ±0.33 步进，与墙上时钟无关，
     /// > 由渲染按 partialTicks 在 last/current 间平滑。不投影状态、不约束门禁，
     /// > 故不作为片段塞进 SegmentSet，仅作 operator 表现字段。
+    // FIXME support aim time
     private static final float AIM_STEP = 0.33f;
     private float aimProgress = 0f;
     private float lastAimProgress = 0f;

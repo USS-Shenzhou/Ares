@@ -97,6 +97,7 @@ public class CameraEventHandler {
         yRotO = 0;
     }
 
+    // FIXME wait until TACZ update
     public static final GunRecoil GUN_RECOIL = new GunRecoil(
             new GunRecoilKeyFrame[]{
                     new GunRecoilKeyFrame(0, 0.66f, 0.66f),

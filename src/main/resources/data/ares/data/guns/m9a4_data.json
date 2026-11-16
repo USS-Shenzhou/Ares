@@ -10,7 +10,6 @@
     "inaccuracy_sneak": 2.5,
     "inaccuracy_lie": 2.0,
     "inaccuracy_aim": 1.0,
-    "armor_ignore": 0.1,
     "headshot_multiplier": 1.5,
     "rpm": 450.0
   },
@@ -37,12 +36,12 @@
   // 适用弹种列表
   "ammos": [
     {
-      "type": "ares:762x39",
+      "type": "ares:9mm",
       "modifiers": {}
     }
   ],
   // 适用弹种
-  "accepted_ammo": "ares:762x39",
+  "accepted_ammo": "ares:9mm",
   // 开火模式：仅半自动
   "fire_modes": [
     "semi",

@@ -9,7 +9,6 @@
     "inaccuracy_sneak": 1.5,
     "inaccuracy_lie": 0.8,
     "inaccuracy_aim": 0.05,
-    "armor_ignore": 0.6,
     "headshot_multiplier": 2.5,
     "rpm": 45.0
   },
@@ -32,10 +31,10 @@
   "bullet_lifespan": 300,
   "draw_time": 0.4,
   "put_away_time": 0.57,
-  "accepted_ammo": "ares:762x39",
+  "accepted_ammo": "ares:762x51",
   "ammos": [
     {
-      "type": "ares:762x39",
+      "type": "ares:762x51",
       "modifiers": {}
     }
   ],

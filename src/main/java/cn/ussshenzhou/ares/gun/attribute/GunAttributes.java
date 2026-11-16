@@ -9,7 +9,6 @@ import net.minecraft.resources.Identifier;
 public class GunAttributes {
     public static final Identifier ADS                  = Ares.modLoc("ads");
     public static final Identifier AMMO_SPEED           = Ares.modLoc("ammo_speed");
-    public static final Identifier ARMOR_IGNORE         = Ares.modLoc("armor_ignore");
     public static final Identifier DAMAGE               = Ares.modLoc("damage");
     public static final Identifier HEADSHOT_MULTIPLIER  = Ares.modLoc("headshot_multiplier");
 

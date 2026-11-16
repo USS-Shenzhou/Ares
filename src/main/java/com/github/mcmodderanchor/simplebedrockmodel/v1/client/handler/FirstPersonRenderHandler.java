@@ -2,6 +2,7 @@ package com.github.mcmodderanchor.simplebedrockmodel.v1.client.handler;
 
 import cn.ussshenzhou.ares.gun.TimelessHelperC;
 import cn.ussshenzhou.ares.gun.client.renderer.animation.GunAnimationInstance;
+import cn.ussshenzhou.ares.gun.item.GunItem;
 import com.github.mcmodderanchor.simplebedrockmodel.SimpleBedrockModel;
 import com.github.mcmodderanchor.simplebedrockmodel.v1.common.time.AnimationClock;
 import com.github.mcmodderanchor.simplebedrockmodel.v1.common.time.AnimationClocks;
@@ -347,10 +348,11 @@ public class FirstPersonRenderHandler {
         if (stack.isEmpty()) {
             return false;
         }
+        return stack.getItem() instanceof GunItem;
 
-        return getRenderer(stack)
-                .map(renderer -> renderer.canRenderInHand(stack, hand))
-                .orElse(false);
+        //FIXME applies ro gunitem only return getRenderer(stack)
+        //        .map(renderer -> renderer.canRenderInHand(stack, hand))
+        //        .orElse(false);
     }
 
     /* FIXME rendering

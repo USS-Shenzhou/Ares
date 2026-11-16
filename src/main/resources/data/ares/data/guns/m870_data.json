@@ -10,7 +10,6 @@
     "inaccuracy_sneak": 3.65,
     "inaccuracy_lie": 3.5,
     "inaccuracy_aim": 3.5,
-    "armor_ignore": 0.25,
     "headshot_multiplier": 1.33
   },
   "bolt": "manual_action",
@@ -33,6 +32,6 @@
   "draw_time": 0.35,
   "put_away_time": 0.45,
   "bullet_gravity": 0.15,
-  "accepted_ammo": "ares:762x39",
+  "accepted_ammo": "ares:12g",
   "attachment_slots": ["extended_mag", "muzzle"]
 }
