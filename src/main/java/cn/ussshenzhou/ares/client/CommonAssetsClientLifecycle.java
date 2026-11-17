@@ -1,4 +1,4 @@
-package cn.ussshenzhou.ares.client.network;
+package cn.ussshenzhou.ares.client;
 
 import cn.ussshenzhou.ares.Ares;
 import cn.ussshenzhou.ares.gun.custom.CommonAssetsManager;
@@ -9,9 +9,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 
 /// @author TACZ, USS_Shenzhou
-// FIXME REVIEW renamed from CommonAssetsClientSyncLifecycle.
-// FIXME REVIEW on a remote server LoggingIn loads the built-in data from the client's own jar into CLIENT_BUILTIN and LoggingOut
-// clears it; in singleplayer the client reads what the integrated server published, as in respawn.
 @EventBusSubscriber(modid = Ares.MOD_ID, value = Dist.CLIENT)
 public class CommonAssetsClientLifecycle {
     @SubscribeEvent

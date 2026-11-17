@@ -128,7 +128,7 @@ public class BedrockGunModel implements BoneIndexProvider {
         java.util.List<Integer> path = new java.util.ArrayList<>();
         int current = boneIndex;
         while (current >= 0) {
-            path.add(0, current);
+            path.addFirst(current);
             current = baseModel.bone(current).parentIndex();
         }
         int[] result = new int[path.size()];
