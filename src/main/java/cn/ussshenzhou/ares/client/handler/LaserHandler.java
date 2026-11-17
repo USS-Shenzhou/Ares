@@ -1,6 +1,6 @@
 package cn.ussshenzhou.ares.client.handler;
 
-/* FIXME rendering
+/*
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;

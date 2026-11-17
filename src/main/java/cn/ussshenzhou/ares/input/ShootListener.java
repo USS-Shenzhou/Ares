@@ -1,33 +1,21 @@
-package cn.ussshenzhou.ares.client.input;
+package cn.ussshenzhou.ares.input;
 
-import cn.ussshenzhou.ares.client.ClientSetup;
 import cn.ussshenzhou.ares.Ares;
 import net.neoforged.fml.common.EventBusSubscriber;
-import com.mojang.blaze3d.platform.InputConstants;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
 import cn.ussshenzhou.ares.gun.util.FireModeHelper;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.InteractionHand;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.client.settings.KeyConflictContext;
-import net.neoforged.neoforge.client.settings.KeyModifier;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RenderFrameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 
 /// @author TACZ, USS_Shenzhou
 @EventBusSubscriber(modid = Ares.MOD_ID, value = Dist.CLIENT)
-public class ShootKey {
-    public static final KeyMapping SHOOT_KEY = new KeyMapping("key.ares.shoot.desc",
-            KeyConflictContext.IN_GAME,
-            KeyModifier.NONE,
-            InputConstants.Type.MOUSE,
-            InputConstants.MOUSE_BUTTON_LEFT,
-            ClientSetup.KEY_CATEGORY);
-
+public class ShootListener {
     /// > 左键（射击键）边沿/全自动按住态。
     private static boolean leftWasDown = false;
     private static boolean leftHoldingAuto = false;
@@ -44,12 +32,12 @@ public class ShootKey {
             return;
         }
 
-        boolean leftDown = SHOOT_KEY.isDown();
+        boolean leftDown = ModKey.SHOOT_KEY.isDown();
         boolean leftRising = leftDown && !leftWasDown;
         boolean leftFalling = !leftDown && leftWasDown;
         leftWasDown = leftDown;
 
-        boolean rightDown = AimKey.AIM_KEY.isDown();
+        boolean rightDown = ModKey.AIM_KEY.isDown();
         boolean rightRising = rightDown && !rightWasDown;
         boolean rightFalling = !rightDown && rightWasDown;
         rightWasDown = rightDown;
@@ -81,7 +69,7 @@ public class ShootKey {
                     fireReleaseIfNeeded(op, InteractionHand.MAIN_HAND);
                 }
             } else {
-                /// > 单枪：仅左键开火当前手，右键交由 AimKey 处理瞄准。
+                /// > 单枪：仅左键开火当前手，右键交由 AimListener 处理瞄准。
                 rightHoldingAuto = false;
                 InteractionHand hand = DualWieldHelper.getPreferredHand(player);
                 if (leftDown) {
@@ -118,7 +106,7 @@ public class ShootKey {
         rightHoldingAuto = false;
     }
 
-    // FIXME REVIEW auto fire is driven by RenderFrameEvent.Pre in place of the Forge RenderTickEvent.
+    // NEEDTEST auto fire is driven by RenderFrameEvent.Pre in place of the Forge RenderTickEvent.
     @SubscribeEvent
     public static void onRenderTick(RenderFrameEvent.Pre event) {
         if (!leftHoldingAuto && !rightHoldingAuto) {

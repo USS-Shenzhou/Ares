@@ -1,6 +1,6 @@
 package cn.ussshenzhou.ares.client.handler;
 
-/* FIXME rendering
+/*
 import net.neoforged.fml.common.EventBusSubscriber;
 import cn.ussshenzhou.ares.Ares;
 import cn.ussshenzhou.ares.gun.item.IGun;

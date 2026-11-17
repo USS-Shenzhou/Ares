@@ -50,7 +50,7 @@ public class CharmCollisionExtractor {
     public static List<CharmCollisionBox> get(Identifier gunDisplayId, BedrockGunModel gunModel,
                                               String anchorBone, Vector3f focusCenter) {
         if (gunDisplayId == null || gunModel == null || anchorBone == null || anchorBone.isBlank()
-                || focusCenter == null || !finite(focusCenter)) {
+                || !finite(focusCenter)) {
             return List.of();
         }
         Key key = new Key(gunDisplayId, anchorBone,
@@ -130,7 +130,7 @@ public class CharmCollisionExtractor {
     /// > 是否为不参与碰撞的辅助骨骼：手臂定位、视角 / 相机锚点、locator 类。
     private static boolean isNonCollidableBone(String boneName) {
         String lower = boneName.toLowerCase(Locale.ROOT);
-        return lower.equals("lefthand_pos") || lower.equals("righthand_pos")
+        return "lefthand_pos".equals(lower) || "righthand_pos".equals(lower)
                 || lower.contains("hand")
                 || lower.contains("view") || lower.contains("camera")
                 || lower.endsWith("locator") || lower.contains("_locator");

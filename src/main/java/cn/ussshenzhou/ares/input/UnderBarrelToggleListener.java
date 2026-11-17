@@ -1,9 +1,7 @@
-package cn.ussshenzhou.ares.client.input;
+package cn.ussshenzhou.ares.input;
 
-import cn.ussshenzhou.ares.client.ClientSetup;
 import cn.ussshenzhou.ares.Ares;
 import net.neoforged.fml.common.EventBusSubscriber;
-import com.mojang.blaze3d.platform.InputConstants;
 import cn.ussshenzhou.ares.util.GunModuleMode;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.gun.item.IGun;
@@ -13,32 +11,22 @@ import cn.ussshenzhou.ares.gun.network.message.c2s.C2SFireModeSwitchMessage;
 import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
 import cn.ussshenzhou.ares.gun.util.FireModeHelper;
 import cn.ussshenzhou.ares.gun.util.MountedWeaponHelper;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.InputEvent;
-import net.neoforged.neoforge.client.settings.KeyConflictContext;
-import net.neoforged.neoforge.client.settings.KeyModifier;
 import net.neoforged.bus.api.SubscribeEvent;
 
 /// > 下挂武器模式切换按键：在主武器模式（PRIMARY）和下挂武器模式（UNDER_BARREL）之间切换。
-/// > 仅在安装了下挂武器时有效。快慢机切换由 [FireModeSwitchKey] 独立处理。
+/// > 仅在安装了下挂武器时有效。快慢机切换由 [FireModeSwitchListener] 独立处理。
 /// @author TACZ, USS_Shenzhou
 @EventBusSubscriber(modid = Ares.MOD_ID, value = Dist.CLIENT)
-public class UnderBarrelToggleKey {
-    public static final KeyMapping UNDER_BARREL_TOGGLE_KEY = new KeyMapping("key.ares.under_barrel_toggle.desc",
-            KeyConflictContext.IN_GAME,
-            KeyModifier.ALT,
-            InputConstants.Type.KEYBOARD,
-            InputConstants.KEY_G,
-            ClientSetup.KEY_CATEGORY);
-
+public class UnderBarrelToggleListener {
     @SubscribeEvent
     public static void onKeyPress(InputEvent.Key event) {
-        while (UNDER_BARREL_TOGGLE_KEY.consumeClick()) {
+        while (ModKey.UNDER_BARREL_TOGGLE_KEY.consumeClick()) {
             Player player = Minecraft.getInstance().player;
             if (player == null || player.isSpectator()) {
                 return;

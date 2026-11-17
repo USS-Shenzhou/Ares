@@ -1,6 +1,7 @@
 package cn.ussshenzhou.ares.client.charm.physics;
 
 import cn.ussshenzhou.ares.client.charm.CharmLayerPlacement;
+import net.minecraft.util.Mth;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -40,7 +41,7 @@ public class CharmHingeState {
             angularVelocity = 0.0f;
             initialized = true;
         } else {
-            float dt = Math.max(0.001f, Math.min(deltaSeconds, MAX_DELTA_SECONDS));
+            float dt = Math.clamp(deltaSeconds, 0.001f, MAX_DELTA_SECONDS);
             float targetDelta = wrapRadians(target - angle);
             if (Math.abs(targetDelta) < TARGET_DEADBAND) {
                 targetDelta = 0.0f;
@@ -50,8 +51,8 @@ public class CharmHingeState {
             float angularAcceleration = targetDelta * TARGET_STIFFNESS
                     - angle * CENTER_STIFFNESS
                     - angularVelocity * ANGULAR_DAMPING;
-            angularVelocity = clamp(angularVelocity + angularAcceleration * dt, -MAX_ANGULAR_SPEED, MAX_ANGULAR_SPEED);
-            angle = clamp(wrapRadians(angle + angularVelocity * dt), -MAX_HINGE_ANGLE, MAX_HINGE_ANGLE);
+            angularVelocity = Mth.clamp(angularVelocity + angularAcceleration * dt, -MAX_ANGULAR_SPEED, MAX_ANGULAR_SPEED);
+            angle = Mth.clamp(wrapRadians(angle + angularVelocity * dt), -MAX_HINGE_ANGLE, MAX_HINGE_ANGLE);
         }
 
         Vector3f axis = hingeAxis(pivotPosition, restMassPosition);
@@ -81,10 +82,6 @@ public class CharmHingeState {
             wrapped += (float) (Math.PI * 2.0);
         }
         return wrapped;
-    }
-
-    private static float clamp(float value, float min, float max) {
-        return Math.max(min, Math.min(max, value));
     }
 
     private static boolean finite(Vector3f value) {

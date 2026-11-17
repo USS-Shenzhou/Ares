@@ -1,5 +1,6 @@
 package cn.ussshenzhou.ares.client.charm.physics;
 
+import net.minecraft.util.Mth;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -93,9 +94,9 @@ public class CharmCollisionBox {
     public Vector3f closestPoint(Vector3f point) {
         Vector3f local = localPosition(point);
         return worldPosition(new Vector3f(
-                clamp(local.x, min.x, max.x),
-                clamp(local.y, min.y, max.y),
-                clamp(local.z, min.z, max.z)
+                Mth.clamp(local.x, min.x, max.x),
+                Mth.clamp(local.y, min.y, max.y),
+                Mth.clamp(local.z, min.z, max.z)
         ));
     }
 
@@ -157,10 +158,6 @@ public class CharmCollisionBox {
 
     public Matrix4f localToWorldMatrix() {
         return new Matrix4f(localToWorld);
-    }
-
-    private static float clamp(float value, float min, float max) {
-        return Math.max(min, Math.min(value, max));
     }
 
     private static Vector3f transformPosition(Matrix4f matrix, Vector3f point) {

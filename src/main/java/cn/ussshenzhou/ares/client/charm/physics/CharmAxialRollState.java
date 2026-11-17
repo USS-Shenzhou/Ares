@@ -1,6 +1,7 @@
 package cn.ussshenzhou.ares.client.charm.physics;
 
 import cn.ussshenzhou.ares.client.charm.CharmLayerPlacement;
+import net.minecraft.util.Mth;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -45,7 +46,7 @@ public class CharmAxialRollState {
             angularVelocity = 0.0f;
             initialized = true;
         } else {
-            float dt = Math.max(0.001f, Math.min(deltaSeconds, MAX_DELTA_SECONDS));
+            float dt = Math.clamp(deltaSeconds, 0.001f, MAX_DELTA_SECONDS);
             float targetDelta = wrapRadians(target - angle);
             if (Math.abs(targetDelta) < TARGET_DEADBAND) {
                 targetDelta = 0.0f;
@@ -57,7 +58,7 @@ public class CharmAxialRollState {
                     - angle * CENTER_STIFFNESS
                     - angularVelocity * ANGULAR_DAMPING
                     + forceTorque;
-            angularVelocity = clamp(angularVelocity + angularAcceleration * dt, -MAX_ANGULAR_SPEED, MAX_ANGULAR_SPEED);
+            angularVelocity = Mth.clamp(angularVelocity + angularAcceleration * dt, -MAX_ANGULAR_SPEED, MAX_ANGULAR_SPEED);
             angle = wrapRadians(angle + angularVelocity * dt);
         }
 
@@ -87,7 +88,7 @@ public class CharmAxialRollState {
         }
         float torque = radialMass.cross(radialForce, new Vector3f()).dot(normalizedAxis) * FORCE_TORQUE_GAIN;
         float restoring = -radialMass.dot(radialForce.normalize()) * AXIS_RESTORING_GAIN;
-        return clamp(torque + restoring, -MAX_FORCE_TORQUE, MAX_FORCE_TORQUE);
+        return Mth.clamp(torque + restoring, -MAX_FORCE_TORQUE, MAX_FORCE_TORQUE);
     }
 
     private static Vector3f hingeAxis(Vector3f pivotPosition, Vector3f restMassPosition) {
@@ -110,10 +111,6 @@ public class CharmAxialRollState {
             wrapped += (float) (Math.PI * 2.0);
         }
         return wrapped;
-    }
-
-    private static float clamp(float value, float min, float max) {
-        return Math.max(min, Math.min(max, value));
     }
 
     private static boolean finite(Vector3f value) {

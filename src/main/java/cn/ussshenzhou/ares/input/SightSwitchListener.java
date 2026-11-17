@@ -1,20 +1,15 @@
-package cn.ussshenzhou.ares.client.input;
+package cn.ussshenzhou.ares.input;
 
-import cn.ussshenzhou.ares.client.ClientSetup;
 import cn.ussshenzhou.ares.Ares;
 import net.neoforged.fml.common.EventBusSubscriber;
-import com.mojang.blaze3d.platform.InputConstants;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.attachment.entity.LocalGunOperator;
 import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.InputEvent;
-import net.neoforged.neoforge.client.settings.KeyConflictContext;
-import net.neoforged.neoforge.client.settings.KeyModifier;
 import net.neoforged.bus.api.SubscribeEvent;
 
 /// > 瞄准视图位切换键（Alt+V）：在视图位列表（本体机瞄 / 战术拒枪位 / 安装的瞄具）中循环切换激活项。
@@ -24,18 +19,11 @@ import net.neoforged.bus.api.SubscribeEvent;
 /// > 服务端权威落地。
 /// @author TACZ, USS_Shenzhou
 @EventBusSubscriber(modid = Ares.MOD_ID, value = Dist.CLIENT)
-public class SightSwitchKey {
-    public static final KeyMapping SIGHT_SWITCH_KEY = new KeyMapping("key.ares.sight_switch.desc",
-            KeyConflictContext.IN_GAME,
-            KeyModifier.ALT,
-            InputConstants.Type.KEYBOARD,
-            InputConstants.KEY_V,
-            ClientSetup.KEY_CATEGORY);
-
+public class SightSwitchListener {
     @SubscribeEvent
     public static void onKeyPress(InputEvent.Key event) {
         Player player = Minecraft.getInstance().player;
-        if (player == null || player.isSpectator() || !SIGHT_SWITCH_KEY.consumeClick()) {
+        if (player == null || player.isSpectator() || !ModKey.SIGHT_SWITCH_KEY.consumeClick()) {
             return;
         }
         IGunOperator.asGunHolder(player).ifPresent(op -> {

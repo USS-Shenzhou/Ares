@@ -1,34 +1,22 @@
-package cn.ussshenzhou.ares.client.input;
+package cn.ussshenzhou.ares.input;
 
-import cn.ussshenzhou.ares.client.ClientSetup;
 import cn.ussshenzhou.ares.Ares;
 import net.neoforged.fml.common.EventBusSubscriber;
-import com.mojang.blaze3d.platform.InputConstants;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.InputEvent;
-import net.neoforged.neoforge.client.settings.KeyConflictContext;
-import net.neoforged.neoforge.client.settings.KeyModifier;
 import net.neoforged.bus.api.SubscribeEvent;
 
 /// @author TACZ, USS_Shenzhou
 @EventBusSubscriber(modid = Ares.MOD_ID, value = Dist.CLIENT)
-public class ReloadKey {
-    public static final KeyMapping RELOAD_KEY = new KeyMapping("key.ares.reload.desc",
-            KeyConflictContext.IN_GAME,
-            KeyModifier.NONE,
-            InputConstants.Type.KEYBOARD,
-            InputConstants.KEY_R,
-            ClientSetup.KEY_CATEGORY);
-
+public class ReloadListener {
     @SubscribeEvent
     public static void onReloadPress(InputEvent.Key event) {
-        while (RELOAD_KEY.consumeClick()) {
+        while (ModKey.RELOAD_KEY.consumeClick()) {
             Player player = Minecraft.getInstance().player;
             if (player == null || player.isSpectator()) {
                 return;

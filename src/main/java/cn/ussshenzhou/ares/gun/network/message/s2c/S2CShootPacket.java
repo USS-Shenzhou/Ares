@@ -1,10 +1,13 @@
 package cn.ussshenzhou.ares.gun.network.message.s2c;
 
 import cn.ussshenzhou.ares.Ares;
+import cn.ussshenzhou.ares.client.renderer.item.MuzzleFlashHandler;
 import cn.ussshenzhou.t88.network.annotation.ClientHandler;
 import cn.ussshenzhou.t88.network.annotation.Codec;
 import cn.ussshenzhou.t88.network.annotation.NetPacket;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import cn.ussshenzhou.ares.gun.gameplay.MuzzleReference;
 import cn.ussshenzhou.ares.client.event.ClientShootEventHandler;
@@ -28,6 +31,14 @@ public record S2CShootPacket(int shooterId, InteractionHand hand, MuzzleReferenc
 
     @ClientHandler
     public void clientHandler(IPayloadContext context) {
-        ClientShootEventHandler.onShootPacket(shooterId, hand, muzzleReference);
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null) {
+            return;
+        }
+        Entity entity = mc.level.getEntity(shooterId);
+        if (entity == null) {
+            return;
+        }
+        MuzzleFlashHandler.onEntityShoot(entity, hand, muzzleReference);
     }
 }

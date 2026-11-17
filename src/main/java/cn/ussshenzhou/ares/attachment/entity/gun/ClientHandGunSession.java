@@ -91,7 +91,7 @@ public class ClientHandGunSession extends HandGunSession {
     private float lastAimProgress = 0f;
 
     /// > 瞄准视图位切换（纯客户端表现，不做服务端权威）：激活视图位索引（AimViewHelper 收集顺序，
-    /// > 含本体机瞄 / 战术拒枪位 / 安装瞄具）与切换过渡进度。由 SightSwitchKey 触发，渲染器按
+    /// > 含本体机瞄 / 战术拒枪位 / 安装瞄具）与切换过渡进度。由 SightSwitchListener 触发，渲染器按
     /// > active/pending 过滤 stencil 会话，并按过渡进度缩放圆切半径 / 插值瞄准视点。过渡收敛
     /// > （NextSecondOrderDynamics.isStable）后落定 activeAimViewIndex。换枪 / 收枪后状态随会话重建或 draw 重置。
     private int activeAimViewIndex = 0;

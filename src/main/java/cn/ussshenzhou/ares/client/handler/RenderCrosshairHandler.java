@@ -12,7 +12,7 @@ import cn.ussshenzhou.ares.client.renderer.crosshair.CrosshairRenderer;
 import cn.ussshenzhou.ares.client.resource.display.GunDisplayInstance;
 import cn.ussshenzhou.ares.gun.TimelessHelperC;
 import cn.ussshenzhou.ares.gun.item.IGun;
-*/
+
 import cn.ussshenzhou.ares.Ares;
 import cn.ussshenzhou.ares.util.GunHolderState;
 import cn.ussshenzhou.ares.attachment.entity.gun.HandGunSession;
@@ -62,7 +62,7 @@ public class RenderCrosshairHandler {
         }
         event.setCanceled(true);
     }
-    */
+
 
     private static boolean shouldHideCrosshair(LocalPlayer player, float partialTick) {
         float aimingProgress = IGunOperator.asGunHolder(player)
@@ -125,5 +125,6 @@ public class RenderCrosshairHandler {
         graphics.blit(HIT_ICON, (int) (x + 8 + offset), (int) (y + 8 + offset), 8, 8, 8, 8, 16, 16);
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
     }
-    */
+
 }
+*/

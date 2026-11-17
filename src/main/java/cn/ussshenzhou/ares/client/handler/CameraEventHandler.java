@@ -187,8 +187,7 @@ public class CameraEventHandler {
         }
     }
 
-    // FIXME distinguish caller: since the NeoForge 26.2-pre-2 port ComputeFov no longer has usedConfiguredFov(),
-    // and Camera posts it from both calculateFov (world FOV) and calculateHudFov (hand FOV), so the call stack is walked instead.
+    // FIXME distinguish caller: since the NeoForge 26.2-pre-2 port ComputeFov no longer has usedConfiguredFov(), and Camera posts it from both calculateFov (world FOV) and calculateHudFov (hand FOV), so the call stack is walked instead.
     private static boolean isComputingWorldFov() {
         String cameraClassName = Camera.class.getName();
         return StackWalker.getInstance().walk(frames -> frames

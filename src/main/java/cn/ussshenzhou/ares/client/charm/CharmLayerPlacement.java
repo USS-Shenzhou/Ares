@@ -1,5 +1,6 @@
 package cn.ussshenzhou.ares.client.charm;
 
+import net.minecraft.util.Mth;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -49,7 +50,7 @@ public class CharmLayerPlacement {
         Vector3f currentDirection = current.normalize();
         float dot = restDirection.dot(currentDirection);
         if (dot < OPPOSITE_DOT_THRESHOLD) {
-            float angle = (float) Math.acos(clamp(dot, -1.0f, 1.0f));
+            float angle = (float) Math.acos(Mth.clamp(dot, -1.0f, 1.0f));
             return new Quaternionf().fromAxisAngleRad(stablePerpendicularAxis(restDirection), angle);
         }
         return new Quaternionf().rotationTo(restDirection, currentDirection);
@@ -86,7 +87,7 @@ public class CharmLayerPlacement {
         Vector3f reference = twistReference(restDirection, surfaceNormal);
         Vector3f perpendicular = restDirection.cross(reference, new Vector3f()).normalize();
         float angle = (float) Math.atan2(swingPlaneNormal.dot(perpendicular), swingPlaneNormal.dot(reference));
-        return clamp(angle * HINGE_TWIST_GAIN, -MAX_HINGE_TWIST_RADIANS, MAX_HINGE_TWIST_RADIANS);
+        return Mth.clamp(angle * HINGE_TWIST_GAIN, -MAX_HINGE_TWIST_RADIANS, MAX_HINGE_TWIST_RADIANS);
     }
 
     public static Matrix4f dynamicLayerTransform(Vector3f fixedPivotPosition, Vector3f rawFixedPivotOffset, Vector3f rawDynamicPivotOffset, Quaternionf swingRotation, Quaternionf surfaceOrientation, Quaternionf renderRotation, Quaternionf dynamicRotation) {
@@ -139,10 +140,6 @@ public class CharmLayerPlacement {
             return stablePerpendicularAxis(restDirection);
         }
         return reference.normalize();
-    }
-
-    private static float clamp(float value, float min, float max) {
-        return Math.max(min, Math.min(max, value));
     }
 
     private static Quaternionf safe(Quaternionf rotation) {

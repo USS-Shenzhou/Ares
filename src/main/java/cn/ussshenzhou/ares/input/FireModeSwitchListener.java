@@ -1,9 +1,7 @@
-package cn.ussshenzhou.ares.client.input;
+package cn.ussshenzhou.ares.input;
 
-import cn.ussshenzhou.ares.client.ClientSetup;
 import cn.ussshenzhou.ares.Ares;
 import net.neoforged.fml.common.EventBusSubscriber;
-import com.mojang.blaze3d.platform.InputConstants;
 import cn.ussshenzhou.ares.util.GunModuleMode;
 import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.gun.item.IGun;
@@ -14,32 +12,22 @@ import cn.ussshenzhou.t88.network.NetworkHelper;
 import cn.ussshenzhou.ares.gun.network.message.c2s.C2SFireModeSwitchMessage;
 import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
 import cn.ussshenzhou.ares.gun.util.FireModeHelper;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.InputEvent;
-import net.neoforged.neoforge.client.settings.KeyConflictContext;
-import net.neoforged.neoforge.client.settings.KeyModifier;
 import net.neoforged.bus.api.SubscribeEvent;
 
 /// > 快慢机切换按键：在枪械的开火模式（fireModes）之间循环切换。
-/// > 下挂武器模式切换由 [UnderBarrelToggleKey] 独立处理。
+/// > 下挂武器模式切换由 [UnderBarrelToggleListener] 独立处理。
 /// @author TACZ, USS_Shenzhou
 @EventBusSubscriber(modid = Ares.MOD_ID, value = Dist.CLIENT)
-public class FireModeSwitchKey {
-    public static final KeyMapping FIRE_MODE_SWITCH_KEY = new KeyMapping("key.ares.fire_mode_switch.desc",
-            KeyConflictContext.IN_GAME,
-            KeyModifier.NONE,
-            InputConstants.Type.KEYBOARD,
-            InputConstants.KEY_G,
-            ClientSetup.KEY_CATEGORY);
-
+public class FireModeSwitchListener {
     @SubscribeEvent
     public static void onKeyPress(InputEvent.Key event) {
-        while (FIRE_MODE_SWITCH_KEY.consumeClick()) {
+        while (ModKey.FIRE_MODE_SWITCH_KEY.consumeClick()) {
             Player player = Minecraft.getInstance().player;
             if (player == null || player.isSpectator()) {
                 return;
