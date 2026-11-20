@@ -1,93 +1,245 @@
 package cn.ussshenzhou.ares.client.resource.display;
 
-import com.google.gson.annotations.SerializedName;
+import com.github.mcmodderanchor.simplebedrockmodel.v1.common.resource.pojo.BedrockModelPOJO;
+import com.google.common.base.Preconditions;
+import cn.ussshenzhou.ares.client.model.BedrockAttachmentModel;
+import cn.ussshenzhou.ares.client.resource.ClientAssetsManager;
 import net.minecraft.resources.Identifier;
 import javax.annotation.Nullable;
-import org.joml.Vector3f;
 
 import java.util.Map;
 
 /// @author TACZ, USS_Shenzhou
 public class AttachmentDisplay {
-    @SerializedName("model")
-    public Identifier modelLocation;
+    private BedrockAttachmentModel model;
+    private Identifier modelTexture;
+    private boolean scope;
+    private boolean sight;
+    private boolean showMount;
+    private float scopeViewRadiusModifier = 1.0F;
+    private float[] viewsFov = new float[]{70.0F};
+    @Nullable
+    private float[] zoom = null;
+    @Nullable
+    private float[] zoomFovRange = null;
+    @Nullable
+    private float[] zoomRange = null;
+    @Nullable
+    private Map<Identifier, AttachmentSlotDisplayCfg> slots;
+    @Nullable
+    private GunDisplay.Laser laser;
+    @Nullable
+    private GunDisplay.Flashlight flashlight;
+    /// > 变体相关
+    private String variantMode = "replace";
+    @Nullable
+    private String variantAttachBone;
+    @Nullable
+    private org.joml.Vector3f variantMountOffset;
 
-    @SerializedName("texture")
-    public Identifier modelTexture;
+    /// > 必须在资源包重载期间构建，否则所需的资源缓存不可用
+    public static AttachmentDisplay of(AttachmentDisplayCfg cfg) {
+        AttachmentDisplay instance = new AttachmentDisplay();
+        instance.scope = cfg.scope;
+        instance.sight = cfg.sight;
+        instance.showMount = cfg.showMount;
+        instance.scopeViewRadiusModifier = cfg.scopeViewRadiusModifier;
+        instance.viewsFov = sanitizeViewsFov(cfg);
+        instance.zoom = sanitizeZoom(cfg, instance.viewsFov);
+        instance.zoomFovRange = sanitizeRange(cfg.zoomFovRange, "zoom_fov_range");
+        instance.zoomRange = sanitizeRange(cfg.zoomRange, "zoom_range");
+        instance.slots = cfg.attachmentSlotDisplay;
+        instance.variantMode = cfg.mode == null ? "replace" : cfg.mode;
+        instance.variantAttachBone = cfg.attachBone;
+        instance.variantMountOffset = cfg.mountOffset;
 
-    /// > 是否为筒状放大瞄具（长筒镜）。需要模板缓冲渲染镜片透视。
-    @SerializedName("scope")
-    public boolean scope = false;
+        buildModelAndTexture(instance, cfg);
+        buildLaser(instance, cfg);
+        buildFlashlight(instance, cfg);
 
-    /// > 是否为红点 / 全息瞄具。需要模板缓冲渲染分划板。
-    @SerializedName("sight")
-    public boolean sight = false;
+        return instance;
+    }
 
-    /// > 是否在枪身上渲染瞄具支架（mount）。
-    @SerializedName("show_mount")
-    public boolean showMount = false;
+    private static float[] sanitizeViewsFov(AttachmentDisplayCfg cfg) {
+        if (cfg.viewsFov == null || cfg.viewsFov.length == 0) {
+            Preconditions.checkArgument(cfg.fov > 0.0F, "fov must > 0");
+            return new float[]{Math.min(cfg.fov, 70.0F)};
+        }
+        float[] result = new float[cfg.viewsFov.length];
+        for (int i = 0; i < cfg.viewsFov.length; i++) {
+            float fov = cfg.viewsFov[i];
+            Preconditions.checkArgument(fov > 0.0F, "fov must > 0");
+            result[i] = Math.min(fov, 70.0F);
+        }
+        return result;
+    }
 
-    /// > 镜内可视圆形区域的半径修正系数，默认为 1。
-    @SerializedName("scope_view_radius_modifier")
-    public float scopeViewRadiusModifier = 1.0F;
+    /// > 有级档位倍率数组：必须与 views_fov 同长配套（同索引 = 同一档，超长截断并告警）；
+    /// > 缺省由 70/fov 反推。
+    private static float[] sanitizeZoom(AttachmentDisplayCfg cfg, float[] viewsFov) {
+        float[] raw = cfg.zoom;
+        if (raw == null || raw.length == 0) {
+            return null;
+        }
+        if (raw.length != viewsFov.length) {
+            return null;
+        }
+        float[] result = new float[raw.length];
+        for (int i = 0; i < raw.length; i++) {
+            result[i] = Math.max(0.1F, raw[i]);
+        }
+        return result;
+    }
 
-    @SerializedName("fov")
-    public float fov = 70.0F;
+    /// > 通用范围 sanitize：长度 2、0 < min < max、max 上限 70（fov 语义）。非法返回 null（视为未配置）。
+    private static float[] sanitizeRange(float[] range, String name) {
+        if (range == null || range.length != 2) {
+            return null;
+        }
+        float min = Math.min(range[0], range[1]);
+        float max = Math.max(range[0], range[1]);
+        if (min <= 0.0F || min >= max || max > 70.0F) {
+            return null;
+        }
+        return new float[]{min, max};
+    }
+
+    public static void buildLaser(AttachmentDisplay instance, AttachmentDisplayCfg cfg) {
+        instance.laser = null;
+        if (cfg.laser == null) {
+            return;
+        }
+        String boneName = cfg.laser.bone == null || cfg.laser.bone.isEmpty() ? "laser_beam" : cfg.laser.bone;
+        float[] color = GunDisplay.parseHexColor(cfg.laser.color);
+        if (color == null) {
+            color = new float[]{1.0f, 0.1f, 0.1f};
+        }
+        float length = cfg.laser.length == null ? 0.0f : Math.max(0.0f, cfg.laser.length);
+        instance.laser = new GunDisplay.Laser(boneName, color, length);
+    }
+
+    public static void buildFlashlight(AttachmentDisplay instance, AttachmentDisplayCfg cfg) {
+        instance.flashlight = null;
+        if (cfg.flashlight == null) {
+            return;
+        }
+        String boneName = cfg.flashlight.bone == null || cfg.flashlight.bone.isEmpty()
+                ? "flashlight" : cfg.flashlight.bone;
+        float[] color = GunDisplay.parseHexColor(cfg.flashlight.color);
+        if (color == null) {
+            color = new float[]{1.0f, 0.88f, 0.68f};
+        }
+        float range = cfg.flashlight.range == null ? 0.0f : Math.max(0.0f, cfg.flashlight.range);
+        instance.flashlight = new GunDisplay.Flashlight(boneName, color, range);
+    }
+
+    /// > 加载模型和贴图
+    public static void buildModelAndTexture(AttachmentDisplay instance, AttachmentDisplayCfg cfg) {
+        Preconditions.checkArgument(cfg.modelLocation != null, "display object missing model field");
+        BedrockModelPOJO modelPojo = ClientAssetsManager.INSTANCE.getModelPojo(cfg.modelLocation);
+        Preconditions.checkArgument(modelPojo != null, "there is no corresponding model file: " + cfg.modelLocation);
+        instance.model = new BedrockAttachmentModel(modelPojo);
+        instance.model.setIsScope(instance.scope);
+        instance.model.setIsSight(instance.sight);
+        instance.model.setScopeViewRadiusModifier(instance.scopeViewRadiusModifier);
+        Preconditions.checkArgument(cfg.modelTexture != null, "display object missing texture field");
+        instance.modelTexture = cfg.modelTexture.withPrefix("textures/").withSuffix(".png");
+    }
+
+    public BedrockAttachmentModel getModel() {
+        return model;
+    }
+
+    public Identifier getModelTexture() {
+        return modelTexture;
+    }
 
     @Nullable
-    @SerializedName("views_fov")
-    public float[] viewsFov = null;
+    public GunDisplay.Laser getLaser() {
+        return laser;
+    }
 
-    /// > 有级档位的倍率数组，与 [#viewsFov] 一一配套（同索引 = 同一档）。
-    /// > 声明了 views_fov 但缺省本字段时，按 70/viewsFov 反推。
     @Nullable
-    @SerializedName("zoom")
-    public float[] zoom = null;
+    public GunDisplay.Flashlight getFlashlight() {
+        return flashlight;
+    }
 
-    /// > 无级模型 FOV 范围（[minFov, maxFov]，数值越小倍率越高）。声明后开镜按住变倍键
-    /// > 拨动滚轮在范围内连续调节**模型 FOV**；缺省 = 不支持无级模型 FOV。
+    public boolean isScope() {
+        return scope;
+    }
+
+    public boolean isSight() {
+        return sight;
+    }
+
+    public boolean isShowMount() {
+        return showMount;
+    }
+
+    public float getScopeViewRadiusModifier() {
+        return scopeViewRadiusModifier;
+    }
+
+    public float[] getViewsFov() {
+        return viewsFov;
+    }
+
+    /// > 有级档位倍率数组（与 views_fov 同索引配套）；未声明返回 null（按 70/viewsFov 反推）。
     @Nullable
-    @SerializedName("zoom_fov_range")
-    public float[] zoomFovRange = null;
+    public float[] getZoom() {
+        return zoom;
+    }
 
-    /// > 无级倍率范围（[minZoom, maxZoom]，与 [#zoomFovRange] 配套的独立字段，
-    /// > 滚轮同比例映射调节）。缺省时按 70/zoomFovRange 反推。
+    /// > 无级模型 FOV 范围 [minFov, maxFov]（数值越小倍率越高）；未配置返回 null。
     @Nullable
-    @SerializedName("zoom_range")
-    public float[] zoomRange = null;
+    public float[] getZoomFovRange() {
+        return zoomFovRange;
+    }
 
-    /// > 子配件槽位的显示配置。任意配件作为容器时，用于定位其挂载的子配件。
-    /// > 叶子配件可为 null。
+    /// > 无级倍率范围 [minZoom, maxZoom]（独立于模型 FOV 的配套字段）；未配置返回 null。
     @Nullable
-    @SerializedName("attachment_slot_display")
-    public Map<Identifier, AttachmentSlotDisplay> attachmentSlotDisplay = null;
+    public float[] getZoomRange() {
+        return zoomRange;
+    }
 
-    /// > ===== 以下字段仅在本 display 作为「配件变体」使用时有意义 =====
+    /// > 是否支持有级变倍（V 键循环档位）：声明了至少两个 views_fov 档位。
+    public boolean hasSteppedZooms() {
+        return viewsFov != null && viewsFov.length > 1;
+    }
 
-    /// > 变体几何模式：
-    /// > - `replace`：用本 display 的模型整体替换基础配件模型（默认）；
-    /// > - `overlay`：在基础配件模型之上、[#attachBone] 指定骨骼处叠加渲染本模型。
-    @SerializedName("mode")
-    public String mode = "replace";
+    /// > 是否支持无级变倍（按住变倍键 + 滚轮）：声明了 zoom_fov_range 或 zoom_range 任一。
+    public boolean hasSmoothZoom() {
+        return zoomFovRange != null || zoomRange != null;
+    }
 
-    /// > overlay 模式下，叠加模型挂载到「基础配件模型」的哪根骨骼上。replace 模式忽略。
+    /// > 获取指定子配件槽位的显示配置，叶子配件返回 null。
     @Nullable
-    @SerializedName("attach_bone")
-    public String attachBone = null;
+    public AttachmentSlotDisplayCfg getSlot(Identifier slotId) {
+        if (slots == null) {
+            return null;
+        }
+        return slots.get(slotId);
+    }
 
-    /// > 变体对下游（子配件挂点 / 瞄准视点）施加的额外平移（模型空间，1.0 = 16 像素）。
-    /// > 例如增高座把瞄准点抬高。可空。
-    @Nullable
-    @SerializedName("mount_offset")
-    public Vector3f mountOffset = null;
+    /// > 变体几何模式：`replace`（替换基础模型）或 `overlay`（在 attach_bone 处叠加）。
+    public String getVariantMode() {
+        return variantMode;
+    }
 
-    /// > 本配件若是镭射发射器，可在此声明发射骨骼、颜色与长度。
-    @Nullable
-    @SerializedName("laser")
-    public Laser laser = null;
+    /// > 变体是否为 overlay 模式（在基础配件模型上叠加渲染）。
+    public boolean isOverlayVariant() {
+        return "overlay".equalsIgnoreCase(variantMode);
+    }
 
-    /// > 本配件若是枪灯（手电），可在此声明灯光起点骨骼、颜色与照射范围。
+    /// > overlay 模式下叠加模型挂载到基础配件模型的骨骼名；非 overlay 返回 null。
     @Nullable
-    @SerializedName("flashlight")
-    public Flashlight flashlight = null;
+    public String getVariantAttachBone() {
+        return variantAttachBone;
+    }
+
+    /// > 变体对下游（子配件挂点 / 瞄准视点）施加的额外平移；无则返回 null。
+    @Nullable
+    public org.joml.Vector3f getVariantMountOffset() {
+        return variantMountOffset;
+    }
 }

@@ -234,7 +234,7 @@ public class HostOverlayRuntime {
         }
         SkeletonBaseLayerBlend blend = new SkeletonBaseLayerBlend(skeletonAccessor);
         boolean any = false;
-        for (MountedOverlayTemplate.GripGroup group : resolved.gripGroups) {
+        for (MountedOverlayTemplate.GripGroupCfg group : resolved.gripGroups) {
             if (group == null || group.rootBone == null) {
                 continue;
             }

@@ -11,7 +11,7 @@ import java.util.Map;
 /// > 解析后的下挂 overlay 运行时数据：在资源重载阶段按解析链（combo profile + mounted template）
 /// > 预先构建，所有动画已绑定到具体 host 模型骨架。供 [HostOverlayRuntime] 直接使用。
 /// >
-/// > 解析链：combo profile 显式声明 [MountedCompatibilityProfile#grip] 持枪姿态（per-combo），
+/// > 解析链：combo profile 显式声明 [MountedCompatibilityProfileCfg#grip] 持枪姿态（per-combo），
 /// > mounted template 提供操作差量蒙太奇与持枪混合规则（per-mounted 复用）。
 /// @author TACZ, USS_Shenzhou
 public class MountedOverlayResolved {
@@ -22,7 +22,7 @@ public class MountedOverlayResolved {
     public final String gripBlendMode;
 
     /// > 持枪姿态层 per-hand 权重分组。
-    public final List<MountedOverlayTemplate.GripGroup> gripGroups;
+    public final List<MountedOverlayTemplate.GripGroupCfg> gripGroups;
 
     /// > 操作差量动画集（已绑定 host 模型骨架），由下挂状态机按动画名直接触发。
     public final Map<String, BedrockAnimation> operationAnimations;
@@ -41,7 +41,7 @@ public class MountedOverlayResolved {
 
     public MountedOverlayResolved(BedrockAnimation gripAnimation,
                                   String gripBlendMode,
-                                  List<MountedOverlayTemplate.GripGroup> gripGroups,
+                                  List<MountedOverlayTemplate.GripGroupCfg> gripGroups,
                                   Map<String, BedrockAnimation> operationAnimations,
                                   @Nullable AnimationMontage<MontageContext> operationMontage,
                                   @Nullable BedrockAnimation transitionToUnderBarrel,

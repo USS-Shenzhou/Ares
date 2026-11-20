@@ -14,8 +14,8 @@ import cn.ussshenzhou.ares.gun.item.IMountedWeapon;
 import cn.ussshenzhou.ares.client.model.BedrockAttachmentModel;
 import cn.ussshenzhou.ares.client.model.BedrockGunModel;
 import cn.ussshenzhou.ares.client.renderer.AttachmentMountHelper;
-import cn.ussshenzhou.ares.client.resource.display.AttachmentDisplayInstance;
-import cn.ussshenzhou.ares.client.resource.display.GunDisplayInstance;
+import cn.ussshenzhou.ares.client.resource.display.AttachmentDisplay;
+import cn.ussshenzhou.ares.client.resource.display.GunDisplay;
 import net.minecraft.world.item.ItemStack;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -27,7 +27,7 @@ public class RefitScreenCacheCollector {
     /* FIXME rendering
     /// > 将当前枪整棵配件树的槽位挂点投影到 GUI 屏幕坐标。
     public static void cacheSlotPositions(PoseStack poseStack, BedrockGunModel model,
-                                          ItemStack stack, GunDisplayInstance displayInstance) {
+                                          ItemStack stack, GunDisplay displayInstance) {
         RefitSlotScreenCache.clear();
         IGun iGun = IGun.asGun(stack);
         if (iGun == null) {
@@ -63,7 +63,7 @@ public class RefitScreenCacheCollector {
     */
 
     private static void cacheChildSlotPositions(ItemStack attachmentStack, Matrix4f parentMount, AttachmentPath parentPath,
-                                                BedrockGunModel gunModel, GunDisplayInstance gunDisplay,
+                                                BedrockGunModel gunModel, GunDisplay gunDisplay,
                                                 Matrix4f viewProj, float guiW, float guiH, int remaining) {
         if (attachmentStack.isEmpty() || remaining <= 0) {
             return;
@@ -96,7 +96,7 @@ public class RefitScreenCacheCollector {
             return;
         }
 
-        AttachmentDisplayInstance attachmentDisplay = TimelessHelperC.getAttachmentDisplay(attachmentStack).orElse(null);
+        AttachmentDisplay attachmentDisplay = TimelessHelperC.getAttachmentDisplay(attachmentStack).orElse(null);
         if (attachmentDisplay == null || attachmentDisplay.getModel() == null) {
             return;
         }

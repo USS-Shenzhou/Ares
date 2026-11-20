@@ -9,7 +9,7 @@ import cn.ussshenzhou.ares.gun.item.IGun;
 
 import cn.ussshenzhou.ares.attachment.entity.LocalGunOperator;
 import cn.ussshenzhou.ares.client.animation.mounted.HostOverlayBridge;
-import cn.ussshenzhou.ares.client.resource.display.GunDisplayInstance;
+import cn.ussshenzhou.ares.client.resource.display.GunDisplay;
 import cn.ussshenzhou.ares.gun.custom.gun.BoltType;
 import cn.ussshenzhou.ares.gun.custom.gun.GunData;
 import cn.ussshenzhou.ares.gun.custom.gun.GunIndex;
@@ -47,7 +47,7 @@ public class WeaponAnimationContext {
     }
 
     private final LocalPlayer player;
-    private final GunDisplayInstance display;
+    private final GunDisplay display;
     /// > 本上下文所属的手（主/副）。双持时据此向 operator 取对应手的 gameplay 状态，
     /// > 保证左右手状态机各读各的（reload/inspect/bolt/aim/模式 镜像不串）。
     private final InteractionHand hand;
@@ -90,11 +90,11 @@ public class WeaponAnimationContext {
     private int shellReloadPlayedLoops = 0;
     private HostOverlayBridge hostOverlayBridge = HostOverlayBridge.NONE;
 
-    public WeaponAnimationContext(LocalPlayer player, ItemStack itemStack, GunDisplayInstance display) {
+    public WeaponAnimationContext(LocalPlayer player, ItemStack itemStack, GunDisplay display) {
         this(player, itemStack, display, InteractionHand.MAIN_HAND);
     }
 
-    public WeaponAnimationContext(LocalPlayer player, ItemStack itemStack, GunDisplayInstance display,
+    public WeaponAnimationContext(LocalPlayer player, ItemStack itemStack, GunDisplay display,
                                   InteractionHand hand) {
         this.player = player;
         this.itemStack = itemStack;
@@ -208,7 +208,7 @@ public class WeaponAnimationContext {
         this.itemStack = itemStack;
     }
 
-    public GunDisplayInstance display() {
+    public GunDisplay display() {
         return display;
     }
 

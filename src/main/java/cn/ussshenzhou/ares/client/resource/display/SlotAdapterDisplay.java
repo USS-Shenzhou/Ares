@@ -1,24 +1,47 @@
 package cn.ussshenzhou.ares.client.resource.display;
 
-import com.google.gson.annotations.SerializedName;
+import com.github.mcmodderanchor.simplebedrockmodel.v1.common.resource.pojo.BedrockModelPOJO;
+import com.google.common.base.Preconditions;
+import cn.ussshenzhou.ares.client.model.BedrockAttachmentModel;
+import cn.ussshenzhou.ares.client.resource.ClientAssetsManager;
 import net.minecraft.resources.Identifier;
 import javax.annotation.Nullable;
 import org.joml.Vector3f;
 
-/// > 槽位适配器的客户端显示配置。
-/// >
-/// > 适配器是叠加在宿主槽位挂点处的小模型（如垫高的导轨），并可把子配件落点抬高。
+/// > 槽位适配器的客户端显示实例（含烘焙后的 bedrock 模型）。
 /// @author TACZ, USS_Shenzhou
 public class SlotAdapterDisplay {
-    @SerializedName("model")
-    public Identifier modelLocation;
-
-    @SerializedName("texture")
-    public Identifier modelTexture;
-
-    /// > 适配器对子配件落点施加的额外平移（模型空间，1.0 = 16 像素）。
-    /// > 例如垫高导轨把其上安装的配件整体抬高。可空。
+    private BedrockAttachmentModel model;
+    private Identifier modelTexture;
     @Nullable
-    @SerializedName("mount_offset")
-    public Vector3f mountOffset = null;
+    private Vector3f mountOffset;
+
+    /// > 必须在资源包重载期间构建，否则所需的资源缓存不可用
+    public static SlotAdapterDisplay of(SlotAdapterDisplayCfg cfg) {
+        SlotAdapterDisplay instance = new SlotAdapterDisplay();
+        instance.mountOffset = cfg.mountOffset;
+
+        Preconditions.checkArgument(cfg.modelLocation != null, "slot adapter display missing model field");
+        BedrockModelPOJO modelPojo = ClientAssetsManager.INSTANCE.getModelPojo(cfg.modelLocation);
+        Preconditions.checkArgument(modelPojo != null, "there is no corresponding model file: " + cfg.modelLocation);
+        instance.model = new BedrockAttachmentModel(modelPojo);
+        Preconditions.checkArgument(cfg.modelTexture != null, "slot adapter display missing texture field");
+        instance.modelTexture = cfg.modelTexture.withPrefix("textures/").withSuffix(".png");
+
+        return instance;
+    }
+
+    public BedrockAttachmentModel getModel() {
+        return model;
+    }
+
+    public Identifier getModelTexture() {
+        return modelTexture;
+    }
+
+    /// > 适配器对其上子配件落点施加的额外平移；无则返回 null。
+    @Nullable
+    public Vector3f getMountOffset() {
+        return mountOffset;
+    }
 }

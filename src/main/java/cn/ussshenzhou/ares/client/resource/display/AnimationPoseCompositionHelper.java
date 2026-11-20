@@ -34,7 +34,7 @@ class AnimationPoseCompositionHelper {
     private static final Field SCALE_FIELD = boneField("scale");
 
     static Map<String, BedrockAnimationPOJO> compose(Map<String, BedrockAnimationPOJO> resolvedAnimations,
-                                                      @Nullable List<AnimationPoseComposition> compositions) {
+                                                      @Nullable List<AnimationPoseCompositionCfg> compositions) {
         Map<String, BedrockAnimationPOJO> result = new LinkedHashMap<>(resolvedAnimations);
         if (compositions == null || compositions.isEmpty()) {
             return result;
@@ -42,7 +42,7 @@ class AnimationPoseCompositionHelper {
 
         Set<String> declaredTargets = new HashSet<>();
         for (int index = 0; index < compositions.size(); index++) {
-            AnimationPoseComposition composition = compositions.get(index);
+            AnimationPoseCompositionCfg composition = compositions.get(index);
             if (composition == null) {
                 throw new IllegalArgumentException("animation_pose_compositions[" + index + "] must not be null");
             }

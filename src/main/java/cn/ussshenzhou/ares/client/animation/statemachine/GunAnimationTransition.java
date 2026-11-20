@@ -10,21 +10,21 @@ import com.maydaymemory.mae.control.statemachine.TransferOutStrategy;
 
 /// @author TACZ, USS_Shenzhou
 public class GunAnimationTransition implements IAnimationTransition<GunStateContext> {
-    private final StateMachineTransition definition;
+    private final StateMachineTransitionCfg cfg;
     private final IAnimationState<GunStateContext> targetState;
     private final MolangExpression condition;
     private final MolangExpression afterTrigger;
     private final IBlendCurve curve;
 
-    public GunAnimationTransition(StateMachineTransition definition,
+    public GunAnimationTransition(StateMachineTransitionCfg cfg,
                                   IAnimationState<GunStateContext> targetState,
                                   MolangExpression condition,
                                   MolangExpression afterTrigger) {
-        this.definition = definition;
+        this.cfg = cfg;
         this.targetState = targetState;
         this.condition = condition != null ? condition : MolangExpression.zero();
         this.afterTrigger = afterTrigger != null ? afterTrigger : MolangExpression.zero();
-        this.curve = new EasingBlendCurve(TransitionEasing.resolve(definition.easing));
+        this.curve = new EasingBlendCurve(TransitionEasing.resolve(cfg.easing));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class GunAnimationTransition implements IAnimationTransition<GunStateCont
 
     @Override
     public float duration() {
-        return definition.duration;
+        return cfg.duration;
     }
 
     @Override

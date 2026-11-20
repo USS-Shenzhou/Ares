@@ -1,0 +1,174 @@
+package cn.ussshenzhou.ares.client.resource.display;
+
+import com.google.gson.annotations.SerializedName;
+import net.minecraft.resources.Identifier;
+import javax.annotation.Nullable;
+
+import java.util.List;
+import java.util.Map;
+
+/// @author TACZ, USS_Shenzhou
+public class GunDisplayCfg {
+    @SerializedName("model")
+    public Identifier modelLocation;
+
+    @SerializedName("texture")
+    public Identifier modelTexture;
+
+    @Nullable
+    @SerializedName("animation")
+    public Identifier animationLocation;
+
+    @Nullable
+    @SerializedName("default_animation")
+    public Identifier defaultAnimation = null;
+
+    @Nullable
+    @SerializedName("animation_pose_compositions")
+    public List<AnimationPoseCompositionCfg> animationPoseCompositions = null;
+
+    @Nullable
+    @SerializedName("controller")
+    public Identifier controller = null;
+
+    @Nullable
+    @SerializedName("attachment_slot_display")
+    public Map<Identifier, AttachmentSlotDisplayCfg> attachmentSlotDisplay = null;
+
+    @Nullable
+    @SerializedName("slot")
+    public Identifier slotTexture = null;
+
+    @SerializedName("iron_zoom")
+    public float ironZoom = 1.2f;
+
+    @SerializedName("model_fov")
+    public float modelFov = 70.0f;
+
+    @SerializedName("zoom_model_fov")
+    public float zoomModelFov = 70.0f;
+
+    @Nullable
+    @SerializedName("ica_control_bone")
+    public String icaControlBone = "constraint";
+
+    @Nullable
+    @SerializedName("ica_strength_multiplier")
+    public Float icaStrengthMultiplier = 1.0f;
+
+    @Nullable
+    @SerializedName("ica_bone_multipliers")
+    public Map<String, Float> icaBoneMultipliers = null;
+
+    @Nullable
+    @SerializedName("muzzle_flash")
+    public MuzzleFlashCfg muzzleFlash = null;
+
+    /// > 有序枪口骨骼表；数组下标即发射时使用的 muzzleIndex。
+    @Nullable
+    @SerializedName("muzzles")
+    public List<String> muzzles = null;
+
+    @Nullable
+    @SerializedName("tracer_color")
+    public String tracerColor = null;
+
+    @Nullable
+    @SerializedName("laser")
+    public LaserCfg laser = null;
+
+    /// > 枪自带枪灯（手电）配置；声明后该枪可被枪灯快捷键开关。
+    @Nullable
+    @SerializedName("flashlight")
+    public FlashlightCfg flashlight = null;
+
+    @Nullable
+    @SerializedName("shell")
+    public ShellEjectionCfg shell = null;
+
+    /// > 战术拒枪姿态：枪械本体上的第二个定位组，作为一条独立视图位进入 Alt+V 循环列表。
+    /// > 缺省（null）表示该枪没有此姿态，行为与仅有机瞄位时完全一致。
+    @Nullable
+    @SerializedName("tactical_stance")
+    public TacticalStanceCfg tacticalStance = null;
+
+    /// > HUD 枪械图标（2D 贴图，39x13 区域）。对应包内 `textures/gun/hud/<id>.png`；缺省则不渲染图标。
+    @Nullable
+    @SerializedName("hud")
+    public Identifier hudTexture = null;
+
+    /// > 空弹（或过热）时替换的 HUD 图标；缺省时退化为把 `hud` 染红。
+    @Nullable
+    @SerializedName("hud_empty")
+    public Identifier hudEmptyTexture = null;
+
+    /// > HUD 弹药计数样式：`normal` / `percent`。缺省 `normal`。
+    @SerializedName("ammo_count_style")
+    public String ammoCountStyle = "normal";
+
+    /// > 持枪时是否强制显示准星（覆盖瞄准/换弹等隐藏规则）。
+    @SerializedName("show_crosshair")
+    public boolean showCrosshair = false;
+
+    /// > 单手双持形态的按手模型/动画/贴图变体。主手用 `right`，副手用 `left`。
+    /// > 任一字段缺省则回退顶层同名字段。
+    @Nullable
+    @SerializedName("one_hand")
+    public OneHandVariantsCfg oneHand = null;
+
+    /// > 单手双持按手变体。仅覆盖渲染相关字段（模型/贴图/动画），其余沿用顶层 display。
+    public static class OneHandVariantsCfg {
+        @Nullable
+        @SerializedName("left")
+        public VariantCfg left = null;
+
+        @Nullable
+        @SerializedName("right")
+        public VariantCfg right = null;
+    }
+
+    public static class VariantCfg {
+        @Nullable
+        @SerializedName("model")
+        public Identifier modelLocation = null;
+
+        @Nullable
+        @SerializedName("texture")
+        public Identifier modelTexture = null;
+
+        @Nullable
+        @SerializedName("animation")
+        public Identifier animationLocation = null;
+
+        @Nullable
+        @SerializedName("default_animation")
+        public Identifier defaultAnimation = null;
+
+        @Nullable
+        @SerializedName("animation_pose_compositions")
+        public List<AnimationPoseCompositionCfg> animationPoseCompositions = null;
+    }
+
+    /// > 战术拒枪姿态的 display 声明。各字段缺省时回退机瞄位对应值，包作者可以先只给骨骼。
+    public static class TacticalStanceCfg {
+        /// > 定位组骨骼名，缺省 `tactical_view`。
+        @Nullable
+        @SerializedName("view")
+        public String view = null;
+
+        /// > 世界倍率，缺省回退 `iron_zoom`。
+        @Nullable
+        @SerializedName("zoom")
+        public Float zoom = null;
+
+        /// > 非瞄准时的模型 FOV，缺省回退 `model_fov`。
+        @Nullable
+        @SerializedName("model_fov")
+        public Float modelFov = null;
+
+        /// > 开镜时的模型 FOV，缺省回退 `zoom_model_fov`。
+        @Nullable
+        @SerializedName("zoom_model_fov")
+        public Float zoomModelFov = null;
+    }
+}

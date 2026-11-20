@@ -7,17 +7,17 @@ import com.github.mcmodderanchor.simplebedrockmodel.v1.common.resource.pojo.Bedr
 import com.github.mcmodderanchor.simplebedrockmodel.v1.common.resource.pojo.BedrockModelPOJO;
 import cn.ussshenzhou.ares.gun.resource.GunGsonHelper;
 import cn.ussshenzhou.ares.gun.resource.JsonDataManager;
-import cn.ussshenzhou.ares.client.animation.controller.StandardWeaponControlData;
-import cn.ussshenzhou.ares.client.animation.montage.Montage;
-import cn.ussshenzhou.ares.client.animation.mounted.MountedCompatibilityProfile;
+import cn.ussshenzhou.ares.client.animation.controller.StandardWeaponControlCfg;
+import cn.ussshenzhou.ares.client.animation.montage.MontageCfg;
+import cn.ussshenzhou.ares.client.animation.mounted.MountedCompatibilityProfileCfg;
 import cn.ussshenzhou.ares.client.animation.mounted.MountedOverlayResolved;
 import cn.ussshenzhou.ares.client.animation.mounted.MountedOverlayTemplate;
 import cn.ussshenzhou.ares.client.animation.statemachine.GunStateMachineGraph;
-import cn.ussshenzhou.ares.client.resource.display.AmmoDisplayInstance;
-import cn.ussshenzhou.ares.client.resource.display.AttachmentDisplayInstance;
-import cn.ussshenzhou.ares.client.resource.display.CharmDisplayInstance;
-import cn.ussshenzhou.ares.client.resource.display.GunDisplayInstance;
-import cn.ussshenzhou.ares.client.resource.display.SlotAdapterDisplayInstance;
+import cn.ussshenzhou.ares.client.resource.display.AmmoDisplay;
+import cn.ussshenzhou.ares.client.resource.display.AttachmentDisplay;
+import cn.ussshenzhou.ares.client.resource.display.CharmDisplay;
+import cn.ussshenzhou.ares.client.resource.display.GunDisplay;
+import cn.ussshenzhou.ares.client.resource.display.SlotAdapterDisplay;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
@@ -40,10 +40,10 @@ public enum ClientAssetsManager {
     INSTANCE;
     private JsonDataManager<BedrockModelPOJO> models;
     private JsonDataManager<BedrockAnimationFile> animations;
-    private JsonDataManager<Montage> animationMontages;
-    private JsonDataManager<StandardWeaponControlData> animationControllers;
+    private JsonDataManager<MontageCfg> animationMontages;
+    private JsonDataManager<StandardWeaponControlCfg> animationControllers;
     private AnimationStateMachineManager animationStateMachines;
-    private JsonDataManager<MountedCompatibilityProfile> animationMountedProfiles;
+    private JsonDataManager<MountedCompatibilityProfileCfg> animationMountedProfiles;
     /// > 预解析的 host overlay 运行时数据：(hostDisplayId, mountedId) -> resolved。仅含显式声明 grip 的 combo。
     private final Map<String, MountedOverlayResolved> resolvedOverlays = new HashMap<>();
     private GunDisplayManager gunDisplayManager;
@@ -61,11 +61,11 @@ public enum ClientAssetsManager {
     public void registerListeners(BiConsumer<Identifier, PreparableReloadListener> consumer) {
         models = this.create(BedrockModelPOJO.class, "geo_models", "BedrockModelPojo", consumer);
         animations = this.create(BedrockAnimationFile.class, new FileToIdConverter("animations", ".animation.json"), "BedrockAnimationPojo", consumer);
-        animationMontages = this.create(Montage.class, "animations/montages", "AnimationMontage", consumer);
-        animationControllers = this.create(StandardWeaponControlData.class, "animations/controllers", "AnimationController", consumer);
+        animationMontages = this.create(MontageCfg.class, "animations/montages", "AnimationMontage", consumer);
+        animationControllers = this.create(StandardWeaponControlCfg.class, "animations/controllers", "AnimationController", consumer);
         animationStateMachines = new AnimationStateMachineManager();
         consumer.accept(Ares.modLoc("client/animation_state_machines"), animationStateMachines);
-        animationMountedProfiles = this.create(MountedCompatibilityProfile.class, "animations/mounted_profiles", "AnimationMountedProfile", consumer);
+        animationMountedProfiles = this.create(MountedCompatibilityProfileCfg.class, "animations/mounted_profiles", "AnimationMountedProfile", consumer);
 
         gunDisplayManager = new GunDisplayManager();
         consumer.accept(Ares.modLoc("client/gun_display"), gunDisplayManager);
@@ -124,7 +124,7 @@ public enum ClientAssetsManager {
 
     /// > 预构建所有显式声明 grip 的 combo 的 host overlay 运行时数据。
     /// >
-    /// > combo profile 必须显式提供 [MountedCompatibilityProfile#grip]；operation / grip_blend / transitions
+    /// > combo profile 必须显式提供 [MountedCompatibilityProfileCfg#grip]；operation / grip_blend / transitions
     /// > 直接从同一个 combo 文件读取。持枪姿态与操作差量动画的关键帧均驱动 host 骨骼，boneIndex 必须绑定到
     /// > host 模型，因此按各 combo 的 host_display 模型单独编译。必须在原始动画 pojo被清理前调用。
     private void resolveHostOverlays() {
@@ -132,7 +132,7 @@ public enum ClientAssetsManager {
         if (animationMountedProfiles == null) {
             return;
         }
-        for (MountedCompatibilityProfile profile : animationMountedProfiles.getAllData().values()) {
+        for (MountedCompatibilityProfileCfg profile : animationMountedProfiles.getAllData().values()) {
             if (profile == null || profile.match == null || profile.match.hostDisplay == null || profile.match.mounted == null) {
                 continue;
             }
@@ -140,7 +140,7 @@ public enum ClientAssetsManager {
             if (profile.grip == null || profile.grip.animationFile == null || profile.grip.animation == null) {
                 continue;
             }
-            Optional<GunDisplayInstance> hostDisplay = getGunDisplay(profile.match.hostDisplay);
+            Optional<GunDisplay> hostDisplay = getGunDisplay(profile.match.hostDisplay);
             if (hostDisplay.isEmpty() || hostDisplay.get().getGunModel() == null) {
                 LogUtils.getLogger().warn("[TACZ] host overlay host display/model missing: {}", profile.match.hostDisplay);
                 continue;
@@ -156,7 +156,7 @@ public enum ClientAssetsManager {
             }
 
             String gripBlendMode = "layered";
-            java.util.List<MountedOverlayTemplate.GripGroup> gripGroups = java.util.List.of();
+            java.util.List<MountedOverlayTemplate.GripGroupCfg> gripGroups = java.util.List.of();
             Map<String, BedrockAnimation> operationAnimations = compileOperationAnimations(profile.operation, hostModel);
             BedrockAnimation transitionToUnderBarrel = null;
             BedrockAnimation transitionToPrimary = null;
@@ -192,7 +192,7 @@ public enum ClientAssetsManager {
     }
 
     private Map<String, BedrockAnimation> compileOperationAnimations(
-            MountedCompatibilityProfile.Operation operation, cn.ussshenzhou.ares.client.model.BedrockGunModel hostModel) {
+            MountedCompatibilityProfileCfg.OperationCfg operation, cn.ussshenzhou.ares.client.model.BedrockGunModel hostModel) {
         if (operation == null || operation.animationFile == null) {
             return Map.of();
         }
@@ -214,7 +214,7 @@ public enum ClientAssetsManager {
 
     /// > 编译模式切换过渡段动画（绑定到 host 模型骨架）。缺省或失败返回 null（回退到纯权重淡入淡出）。
     @Nullable
-    private BedrockAnimation compileTransitionClip(MountedOverlayTemplate.TransitionClip clip,
+    private BedrockAnimation compileTransitionClip(MountedOverlayTemplate.TransitionClipCfg clip,
                                                    cn.ussshenzhou.ares.client.model.BedrockGunModel hostModel) {
         if (clip == null || clip.animationFile == null || clip.animation == null) {
             return null;
@@ -250,12 +250,12 @@ public enum ClientAssetsManager {
     }
     
     @Nullable
-    public Montage getAnimationMontage(Identifier path) {
+    public MontageCfg getAnimationMontage(Identifier path) {
         return animationMontages.getData(path);
     }
 
     @Nullable
-    public StandardWeaponControlData getAnimationController(Identifier path) {
+    public StandardWeaponControlCfg getAnimationController(Identifier path) {
         return animationControllers.getData(path);
     }
 
@@ -275,13 +275,13 @@ public enum ClientAssetsManager {
     }
 
     @Nonnull
-    public Optional<GunDisplayInstance> getGunDisplay(Identifier path) {
+    public Optional<GunDisplay> getGunDisplay(Identifier path) {
         return gunDisplayManager.getDisplay(path);
     }
 
     @Nonnull
-    public Optional<GunDisplayInstance> getGunDisplayWithUnderBarrelOverride(ItemStack stack, Identifier displayId) {
-        Optional<GunDisplayInstance> baseOpt = gunDisplayManager.getDisplay(displayId);
+    public Optional<GunDisplay> getGunDisplayWithUnderBarrelOverride(ItemStack stack, Identifier displayId) {
+        Optional<GunDisplay> baseOpt = gunDisplayManager.getDisplay(displayId);
         if (baseOpt.isEmpty() || underBarrelOverrideManager == null) {
             return baseOpt;
         }
@@ -289,7 +289,7 @@ public enum ClientAssetsManager {
     }
 
     @Nonnull
-    public Optional<GunDisplayInstance> getMountedDisplayWithUnderBarrelOverride(ItemStack gunStack, Identifier gunDisplayId, Identifier mountedDisplayId) {
+    public Optional<GunDisplay> getMountedDisplayWithUnderBarrelOverride(ItemStack gunStack, Identifier gunDisplayId, Identifier mountedDisplayId) {
         if (underBarrelOverrideManager == null) {
             return getGunDisplay(mountedDisplayId);
         }
@@ -297,15 +297,15 @@ public enum ClientAssetsManager {
     }
 
     @Nonnull
-    public Optional<AttachmentDisplayInstance> getAttachmentDisplay(Identifier path) {
+    public Optional<AttachmentDisplay> getAttachmentDisplay(Identifier path) {
         return attachmentDisplayManager.getDisplay(path);
     }
 
     /// > 按资源路径解析显示实例：先查配件 display 目录，再查变体 display 目录
     /// > （`display/attachment_variants`，作为可复用几何资产池，供模式关态几何等引用）。
     @Nonnull
-    public Optional<AttachmentDisplayInstance> getDisplay(Identifier path) {
-        Optional<AttachmentDisplayInstance> base = attachmentDisplayManager.getDisplay(path);
+    public Optional<AttachmentDisplay> getDisplay(Identifier path) {
+        Optional<AttachmentDisplay> base = attachmentDisplayManager.getDisplay(path);
         if (base.isPresent()) {
             return base;
         }
@@ -317,7 +317,7 @@ public enum ClientAssetsManager {
 
     /// > 取配件变体的 display（结构同 attachment display，目录为 display/attachment_variants）。
     @Nonnull
-    public Optional<AttachmentDisplayInstance> getVariantDisplay(Identifier path) {
+    public Optional<AttachmentDisplay> getVariantDisplay(Identifier path) {
         if (variantDisplayManager == null) {
             return Optional.empty();
         }
@@ -326,7 +326,7 @@ public enum ClientAssetsManager {
 
     /// > 取槽位适配器的 display。
     @Nonnull
-    public Optional<SlotAdapterDisplayInstance> getSlotAdapterDisplay(Identifier path) {
+    public Optional<SlotAdapterDisplay> getSlotAdapterDisplay(Identifier path) {
         if (slotAdapterDisplayManager == null) {
             return Optional.empty();
         }
@@ -335,7 +335,7 @@ public enum ClientAssetsManager {
 
     /// > 取弹药的 display（含弹壳模型）。
     @Nonnull
-    public Optional<AmmoDisplayInstance> getAmmoDisplay(Identifier path) {
+    public Optional<AmmoDisplay> getAmmoDisplay(Identifier path) {
         if (ammoDisplayManager == null) {
             return Optional.empty();
         }
@@ -344,7 +344,7 @@ public enum ClientAssetsManager {
 
     /// > 取挂饰的 display（模型 + 贴图 + 渲染变换）。
     @Nonnull
-    public Optional<CharmDisplayInstance> getCharmDisplay(Identifier path) {
+    public Optional<CharmDisplay> getCharmDisplay(Identifier path) {
         if (charmDisplayManager == null) {
             return Optional.empty();
         }
@@ -359,7 +359,7 @@ public enum ClientAssetsManager {
         animations.putData(id, pojo);
     }
     
-    public void putGunDisplay(Identifier id, GunDisplayInstance instance) {
+    public void putGunDisplay(Identifier id, GunDisplay instance) {
         gunDisplayManager.putDisplay(id, instance);
     }
 }

@@ -3,7 +3,7 @@ package cn.ussshenzhou.ares.client.util;
 import cn.ussshenzhou.ares.gun.TimelessHelperC;
 import cn.ussshenzhou.ares.gun.item.AttachmentSlot;
 import cn.ussshenzhou.ares.gun.item.IGun;
-import cn.ussshenzhou.ares.client.resource.display.AttachmentDisplayInstance;
+import cn.ussshenzhou.ares.client.resource.display.AttachmentDisplay;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
@@ -29,7 +29,7 @@ public class SightScopeHelper {
             if (attachment.isEmpty()) {
                 continue;
             }
-            AttachmentDisplayInstance display = TimelessHelperC.getAttachmentDisplay(attachment).orElse(null);
+            AttachmentDisplay display = TimelessHelperC.getAttachmentDisplay(attachment).orElse(null);
             if (display == null || display.getModel() == null || !display.getModel().needsStencil()) {
                 continue;
             }
@@ -38,6 +38,6 @@ public class SightScopeHelper {
         return List.copyOf(result);
     }
 
-    public record InstalledSight(Identifier slotId, ItemStack stack, AttachmentDisplayInstance display) {
+    public record InstalledSight(Identifier slotId, ItemStack stack, AttachmentDisplay display) {
     }
 }

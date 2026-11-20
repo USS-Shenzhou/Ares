@@ -11,13 +11,13 @@ import com.maydaymemory.mae.basic.ZYXBoneTransformFactory;
 import com.maydaymemory.mae.blend.EulerAdditiveBlender;
 import com.maydaymemory.mae.blend.SimpleEulerAdditiveBlender;
 import cn.ussshenzhou.ares.client.animation.controller.StandardWeaponController;
-import cn.ussshenzhou.ares.client.animation.controller.StandardWeaponControlData;
+import cn.ussshenzhou.ares.client.animation.controller.StandardWeaponControlCfg;
 import cn.ussshenzhou.ares.client.animation.context.AnimationEventDispatcher;
 import cn.ussshenzhou.ares.client.animation.context.WeaponAnimationContext;
 import cn.ussshenzhou.ares.client.animation.mounted.HostOverlayBridge;
 import cn.ussshenzhou.ares.client.model.BedrockGunModel;
 import cn.ussshenzhou.ares.client.resource.ClientAssetsManager;
-import cn.ussshenzhou.ares.client.resource.display.GunDisplayInstance;
+import cn.ussshenzhou.ares.client.resource.display.GunDisplay;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
@@ -29,7 +29,7 @@ public class AnimationRuntime {
     private static final EulerAdditiveBlender BLENDER = new SimpleEulerAdditiveBlender(new ZYXBoneTransformFactory(), ArrayPoseBuilder::new);
 
     private final LocalPlayer player;
-    private final GunDisplayInstance display;
+    private final GunDisplay display;
     private final BedrockGunModel model;
     private final WeaponAnimationContext context;
     private final StandardWeaponController controller;
@@ -42,20 +42,20 @@ public class AnimationRuntime {
     private final AnimationRateLimiter<Pose> poseRateLimiter =
             new AnimationRateLimiter<>(AnimationClocks.client(), AnimationRateLimiter.FPS_120);
 
-    public AnimationRuntime(LocalPlayer player, ItemStack itemStack, GunDisplayInstance display) {
+    public AnimationRuntime(LocalPlayer player, ItemStack itemStack, GunDisplay display) {
         this(player, itemStack, display, HostOverlayBridge.NONE);
     }
 
-    public AnimationRuntime(LocalPlayer player, ItemStack itemStack, GunDisplayInstance display, HostOverlayBridge hostOverlayBridge) {
+    public AnimationRuntime(LocalPlayer player, ItemStack itemStack, GunDisplay display, HostOverlayBridge hostOverlayBridge) {
         this(player, itemStack, display, hostOverlayBridge, net.minecraft.world.InteractionHand.MAIN_HAND);
     }
 
-    public AnimationRuntime(LocalPlayer player, ItemStack itemStack, GunDisplayInstance display,
+    public AnimationRuntime(LocalPlayer player, ItemStack itemStack, GunDisplay display,
                             net.minecraft.world.InteractionHand hand) {
         this(player, itemStack, display, HostOverlayBridge.NONE, hand);
     }
 
-    public AnimationRuntime(LocalPlayer player, ItemStack itemStack, GunDisplayInstance display,
+    public AnimationRuntime(LocalPlayer player, ItemStack itemStack, GunDisplay display,
                             HostOverlayBridge hostOverlayBridge, net.minecraft.world.InteractionHand hand) {
         this.player = player;
         this.itemStack = itemStack;
@@ -201,14 +201,14 @@ public class AnimationRuntime {
         return controller.getFireSectionName();
     }
 
-    private StandardWeaponController createController(GunDisplayInstance display) {
+    private StandardWeaponController createController(GunDisplay display) {
         Identifier controllerId = display.getControllerId();
-        StandardWeaponControlData definition = controllerId != null ? ClientAssetsManager.INSTANCE.getAnimationController(controllerId) : null;
-        if (definition == null) {
+        StandardWeaponControlCfg cfg = controllerId != null ? ClientAssetsManager.INSTANCE.getAnimationController(controllerId) : null;
+        if (cfg == null) {
             LogUtils.getLogger().warn("[TACZ] Animation controller missing: {}", controllerId);
-            definition = new StandardWeaponControlData();
+            cfg = new StandardWeaponControlCfg();
         }
         /// > montage 由 controller 经 display 按需懒加载并缓存，这里不再预加载。
-        return new StandardWeaponController(definition, eventSink, context);
+        return new StandardWeaponController(cfg, eventSink, context);
     }
 }

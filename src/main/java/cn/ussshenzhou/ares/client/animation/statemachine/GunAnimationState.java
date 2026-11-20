@@ -10,31 +10,31 @@ import java.util.List;
 
 /// @author TACZ, USS_Shenzhou
 public class GunAnimationState implements GunState {
-    private final StateMachineState definition;
+    private final StateMachineStateCfg cfg;
     private final MolangExpression onEnter;
     private final MolangExpression onUpdate;
     private final MolangExpression onExit;
     private final List<String> poseTracks;
     private List<IAnimationTransition<GunStateContext>> transitions = List.of();
 
-    public GunAnimationState(StateMachineState definition,
+    public GunAnimationState(StateMachineStateCfg cfg,
                              MolangExpression onEnter,
                              MolangExpression onUpdate,
                              MolangExpression onExit) {
-        this.definition = definition;
+        this.cfg = cfg;
         this.onEnter = onEnter;
         this.onUpdate = onUpdate;
         this.onExit = onExit;
-        this.poseTracks = definition.pose != null ? definition.pose.resolveTracks() : List.of();
+        this.poseTracks = cfg.pose != null ? cfg.pose.resolveTracks() : List.of();
     }
 
-    public StateMachineState definition() {
-        return definition;
+    public StateMachineStateCfg definition() {
+        return cfg;
     }
 
     @Override
     public String id() {
-        return definition.id;
+        return cfg.id;
     }
 
     public void setTransitions(List<IAnimationTransition<GunStateContext>> transitions) {

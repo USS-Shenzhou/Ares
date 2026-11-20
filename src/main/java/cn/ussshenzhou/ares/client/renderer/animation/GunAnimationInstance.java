@@ -12,7 +12,7 @@ import cn.ussshenzhou.ares.client.animation.mounted.HostOverlayBridge;
 import cn.ussshenzhou.ares.client.animation.runtime.AnimationRuntime;
 import cn.ussshenzhou.ares.client.model.BedrockGunModel;
 import cn.ussshenzhou.ares.client.resource.ClientAssetsManager;
-import cn.ussshenzhou.ares.client.resource.display.GunDisplayInstance;
+import cn.ussshenzhou.ares.client.resource.display.GunDisplay;
 import cn.ussshenzhou.ares.gun.util.MountedWeaponHelper;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.Identifier;
@@ -46,9 +46,9 @@ public class GunAnimationInstance implements IFPAnimationInstance {
     /// > 本实例所属的手（主/副）。双持时据此选用单手按手变体 display。
     private final InteractionHand hand;
     /// > 顶层（双手）display，作为变体解析的基准与回退。
-    private GunDisplayInstance baseDisplay;
+    private GunDisplay baseDisplay;
     /// > 当前生效的 display（双持时为按手变体，否则为 base）。model/runtime 均据此构建。
-    private GunDisplayInstance currentDisplay;
+    private GunDisplay currentDisplay;
 
     private ItemStack itemStack;
 
@@ -59,11 +59,11 @@ public class GunAnimationInstance implements IFPAnimationInstance {
     /// > 绑定到实例固定的渲染形态，过渡期间稳定不变，避免实时 player 判定在收枪/掏枪过渡中抖动。
     private final boolean occupiesView;
 
-    public GunAnimationInstance(LocalPlayer player, ItemStack itemStack, GunDisplayInstance display) {
+    public GunAnimationInstance(LocalPlayer player, ItemStack itemStack, GunDisplay display) {
         this(player, itemStack, display, InteractionHand.MAIN_HAND);
     }
 
-    public GunAnimationInstance(LocalPlayer player, ItemStack itemStack, GunDisplayInstance display, InteractionHand hand) {
+    public GunAnimationInstance(LocalPlayer player, ItemStack itemStack, GunDisplay display, InteractionHand hand) {
         this.player = player;
         this.itemStack = itemStack;
         this.hand = hand;
@@ -82,7 +82,7 @@ public class GunAnimationInstance implements IFPAnimationInstance {
     /// > 否则用顶层（双手）display。无变体声明时 `forHand` 自身会回退 base。
     /// >
     /// > 单手形态判定见 [DualWieldHelper#isOneHandedForm]：副手始终单手，主手仅双持时单手。
-    private GunDisplayInstance resolveEffectiveDisplay() {
+    private GunDisplay resolveEffectiveDisplay() {
         if (baseDisplay.hasOneHandVariants() && DualWieldHelper.isOneHandedForm(player, hand)) {
             return baseDisplay.forHand(hand);
         }
@@ -93,7 +93,7 @@ public class GunAnimationInstance implements IFPAnimationInstance {
     /// >
     /// > 形态切换（进入/退出双持）由 SBM 经「渲染变体键」统一驱动重建实例，本实例创建后
     /// > [#currentDisplay] 即固定，不在 tick 内自行切换，避免与 SBM 实例生命周期冲突。
-    public GunDisplayInstance effectiveDisplay() {
+    public GunDisplay effectiveDisplay() {
         return currentDisplay;
     }
 
@@ -168,7 +168,7 @@ public class GunAnimationInstance implements IFPAnimationInstance {
     }
 
     /// > 热重载：使用新的 Display 实例更新当前动画实例
-    public void reload(GunDisplayInstance newDisplay) {
+    public void reload(GunDisplay newDisplay) {
         this.baseDisplay = newDisplay;
         this.currentDisplay = resolveEffectiveDisplay();
         this.model = currentDisplay.getGunModel();
@@ -338,6 +338,7 @@ public class GunAnimationInstance implements IFPAnimationInstance {
                 + " fire=" + animationRuntime.getActionSectionName();
     }
 
+    @Override
     @Nonnull
     public Quaternionf getCameraRotation() {
         return cameraRotation;

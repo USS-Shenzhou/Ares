@@ -18,7 +18,7 @@ import com.maydaymemory.mae.basic.Pose;
 import com.maydaymemory.mae.basic.BoneTransform;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.AABB;
-import cn.ussshenzhou.ares.client.resource.display.AttachmentSlotDisplay;
+import cn.ussshenzhou.ares.client.resource.display.AttachmentSlotDisplayCfg;
 import javax.annotation.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -51,7 +51,7 @@ public class BedrockGunModel implements BoneIndexProvider {
 
     private boolean renderHand = true;
 
-    public BedrockGunModel(BedrockModelPOJO pojo, @Nullable Map<Identifier, AttachmentSlotDisplay> attachmentSlots) {
+    public BedrockGunModel(BedrockModelPOJO pojo, @Nullable Map<Identifier, AttachmentSlotDisplayCfg> attachmentSlots) {
         this.baseModel = TreeBedrockModel.bake(pojo);
         this.instance = baseModel.createInstance();
         this.rootBoneIndex = baseModel.getIndex(ROOT_BONE);
@@ -67,7 +67,7 @@ public class BedrockGunModel implements BoneIndexProvider {
 
     /// > 在 bind pose 下采集各配件槽位定位组的全局变换（不受动画影响）。
     /// > 实例新建后即处于 bind 状态，可直接采集。
-    private void initAttachmentTransforms(Map<Identifier, AttachmentSlotDisplay> attachmentSlots) {
+    private void initAttachmentTransforms(Map<Identifier, AttachmentSlotDisplayCfg> attachmentSlots) {
         instance.resetPose();
         for (var entry : attachmentSlots.entrySet()) {
             String posGroup = entry.getValue().posGroup();

@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import cn.ussshenzhou.ares.gun.TimelessHelperC;
 import cn.ussshenzhou.ares.gun.item.ICustomItem;
 import cn.ussshenzhou.ares.client.model.BedrockAmmoModel;
-import cn.ussshenzhou.ares.client.resource.display.AmmoDisplayInstance;
+import cn.ussshenzhou.ares.client.resource.display.AmmoDisplay;
 import cn.ussshenzhou.ares.gun.util.CustomItemDataHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -46,7 +46,7 @@ public class AmmoItemRenderer extends BlockEntityWithoutLevelRenderer {
     public void renderByItem(@Nonnull ItemStack stack, @Nonnull ItemDisplayContext ctx, @Nonnull PoseStack poseStack,
                              @Nonnull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         Identifier ammoId = CustomItemDataHelper.getCustomId(stack);
-        AmmoDisplayInstance display = TimelessHelperC.getAmmoDisplay(ammoId).orElse(null);
+        AmmoDisplay display = TimelessHelperC.getAmmoDisplay(ammoId).orElse(null);
 
         BedrockAmmoModel model = display == null ? null : display.getAmmoModel();
         Identifier modelTexture = display == null ? null : display.getModelTexture();
@@ -92,7 +92,7 @@ public class AmmoItemRenderer extends BlockEntityWithoutLevelRenderer {
     }
 
     /// > 渲染 GUI 2D 格子图标。图标贴图缺失时回退 [MissingTextureAtlasSprite]。
-    private void renderSlot(@Nullable AmmoDisplayInstance display, PoseStack poseStack, MultiBufferSource bufferSource,
+    private void renderSlot(@Nullable AmmoDisplay display, PoseStack poseStack, MultiBufferSource bufferSource,
                             int packedLight, int packedOverlay) {
         Identifier slotTexture = display == null ? null : display.getSlotTexture();
         if (slotTexture == null) {

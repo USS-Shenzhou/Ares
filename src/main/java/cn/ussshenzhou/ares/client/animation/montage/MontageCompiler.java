@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-/// > 把 datapack 的 [Montage] 编译为 MAE 的 [AnimationMontage]。
+/// > 把 datapack 的 [MontageCfg] 编译为 MAE 的 [AnimationMontage]。
 /// >
 /// > 蒙太奇的播放、轨道混合、section 切换、notify/clip 触发全部交由 MAE 的
 /// > [com.maydaymemory.mae.control.montage.AnimationMontageRunner] 执行，本类只负责数据转换。
@@ -29,33 +29,33 @@ public class MontageCompiler {
     /// > 编译蒙太奇定义。animationResolver 用于把动画名解析为 [BedrockAnimation]。
     /// > 编译失败（无有效轨道/段）时返回 null。
     public static AnimationMontage<MontageContext> compile(Identifier montageId,
-                                                           Montage definition,
+                                                           MontageCfg montageCfg,
                                                            Function<String, BedrockAnimation> animationResolver) {
         AnimationMontage<MontageContext> montage = new AnimationMontage<>();
 
         List<AnimationMontageTrack> tracks = new ArrayList<>();
         float inferredEnd = 0.0f;
         boolean hasSegment = false;
-        for (MontageTrack trackDef : tracks(definition)) {
-            if (trackDef == null || trackDef.segments == null) {
+        for (MontageTrackCfg trackCfg : tracks(montageCfg)) {
+            if (trackCfg == null || trackCfg.segments == null) {
                 continue;
             }
             ArrayList<Keyframe<AnimationSegment>> segmentKeyframes = new ArrayList<>();
-            for (MontageSegment segmentDef : trackDef.segments) {
-                AnimationSegment segment = buildSegment(montageId, segmentDef, animationResolver);
+            for (MontageSegmentCfg segmentCfg : trackCfg.segments) {
+                AnimationSegment segment = buildSegment(montageId, segmentCfg, animationResolver);
                 if (segment == null) {
                     continue;
                 }
-                segmentKeyframes.add(new AnimationSegmentKeyframe(segmentDef.startTime, segment));
+                segmentKeyframes.add(new AnimationSegmentKeyframe(segmentCfg.startTime, segment));
                 hasSegment = true;
-                inferredEnd = Math.max(inferredEnd, segmentDef.startTime + segment.getLength());
+                inferredEnd = Math.max(inferredEnd, segmentCfg.startTime + segment.getLength());
             }
             if (segmentKeyframes.isEmpty()) {
                 continue;
             }
             AnimationMontageTrack track = new AnimationMontageTrack(segmentKeyframes);
-            track.setAdditive(trackDef.additive);
-            track.setEnabled(trackDef.enabled);
+            track.setAdditive(trackCfg.additive);
+            track.setEnabled(trackCfg.enabled);
             tracks.add(track);
         }
         if (!hasSegment) {
@@ -64,38 +64,38 @@ public class MontageCompiler {
         }
         montage.setTracks(tracks);
 
-        montage.setSections(buildSections(montageId, definition, inferredEnd));
-        montage.setNotifyChannels(buildNotifyChannels(montageId, definition));
+        montage.setSections(buildSections(montageId, montageCfg, inferredEnd));
+        montage.setNotifyChannels(buildNotifyChannels(montageId, montageCfg));
         return montage;
     }
 
     private static AnimationSegment buildSegment(Identifier montageId,
-                                                 MontageSegment segmentDef,
+                                                 MontageSegmentCfg segmentCfg,
                                                  Function<String, BedrockAnimation> animationResolver) {
-        if (segmentDef == null || segmentDef.animation == null) {
+        if (segmentCfg == null || segmentCfg.animation == null) {
             LogUtils.getLogger().warn("[TACZ] Animation montage segment missing animation: montage={}", montageId);
             return null;
         }
-        BedrockAnimation animation = animationResolver.apply(segmentDef.animation);
+        BedrockAnimation animation = animationResolver.apply(segmentCfg.animation);
         if (animation == null) {
-            LogUtils.getLogger().warn("[TACZ] Animation bedrock animation missing: montage={}, animation={}", montageId, segmentDef.animation);
+            LogUtils.getLogger().warn("[TACZ] Animation bedrock animation missing: montage={}, animation={}", montageId, segmentCfg.animation);
             return null;
         }
-        float sourceEnd = segmentDef.sourceEndTime != null ? segmentDef.sourceEndTime : animation.getSpecifiedEndTimeS();
-        return new AnimationSegment(animation, segmentDef.sourceStartTime, sourceEnd);
+        float sourceEnd = segmentCfg.sourceEndTime != null ? segmentCfg.sourceEndTime : animation.getSpecifiedEndTimeS();
+        return new AnimationSegment(animation, segmentCfg.sourceStartTime, sourceEnd);
     }
 
     private static Map<String, AnimationMontageSection> buildSections(Identifier montageId,
-                                                                      Montage definition,
+                                                                      MontageCfg montageCfg,
                                                                       float inferredEnd) {
         Map<String, AnimationMontageSection> sections = new HashMap<>();
-        if (definition.sections != null && !definition.sections.isEmpty()) {
-            for (MontageSection sectionDef : definition.sections) {
-                if (sectionDef == null || sectionDef.name == null) {
+        if (montageCfg.sections != null && !montageCfg.sections.isEmpty()) {
+            for (MontageSectionCfg sectionCfg : montageCfg.sections) {
+                if (sectionCfg == null || sectionCfg.name == null) {
                     continue;
                 }
-                sections.put(sectionDef.name, new AnimationMontageSection(
-                        sectionDef.name, sectionDef.startTime, sectionDef.endTime, sectionDef.nextSectionName));
+                sections.put(sectionCfg.name, new AnimationMontageSection(
+                        sectionCfg.name, sectionCfg.startTime, sectionCfg.endTime, sectionCfg.nextSectionName));
             }
             return sections;
         }
@@ -109,23 +109,23 @@ public class MontageCompiler {
     }
 
     private static List<com.maydaymemory.mae.basic.ClipChannel<IAnimationNotify<MontageContext>>> buildNotifyChannels(
-            Identifier montageId, Montage definition) {
-        if (definition.notifyTracks == null || definition.notifyTracks.isEmpty()) {
+            Identifier montageId, MontageCfg montageCfg) {
+        if (montageCfg.notifyTracks == null || montageCfg.notifyTracks.isEmpty()) {
             return null;
         }
         List<com.maydaymemory.mae.basic.ClipChannel<IAnimationNotify<MontageContext>>> channels = new ArrayList<>();
-        for (MontageNotifyTrack trackDef : definition.notifyTracks) {
-            if (trackDef == null || trackDef.keys == null || trackDef.keys.isEmpty()) {
+        for (MontageNotifyTrackCfg trackCfg : montageCfg.notifyTracks) {
+            if (trackCfg == null || trackCfg.keys == null || trackCfg.keys.isEmpty()) {
                 continue;
             }
             ArrayList<Keyframe<IAnimationNotify<MontageContext>>> keyframes = new ArrayList<>();
-            for (MontageNotifyKey keyDef : trackDef.keys) {
-                if (keyDef == null) {
+            for (MontageNotifyKeyCfg keyCfg : trackCfg.keys) {
+                if (keyCfg == null) {
                     continue;
                 }
-                String event = keyDef.event != null && !keyDef.event.isBlank() ? keyDef.event : trackDef.name;
-                keyframes.add(new AnimationNotifyKeyframe<>(keyDef.time,
-                        new EventNotify(montageId, trackDef.name, event, keyDef.time)));
+                String event = keyCfg.event != null && !keyCfg.event.isBlank() ? keyCfg.event : trackCfg.name;
+                keyframes.add(new AnimationNotifyKeyframe<>(keyCfg.time,
+                        new EventNotify(montageId, trackCfg.name, event, keyCfg.time)));
             }
             if (!keyframes.isEmpty()) {
                 channels.add(new ArrayClipChannel<>(keyframes));
@@ -134,8 +134,8 @@ public class MontageCompiler {
         return channels.isEmpty() ? null : channels;
     }
 
-    private static List<MontageTrack> tracks(Montage definition) {
-        return definition.tracks != null ? definition.tracks : List.of();
+    private static List<MontageTrackCfg> tracks(MontageCfg cfg) {
+        return cfg.tracks != null ? cfg.tracks : List.of();
     }
 
     /// > 把 datapack notify 关键帧转发为 [AnimationNotifyEvent] 到事件 sink。

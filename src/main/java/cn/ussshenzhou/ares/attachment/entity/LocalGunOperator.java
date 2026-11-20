@@ -5,7 +5,7 @@ import cn.ussshenzhou.ares.attachment.entity.gun.WieldProfile;
 import cn.ussshenzhou.ares.gun.item.AttachmentPath;
 import cn.ussshenzhou.ares.gun.item.IGun;
 import cn.ussshenzhou.ares.gun.item.IMountedWeapon;
-import cn.ussshenzhou.ares.client.resource.display.AttachmentDisplayInstance;
+import cn.ussshenzhou.ares.client.resource.display.AttachmentDisplay;
 import cn.ussshenzhou.ares.client.util.AimFovHelper;
 import cn.ussshenzhou.ares.client.util.AimView;
 import cn.ussshenzhou.ares.client.util.AimViewHelper;
@@ -293,7 +293,7 @@ public class LocalGunOperator extends AbstractGunOperator<Player, ClientHandGunS
     /// > —— 变倍（有级档位 / 无级滚轮）——
 
     /// > 当前激活瞄具的解析结果：配件栈 + 槽位路径 + display。
-    private record ActiveScope(ItemStack stack, AttachmentPath path, AttachmentDisplayInstance display) {
+    private record ActiveScope(ItemStack stack, AttachmentPath path, AttachmentDisplay display) {
     }
 
     /// > 玩家请求有级变倍（开镜时按 V）：在当前激活瞄具的档位间 +1 循环。

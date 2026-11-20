@@ -1,48 +1,106 @@
 package cn.ussshenzhou.ares.client.resource.display;
 
-import com.google.gson.annotations.SerializedName;
+import com.github.mcmodderanchor.simplebedrockmodel.v1.common.resource.pojo.BedrockModelPOJO;
+import com.google.common.base.Preconditions;
+import cn.ussshenzhou.ares.client.model.BedrockCharmModel;
+import cn.ussshenzhou.ares.client.resource.ClientAssetsManager;
 import net.minecraft.resources.Identifier;
 import javax.annotation.Nullable;
 
-/// > 挂饰 display 配置（display/charms/*.json），纯客户端资源。
+/// > 挂饰 display 运行时实例。
 /// >
-/// > 承载视觉定义：模型 / 贴图 / 渲染变换。物理与 layout 在数据驱动的 CharmData 中。
+/// > 必须在资源包重载期间构建，否则所需的模型缓存（[ClientAssetsManager#getModelPojo]）不可用。
+/// > 承载挂饰模型 + 贴图 + 渲染变换；本期先打通加载链路，渲染留到后续阶段。
 /// @author TACZ, USS_Shenzhou
 public class CharmDisplay {
-    @SerializedName("model")
-    public Identifier modelLocation;
+    private BedrockCharmModel model;
+    private Identifier modelTexture;
+    private float[] scale = {1.0f, 1.0f, 1.0f};
+    private float[] rotation = {0.0f, 0.0f, 0.0f};
+    private float[] dynamicRotation = {0.0f, 0.0f, 0.0f};
+    private float[] tint = {1.0f, 1.0f, 1.0f};
+    private float[] forwardAxis = {0.0f, 0.0f, 1.0f};
+    private float anchorClearancePixels = 0.32f;
 
-    @SerializedName("texture")
-    public Identifier modelTexture;
+    public static CharmDisplay of(CharmDisplayCfg cfg) {
+        CharmDisplay instance = new CharmDisplay();
+        buildModelAndTexture(instance, cfg);
+        applyRender(instance, cfg.render);
+        return instance;
+    }
 
-    @Nullable
-    @SerializedName("render")
-    public Render render;
+    private static void buildModelAndTexture(CharmDisplay instance, CharmDisplayCfg cfg) {
+        Preconditions.checkArgument(cfg.modelLocation != null, "charm display object missing model field");
+        BedrockModelPOJO modelPojo = ClientAssetsManager.INSTANCE.getModelPojo(cfg.modelLocation);
+        Preconditions.checkArgument(modelPojo != null, "there is no corresponding model file: " + cfg.modelLocation);
+        instance.model = new BedrockCharmModel(modelPojo);
+        Preconditions.checkArgument(cfg.modelTexture != null, "charm display object missing texture field");
+        instance.modelTexture = cfg.modelTexture.withPrefix("textures/").withSuffix(".png");
+    }
 
-    /// > 渲染变换参数。
-    public static class Render {
-        @Nullable
-        @SerializedName("scale")
-        public float[] scale;
+    private static void applyRender(CharmDisplay instance, @Nullable CharmDisplayCfg.RenderCfg render) {
+        if (render == null) {
+            return;
+        }
+        instance.scale = normalizedTriple(render.scale, 1.0f);
+        instance.rotation = normalizedTriple(render.rotation, 0.0f);
+        instance.dynamicRotation = normalizedTriple(render.dynamicRotation, 0.0f);
+        instance.tint = normalizedTriple(render.tint, 1.0f);
+        instance.forwardAxis = normalizedAxis(render.forwardAxis);
+        if (render.anchorClearancePixels != null && Float.isFinite(render.anchorClearancePixels)) {
+            instance.anchorClearancePixels = Math.max(0.0f, render.anchorClearancePixels);
+        }
+    }
 
-        @Nullable
-        @SerializedName("rotation")
-        public float[] rotation;
+    private static float[] normalizedTriple(@Nullable float[] values, float fallback) {
+        float[] triple = {fallback, fallback, fallback};
+        if (values != null) {
+            for (int i = 0; i < Math.min(values.length, 3); i++) {
+                triple[i] = Float.isFinite(values[i]) ? values[i] : fallback;
+            }
+        }
+        return triple;
+    }
 
-        @Nullable
-        @SerializedName("dynamic_rotation")
-        public float[] dynamicRotation;
+    private static float[] normalizedAxis(@Nullable float[] values) {
+        float[] axis = normalizedTriple(values, 0.0f);
+        float lengthSquared = axis[0] * axis[0] + axis[1] * axis[1] + axis[2] * axis[2];
+        if (!Float.isFinite(lengthSquared) || lengthSquared < 1.0E-6f) {
+            return new float[]{0.0f, 0.0f, 1.0f};
+        }
+        float inverseLength = (float) (1.0 / Math.sqrt(lengthSquared));
+        return new float[]{axis[0] * inverseLength, axis[1] * inverseLength, axis[2] * inverseLength};
+    }
 
-        @Nullable
-        @SerializedName("tint")
-        public float[] tint;
+    public BedrockCharmModel getModel() {
+        return model;
+    }
 
-        @Nullable
-        @SerializedName("forward_axis")
-        public float[] forwardAxis;
+    public Identifier getModelTexture() {
+        return modelTexture;
+    }
 
-        @Nullable
-        @SerializedName("anchor_clearance_pixels")
-        public Float anchorClearancePixels;
+    public float[] getScale() {
+        return scale;
+    }
+
+    public float[] getRotation() {
+        return rotation;
+    }
+
+    public float[] getDynamicRotation() {
+        return dynamicRotation;
+    }
+
+    public float[] getTint() {
+        return tint;
+    }
+
+    public float[] getForwardAxis() {
+        return forwardAxis;
+    }
+
+    public float getAnchorClearancePixels() {
+        return anchorClearancePixels;
     }
 }

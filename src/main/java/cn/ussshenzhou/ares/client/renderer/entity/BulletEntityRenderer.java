@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import cn.ussshenzhou.ares.Ares;
 import cn.ussshenzhou.ares.client.resource.ClientAssetsManager;
-import cn.ussshenzhou.ares.client.resource.display.GunDisplayInstance;
+import cn.ussshenzhou.ares.client.resource.display.GunDisplay;
 import cn.ussshenzhou.ares.gun.entity.BulletEntity;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -189,7 +189,7 @@ public class BulletEntityRenderer extends EntityRenderer<BulletEntity> {
     private float[] resolveTracerColor(BulletEntity bullet) {
         Identifier gunId = bullet.getGunId();
         if (gunId != null) {
-            GunDisplayInstance display = ClientAssetsManager.INSTANCE.getGunDisplay(gunId).orElse(null);
+            GunDisplay display = ClientAssetsManager.INSTANCE.getGunDisplay(gunId).orElse(null);
             if (display != null) {
                 float[] color = display.getTracerColor();
                 if (color != null) {

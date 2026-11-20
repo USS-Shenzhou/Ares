@@ -5,7 +5,7 @@ import com.github.mcmodderanchor.simplebedrockmodel.v1.client.renderer.BedrockMo
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import cn.ussshenzhou.ares.client.model.BedrockShellModel;
-import cn.ussshenzhou.ares.client.resource.display.GunDisplayInstance.ShellEjectionConfig;
+import cn.ussshenzhou.ares.client.resource.display.GunDisplay.ShellEjection;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -44,7 +44,7 @@ public class ShellRenderer {
     /// > @param frozenViewTransform 冻结的视图矩阵（`第一人称完整 pose × 抛壳窗骨骼变换`）
     /// >
     /// > @param config              抛壳运动配置
-    public void spawn(Matrix4f frozenViewTransform, ShellEjectionConfig config) {
+    public void spawn(Matrix4f frozenViewTransform, ShellEjection config) {
         if (config == null || frozenViewTransform == null) {
             return;
         }
@@ -64,7 +64,7 @@ public class ShellRenderer {
     /// >
     /// > @param packedLight 渲染光照（取枪体渲染光照）
     public void render(MultiBufferSource bufferSource, @Nullable BedrockShellModel model,
-                       @Nullable Identifier texture, @Nullable ShellEjectionConfig config, int packedLight) {
+                       @Nullable Identifier texture, @Nullable ShellEjection config, int packedLight) {
         if (config == null || model == null || texture == null) {
             queue.clear();
             return;
@@ -89,7 +89,7 @@ public class ShellRenderer {
     }
 
     private void renderSingle(MultiBufferSource bufferSource, BedrockShellModel model, RenderType quadType,
-                              RenderType triangleType, ShellEjectionConfig config, ShellInstance shell,
+                              RenderType triangleType, ShellEjection config, ShellInstance shell,
                               long now, int packedLight) {
         double t = (now - shell.timestamp) / 1000.0;
         Vector3f iv = config.initialVelocity();

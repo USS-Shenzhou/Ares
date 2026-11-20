@@ -9,7 +9,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 import net.minecraft.client.gui.GuiGraphics;
 import cn.ussshenzhou.ares.client.renderer.crosshair.CrosshairRenderer;
-import cn.ussshenzhou.ares.client.resource.display.GunDisplayInstance;
+import cn.ussshenzhou.ares.client.resource.display.GunDisplay;
 import cn.ussshenzhou.ares.gun.TimelessHelperC;
 import cn.ussshenzhou.ares.gun.item.IGun;
 
@@ -55,7 +55,7 @@ public class RenderCrosshairHandler {
         /// > 准星隐藏规则：瞄准快完成 / 改装界面 / 换弹中；display 声明 show_crosshair 可强制显示
         boolean hide = shouldHideCrosshair(player, event.getPartialTick());
         boolean forceShow = TimelessHelperC.getGunDisplay(player.getMainHandItem())
-                .map(GunDisplayInstance::isShowCrosshair).orElse(false);
+                .map(GunDisplay::isShowCrosshair).orElse(false);
         if (!hide || forceShow) {
             CrosshairRenderer.render(event.getGuiGraphics(), player,
                     event.getWindow().getGuiScaledWidth(), event.getWindow().getGuiScaledHeight());

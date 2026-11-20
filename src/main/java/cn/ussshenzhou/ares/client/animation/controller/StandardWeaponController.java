@@ -14,7 +14,7 @@ import com.maydaymemory.mae.control.montage.AnimationMontage;
 import cn.ussshenzhou.ares.client.animation.context.AnimationEventSink;
 import cn.ussshenzhou.ares.client.animation.context.WeaponAnimationContext;
 import cn.ussshenzhou.ares.client.animation.layer.AnimationLayer;
-import cn.ussshenzhou.ares.client.animation.layer.ControllerLayerBinding;
+import cn.ussshenzhou.ares.client.animation.layer.ControllerLayerBindingCfg;
 import cn.ussshenzhou.ares.client.animation.montage.MontageContext;
 import cn.ussshenzhou.ares.client.animation.mounted.HostOverlayBridge;
 import cn.ussshenzhou.ares.client.animation.mounted.HostOverlayRuntime;
@@ -38,7 +38,7 @@ public class StandardWeaponController implements WeaponAnimationController, Host
     private static final EulerAdditiveBlender ADDITIVE_BLENDER = new SimpleEulerAdditiveBlender(new ZYXBoneTransformFactory(), ArrayPoseBuilder::new);
     private static final InterpolatorBlender INTERPOLATOR_BLENDER = new SimpleInterpolatorBlender(new ZYXBoneTransformFactory(), ArrayPoseBuilder::new);
 
-    private final StandardWeaponControlData definition;
+    private final StandardWeaponControlCfg cfg;
     private final AnimationEventSink eventSink;
     private final WeaponAnimationContext context;
     private final Map<String, AnimationLayer> layers = new HashMap<>();
@@ -46,10 +46,10 @@ public class StandardWeaponController implements WeaponAnimationController, Host
     /// > host_overlay：下挂安装且命中 profile 时挂载，叠加在主姿态上。
     private HostOverlayRuntime hostOverlay;
 
-    public StandardWeaponController(StandardWeaponControlData definition,
+    public StandardWeaponController(StandardWeaponControlCfg cfg,
                                     AnimationEventSink eventSink,
                                     WeaponAnimationContext context) {
-        this.definition = definition;
+        this.cfg = cfg;
         this.eventSink = eventSink != null ? eventSink : AnimationEventSink.NONE;
         this.context = context;
         loadLayers();
@@ -205,10 +205,10 @@ public class StandardWeaponController implements WeaponAnimationController, Host
     }
 
     private void loadLayers() {
-        if (definition.layers == null) {
+        if (cfg.layers == null) {
             return;
         }
-        for (Map.Entry<String, ControllerLayerBinding> entry : definition.layers.entrySet()) {
+        for (Map.Entry<String, ControllerLayerBindingCfg> entry : cfg.layers.entrySet()) {
             if (entry.getKey() == null || entry.getValue() == null) {
                 continue;
             }
@@ -218,13 +218,13 @@ public class StandardWeaponController implements WeaponAnimationController, Host
     }
 
     private GunStateMachineRuntime createBaseStateMachine() {
-        if (definition.base == null) {
+        if (cfg.base == null) {
             LogUtils.getLogger().warn("[TACZ] Animation controller missing base state machine id");
             return null;
         }
-        GunStateMachineGraph baseGraph = ClientAssetsManager.INSTANCE.getAnimationStateMachine(definition.base);
+        GunStateMachineGraph baseGraph = ClientAssetsManager.INSTANCE.getAnimationStateMachine(cfg.base);
         if (baseGraph == null) {
-            LogUtils.getLogger().warn("[TACZ] Animation base state machine missing: {}", definition.base);
+            LogUtils.getLogger().warn("[TACZ] Animation base state machine missing: {}", cfg.base);
             return null;
         }
         return new GunStateMachineRuntime(baseGraph, context, this::resolveAnimation, this::resolveMontage, eventSink);

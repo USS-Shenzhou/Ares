@@ -4,8 +4,8 @@ import com.mojang.logging.LogUtils;
 import com.github.mcmodderanchor.simplebedrockmodel.v1.common.resource.pojo.BedrockAnimationFile;
 import com.github.mcmodderanchor.simplebedrockmodel.v1.common.resource.pojo.BedrockModelPOJO;
 import cn.ussshenzhou.ares.gun.resource.GunGsonHelper;
-import cn.ussshenzhou.ares.client.resource.display.GunDisplayInstance;
 import cn.ussshenzhou.ares.client.resource.display.GunDisplay;
+import cn.ussshenzhou.ares.client.resource.display.GunDisplayCfg;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.Identifier;
@@ -29,9 +29,9 @@ public class DebugReloadManager {
         try {
             /// > 1. 读取 Display JSON
             Identifier displayLoc = Identifier.fromNamespaceAndPath(displayId.getNamespace(), "display/guns/" + displayId.getPath() + ".json");
-            GunDisplay pojo = loadJson(displayLoc, GunDisplay.class);
+            GunDisplayCfg cfg = loadJson(displayLoc, GunDisplayCfg.class);
             
-            if (pojo == null) {
+            if (cfg == null) {
                 LogUtils.getLogger().error("Could not find display file: {}", displayLoc);
                 return false;
             }
@@ -39,32 +39,32 @@ public class DebugReloadManager {
             /// > 2. 加载依赖
             
             /// > 2.1 加载 Model
-            if (pojo.modelLocation != null) {
-                Identifier fileLoc = FileToIdConverter.json("geo_models").idToFile(pojo.modelLocation);
+            if (cfg.modelLocation != null) {
+                Identifier fileLoc = FileToIdConverter.json("geo_models").idToFile(cfg.modelLocation);
                 BedrockModelPOJO modelPojo = loadJson(fileLoc, BedrockModelPOJO.class);
                 if (modelPojo != null) {
-                    ClientAssetsManager.INSTANCE.putModel(pojo.modelLocation, modelPojo);
+                    ClientAssetsManager.INSTANCE.putModel(cfg.modelLocation, modelPojo);
                 }
             }
             
             /// > 2.2 加载 Animation
-            if (pojo.animationLocation != null) {
-                Identifier fileLoc = new FileToIdConverter("animations", ".animation.json").idToFile(pojo.animationLocation);
+            if (cfg.animationLocation != null) {
+                Identifier fileLoc = new FileToIdConverter("animations", ".animation.json").idToFile(cfg.animationLocation);
                 BedrockAnimationFile animPojo = loadJson(fileLoc, BedrockAnimationFile.class);
                 if (animPojo != null) {
-                    ClientAssetsManager.INSTANCE.putAnimation(pojo.animationLocation, animPojo);
+                    ClientAssetsManager.INSTANCE.putAnimation(cfg.animationLocation, animPojo);
                 }
             }
-            if (pojo.defaultAnimation != null) {
-                Identifier fileLoc = new FileToIdConverter("animations", ".animation.json").idToFile(pojo.defaultAnimation);
+            if (cfg.defaultAnimation != null) {
+                Identifier fileLoc = new FileToIdConverter("animations", ".animation.json").idToFile(cfg.defaultAnimation);
                 BedrockAnimationFile defAnimPojo = loadJson(fileLoc, BedrockAnimationFile.class);
                 if (defAnimPojo != null) {
-                    ClientAssetsManager.INSTANCE.putAnimation(pojo.defaultAnimation, defAnimPojo);
+                    ClientAssetsManager.INSTANCE.putAnimation(cfg.defaultAnimation, defAnimPojo);
                 }
             }
             
-            /// > 3. 重建 GunDisplayInstance
-            GunDisplayInstance newInstance = GunDisplayInstance.of(pojo);
+            /// > 3. 重建 GunDisplay
+            GunDisplay newInstance = GunDisplay.of(cfg);
             
             /// > 4. 热替换
             ClientAssetsManager.INSTANCE.putGunDisplay(displayId, newInstance);

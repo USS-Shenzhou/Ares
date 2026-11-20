@@ -64,13 +64,13 @@ public class GunStateMachineGraph {
         return new GunStateMachineGraph(safeStates, resolvedEntry, onInitHook);
     }
 
-    /// > Molang 路径：把 JSON 反序列化出的 [GunStateMachine] 编译为图。定义为空时返回空图。
-    public static GunStateMachineGraph compile(GunStateMachine definition) {
+    /// > Molang 路径：把 JSON 反序列化出的 [GunStateMachineCfg] 编译为图。定义为空时返回空图。
+    public static GunStateMachineGraph compile(GunStateMachineCfg cfg) {
         MochaEngine<?> engine = GunMolangContext.sharedCompileEngine();
-        MolangExpression onInit = compileAction(engine, definition.onInit, "stateMachine.onInit", definition.entryStateId);
-        Map<String, GunState> states = buildStates(engine, definition);
-        bindTransitions(engine, definition, states);
-        GunState entryState = states.get(definition.entryStateId);
+        MolangExpression onInit = compileAction(engine, cfg.onInit, "stateMachine.onInit", cfg.entryStateId);
+        Map<String, GunState> states = buildStates(engine, cfg);
+        bindTransitions(engine, cfg, states);
+        GunState entryState = states.get(cfg.entryStateId);
         Consumer<GunStateContext> onInitHook = context -> onInit.evaluate(context.molangContext());
         return of(states, entryState, onInitHook);
     }
@@ -85,44 +85,44 @@ public class GunStateMachineGraph {
         onInitHook.accept(context);
     }
 
-    private static Map<String, GunState> buildStates(MochaEngine<?> engine, GunStateMachine definition) {
+    private static Map<String, GunState> buildStates(MochaEngine<?> engine, GunStateMachineCfg gunStateMachineCfg) {
         Map<String, GunState> states = new HashMap<>();
-        if (definition.states == null) {
+        if (gunStateMachineCfg.states == null) {
             return states;
         }
-        for (StateMachineState stateDefinition : definition.states) {
-            if (stateDefinition == null || stateDefinition.id == null) {
+        for (StateMachineStateCfg stateCfg : gunStateMachineCfg.states) {
+            if (stateCfg == null || stateCfg.id == null) {
                 continue;
             }
-            MolangExpression onEnter = compileAction(engine, stateDefinition.onEnter, "state.onEnter", stateDefinition.id);
-            MolangExpression onUpdate = compileAction(engine, stateDefinition.onUpdate, "state.onUpdate", stateDefinition.id);
-            MolangExpression onExit = compileAction(engine, stateDefinition.onExit, "state.onExit", stateDefinition.id);
-            states.put(stateDefinition.id, new GunAnimationState(stateDefinition, onEnter, onUpdate, onExit));
+            MolangExpression onEnter = compileAction(engine, stateCfg.onEnter, "state.onEnter", stateCfg.id);
+            MolangExpression onUpdate = compileAction(engine, stateCfg.onUpdate, "state.onUpdate", stateCfg.id);
+            MolangExpression onExit = compileAction(engine, stateCfg.onExit, "state.onExit", stateCfg.id);
+            states.put(stateCfg.id, new GunAnimationState(stateCfg, onEnter, onUpdate, onExit));
         }
         return states;
     }
 
-    private static void bindTransitions(MochaEngine<?> engine, GunStateMachine definition, Map<String, GunState> states) {
-        if (definition.transitions == null) {
+    private static void bindTransitions(MochaEngine<?> engine, GunStateMachineCfg gunStateMachineCfg, Map<String, GunState> states) {
+        if (gunStateMachineCfg.transitions == null) {
             return;
         }
         Map<String, List<IAnimationTransition<GunStateContext>>> transitionsByState = new HashMap<>();
-        for (StateMachineTransition transitionDefinition : definition.transitions) {
-            if (transitionDefinition == null || transitionDefinition.from == null || transitionDefinition.to == null) {
+        for (StateMachineTransitionCfg transitionCfg : gunStateMachineCfg.transitions) {
+            if (transitionCfg == null || transitionCfg.from == null || transitionCfg.to == null) {
                 continue;
             }
-            if (!"state".equals(transitionDefinition.from.kind) || !"state".equals(transitionDefinition.to.kind)) {
+            if (!"state".equals(transitionCfg.from.kind) || !"state".equals(transitionCfg.to.kind)) {
                 continue;
             }
-            GunState fromState = states.get(transitionDefinition.from.stateId);
-            GunState toState = states.get(transitionDefinition.to.stateId);
+            GunState fromState = states.get(transitionCfg.from.stateId);
+            GunState toState = states.get(transitionCfg.to.stateId);
             if (fromState == null || toState == null) {
                 continue;
             }
-            MolangExpression condition = compileAction(engine, transitionDefinition.condition, "transition.condition", transitionDefinition.id);
-            MolangExpression afterTrigger = compileAction(engine, transitionDefinition.afterTrigger, "transition.afterTrigger", transitionDefinition.id);
-            transitionsByState.computeIfAbsent(transitionDefinition.from.stateId, id -> new ArrayList<>())
-                    .add(new GunAnimationTransition(transitionDefinition, toState, condition, afterTrigger));
+            MolangExpression condition = compileAction(engine, transitionCfg.condition, "transition.condition", transitionCfg.id);
+            MolangExpression afterTrigger = compileAction(engine, transitionCfg.afterTrigger, "transition.afterTrigger", transitionCfg.id);
+            transitionsByState.computeIfAbsent(transitionCfg.from.stateId, id -> new ArrayList<>())
+                    .add(new GunAnimationTransition(transitionCfg, toState, condition, afterTrigger));
         }
         for (Map.Entry<String, List<IAnimationTransition<GunStateContext>>> entry : transitionsByState.entrySet()) {
             GunState state = states.get(entry.getKey());

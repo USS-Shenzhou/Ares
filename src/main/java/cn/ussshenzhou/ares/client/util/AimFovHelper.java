@@ -5,8 +5,8 @@ import cn.ussshenzhou.ares.attachment.entity.IGunOperator;
 import cn.ussshenzhou.ares.gun.item.IGun;
 import cn.ussshenzhou.ares.attachment.entity.LocalGunOperator;
 import cn.ussshenzhou.ares.attachment.entity.gun.ClientHandGunSession.ZoomPrediction;
-import cn.ussshenzhou.ares.client.resource.display.AttachmentDisplayInstance;
-import cn.ussshenzhou.ares.client.resource.display.GunDisplayInstance;
+import cn.ussshenzhou.ares.client.resource.display.AttachmentDisplay;
+import cn.ussshenzhou.ares.client.resource.display.GunDisplay;
 import cn.ussshenzhou.ares.gun.util.math.MathUtil;
 import cn.ussshenzhou.ares.gun.util.ZoomHelper;
 import net.minecraft.client.Minecraft;
@@ -28,14 +28,14 @@ public class AimFovHelper {
             return 1.0F;
         }
         return TimelessHelperC.getGunDisplay(stack)
-                .map(GunDisplayInstance::getIronZoom)
+                .map(GunDisplay::getIronZoom)
                 .filter(zoom -> zoom > 0.0F)
                 .orElse(1.0F);
     }
 
     public static float getModelFov(ItemStack stack, double fallbackFov) {
         return TimelessHelperC.getGunDisplay(stack)
-                .map(GunDisplayInstance::getModelFov)
+                .map(GunDisplay::getModelFov)
                 .filter(fov -> fov > 0.0F)
                 .orElse((float) fallbackFov);
     }
@@ -48,7 +48,7 @@ public class AimFovHelper {
         ViewTransition views = getViewTransition(stack);
         if (views.active() == null) {
             return TimelessHelperC.getGunDisplay(stack)
-                    .map(GunDisplayInstance::getZoomModelFov)
+                    .map(GunDisplay::getZoomModelFov)
                     .filter(fov -> fov > 0.0F)
                     .orElse(fallbackFov);
         }
@@ -73,7 +73,7 @@ public class AimFovHelper {
     /// > 从 maxFov 向 minFov 插值）→ 档位 views_fov[index % n] → fallback。无级范围的档位互斥：
     /// > 声明了无级范围时档位索引不再参与循环（初始进度由档位映射，见 [#resolveScopeZoomProgress]）。
     public static float resolveScopeZoomFov(ItemStack scope, @Nullable ZoomPrediction prediction, float fallbackFov) {
-        AttachmentDisplayInstance display = scope.isEmpty() ? null : TimelessHelperC.getAttachmentDisplay(scope).orElse(null);
+        AttachmentDisplay display = scope.isEmpty() ? null : TimelessHelperC.getAttachmentDisplay(scope).orElse(null);
         if (display == null) {
             return fallbackFov;
         }
@@ -99,7 +99,7 @@ public class AimFovHelper {
     /// > 在 zoom_range 上从 minZoom 向 maxZoom 插值）→ 档位 zoom[index]（未声明按 70/views_fov 反推）
     /// > → fallback。与 [#resolveScopeZoomFov]（模型 FOV）是两个独立数据字段，共用同一无级进度。
     public static float resolveScopeZoom(ItemStack scope, @Nullable ZoomPrediction prediction, float fallbackZoom) {
-        AttachmentDisplayInstance display = scope.isEmpty() ? null : TimelessHelperC.getAttachmentDisplay(scope).orElse(null);
+        AttachmentDisplay display = scope.isEmpty() ? null : TimelessHelperC.getAttachmentDisplay(scope).orElse(null);
         if (display == null) {
             return fallbackZoom;
         }
@@ -133,7 +133,7 @@ public class AimFovHelper {
 
     /// > 无级模型 FOV 范围；缺省由无级倍率范围反推（70/zoom）。返回 null 表示两个范围都未声明。
     @Nullable
-    public static float[] resolveSmoothFovRange(AttachmentDisplayInstance display) {
+    public static float[] resolveSmoothFovRange(AttachmentDisplay display) {
         float[] fovRange = display.getZoomFovRange();
         if (fovRange != null) {
             return fovRange;
@@ -149,7 +149,7 @@ public class AimFovHelper {
 
     /// > 无级倍率范围；缺省由无级模型 FOV 范围反推（70/fov）。返回 null 表示两个范围都未声明。
     @Nullable
-    public static float[] resolveSmoothZoomRange(AttachmentDisplayInstance display) {
+    public static float[] resolveSmoothZoomRange(AttachmentDisplay display) {
         float[] zoomRange = display.getZoomRange();
         if (zoomRange != null) {
             return zoomRange;

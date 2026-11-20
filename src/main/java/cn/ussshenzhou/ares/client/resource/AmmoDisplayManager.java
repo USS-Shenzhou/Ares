@@ -5,8 +5,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import cn.ussshenzhou.ares.gun.resource.GunGsonHelper;
-import cn.ussshenzhou.ares.client.resource.display.AmmoDisplayInstance;
 import cn.ussshenzhou.ares.client.resource.display.AmmoDisplay;
+import cn.ussshenzhou.ares.client.resource.display.AmmoDisplayCfg;
 import cn.ussshenzhou.ares.gun.util.ResourceScanHelper;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -24,7 +24,7 @@ import java.util.Optional;
 public class AmmoDisplayManager extends SimplePreparableReloadListener<Map<Identifier, JsonElement>> {
     public static final Marker MARKER = MarkerFactory.getMarker("AmmoDisplayManager");
 
-    private Map<Identifier, AmmoDisplayInstance> displayMap = Map.of();
+    private Map<Identifier, AmmoDisplay> displayMap = Map.of();
 
     @Nonnull
     @Override
@@ -34,12 +34,12 @@ public class AmmoDisplayManager extends SimplePreparableReloadListener<Map<Ident
 
     @Override
     protected void apply(@Nonnull Map<Identifier, JsonElement> resources, @Nonnull ResourceManager manager, @Nonnull ProfilerFiller pProfiler) {
-        Map<Identifier, AmmoDisplayInstance> tempMap = Maps.newHashMap();
+        Map<Identifier, AmmoDisplay> tempMap = Maps.newHashMap();
         for (var entry : resources.entrySet()) {
             try {
                 var obj = GsonHelper.convertToJsonObject(entry.getValue(), "ammo display");
-                AmmoDisplay pojo = GunGsonHelper.GSON.fromJson(obj, AmmoDisplay.class);
-                AmmoDisplayInstance data = AmmoDisplayInstance.of(pojo);
+                AmmoDisplayCfg cfg = GunGsonHelper.GSON.fromJson(obj, AmmoDisplayCfg.class);
+                AmmoDisplay data = AmmoDisplay.of(cfg);
 
                 tempMap.put(entry.getKey(), data);
             } catch (Exception e) {
@@ -49,17 +49,17 @@ public class AmmoDisplayManager extends SimplePreparableReloadListener<Map<Ident
         displayMap = ImmutableMap.copyOf(tempMap);
     }
 
-    public void putDisplay(Identifier id, AmmoDisplayInstance instance) {
-        Map<Identifier, AmmoDisplayInstance> newMap = Maps.newHashMap(displayMap);
+    public void putDisplay(Identifier id, AmmoDisplay instance) {
+        Map<Identifier, AmmoDisplay> newMap = Maps.newHashMap(displayMap);
         newMap.put(id, instance);
         displayMap = ImmutableMap.copyOf(newMap);
     }
 
-    public Map<Identifier, AmmoDisplayInstance> getDisplayMap() {
+    public Map<Identifier, AmmoDisplay> getDisplayMap() {
         return displayMap;
     }
 
-    public Optional<AmmoDisplayInstance> getDisplay(Identifier id) {
+    public Optional<AmmoDisplay> getDisplay(Identifier id) {
         return Optional.ofNullable(displayMap.get(id));
     }
 }

@@ -14,12 +14,6 @@ import cn.ussshenzhou.ares.client.render.fx.LaserVisualResolver;
 import cn.ussshenzhou.ares.gun.compat.oculus.OculusCompat;
 import cn.ussshenzhou.ares.client.render.fx.LaserBeamManager;
 */
-/* FIXME rendering
-*/
-/* FIXME rendering
-*/
-/* FIXME rendering
-*/
 import com.github.mcmodderanchor.simplebedrockmodel.v1.client.animation.IFPAnimationInstance;
 import com.github.mcmodderanchor.simplebedrockmodel.v1.client.renderer.IFPGeoItemRenderer;
 import com.github.mcmodderanchor.simplebedrockmodel.v1.client.handler.FirstPersonRenderHandler;
@@ -47,10 +41,10 @@ import cn.ussshenzhou.ares.client.renderer.entity.FirstPersonPoseCache;
 
 import cn.ussshenzhou.ares.client.refit.RefitFocusSmoothing;
 import cn.ussshenzhou.ares.client.refit.RefitTransform;
-import cn.ussshenzhou.ares.client.resource.display.AttachmentDisplayInstance;
-import cn.ussshenzhou.ares.client.resource.display.GunDisplayInstance;
-import cn.ussshenzhou.ares.client.resource.display.SlotAdapterDisplayInstance;
-import cn.ussshenzhou.ares.client.resource.display.AttachmentSlotDisplay;
+import cn.ussshenzhou.ares.client.resource.display.AttachmentDisplay;
+import cn.ussshenzhou.ares.client.resource.display.GunDisplay;
+import cn.ussshenzhou.ares.client.resource.display.SlotAdapterDisplay;
+import cn.ussshenzhou.ares.client.resource.display.AttachmentSlotDisplayCfg;
 import cn.ussshenzhou.ares.gun.util.AdapterLookupHelper;
 import cn.ussshenzhou.ares.gun.util.CustomItemDataHelper;
 import cn.ussshenzhou.ares.gun.util.DualWieldHelper;
@@ -79,9 +73,9 @@ import java.util.WeakHashMap;
 import static net.minecraft.world.item.ItemDisplayContext.FIRST_PERSON_LEFT_HAND;
 
 /// @author TACZ, USS_Shenzhou
-// FIXME REVIEW AbstractGeoItemRendererV2 does not implement IFPGeoItemRenderer while its rendering part is commented,
+// FIXME rendering AbstractGeoItemRendererV2 does not implement IFPGeoItemRenderer while its rendering part is commented,
 // so it is implemented here to keep the logic overrides (animation instance, put-away duration and so on) active.
-// FIXME REVIEW only the drawing methods are commented here and in the Bedrock*Model classes; logic methods such as
+// FIXME rendering only the drawing methods are commented here and in the Bedrock*Model classes; logic methods such as
 // createAnimationInstance, isSameItem and getPutAwayDuration stay active.
 public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements IFPGeoItemRenderer {
     private static final EulerAdditiveBlender BLENDER = new SimpleEulerAdditiveBlender(new ZYXBoneTransformFactory(), ArrayPoseBuilder::new);
@@ -122,7 +116,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
 
     /// > 获取当前物品对应的枪械模型与贴图（不存在时返回 null）。
     @Nullable
-    private GunDisplayInstance getDisplay(ItemStack stack) {
+    private GunDisplay getDisplay(ItemStack stack) {
         return TimelessHelperC.getGunDisplay(stack).orElse(null);
     }
 
@@ -137,7 +131,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /// > 这保证渲染所用的 [BedrockGunModel] 与动画实例 pose 的目标模型是同一对象，
     /// > 避免双持时主/副手套用了错误骨架（双手模型 vs 单手模型）。
     @Nullable
-    private GunDisplayInstance resolveRenderDisplay(ItemStack stack, ItemDisplayContext ctx) {
+    private GunDisplay resolveRenderDisplay(ItemStack stack, ItemDisplayContext ctx) {
         if (ctx.firstPerson()) {
             var instance = FirstPersonRenderHandler.getActiveAnimationInstance(handForContext(ctx));
             if (instance instanceof GunAnimationInstance gunAni) {
@@ -150,7 +144,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /* FIXME rendering
     @Override
     public boolean hasModel(ItemStack stack) {
-        GunDisplayInstance display = getDisplay(stack);
+        GunDisplay display = getDisplay(stack);
         return display != null && display.getGunModel() != null && display.getModelTexture() != null;
     }
     */
@@ -160,7 +154,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     @Override
     public Identifier getSlotTexture(ItemStack stack) {
         return TimelessHelperC.getGunDisplay(stack)
-                .map(GunDisplayInstance::getSlotTexture)
+                .map(GunDisplay::getSlotTexture)
                 .orElse(null);
     }
     */
@@ -216,7 +210,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     protected void beforeRender(PoseStack poseStack, ItemDisplayContext ctx, ItemStack stack, float partialTicks) {
         super.beforeRender(poseStack, ctx, stack, partialTicks);
 
-        GunDisplayInstance displayInstance = resolveRenderDisplay(stack, ctx);
+        GunDisplay displayInstance = resolveRenderDisplay(stack, ctx);
         if (displayInstance == null) {
             return;
         }
@@ -279,7 +273,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     @Override
     protected void renderModel(PoseStack poseStack, ItemDisplayContext ctx, ItemStack stack,
                                MultiBufferSource bufferSource, int light, int overlay, float partialTicks) {
-        GunDisplayInstance displayInstance = resolveRenderDisplay(stack, ctx);
+        GunDisplay displayInstance = resolveRenderDisplay(stack, ctx);
         if (displayInstance == null) {
             return;
         }
@@ -366,7 +360,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /// >
     /// > @param bindMounts 瞄准定位使用静态挂点，避免视点取逆与动画约束重复抵消枪体动画；实体渲染使用动态挂点。
     private List<ScopeStencilRenderer.Scope> collectAllStencilScopes(ItemStack stack, BedrockGunModel model,
-                                                     GunDisplayInstance displayInstance, boolean bindMounts) {
+                                                     GunDisplay displayInstance, boolean bindMounts) {
         IGun iGun = IGun.asGun(stack);
         if (iGun == null) {
             return List.of();
@@ -400,7 +394,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
             /// > 导轨微调：瞄具走 stencil 路径，同样需要叠加偏移
             slotTransform = AttachmentMountHelper.applyRailOffset(slotTransform, slot, attachmentStack);
             /// > 仅唯一匹配当前宿主与槽位的适配器可抬高瞄具落点
-            SlotAdapterDisplayInstance adapterDisplay = resolveValidSlotAdapterDisplay(stack, sight.slotId());
+            SlotAdapterDisplay adapterDisplay = resolveValidSlotAdapterDisplay(stack, sight.slotId());
             if (adapterDisplay != null) {
                 slotTransform = applyMountOffset(slotTransform, adapterDisplay.getMountOffset());
             }
@@ -456,7 +450,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /// > @param overlayBone   overlay 模型挂载到 model 的骨骼名；无则 null\
     /// > @param mountOffset   变体对下游（子挂点 / 瞄准视点）施加的额外平移；无则 null
     private record AttachmentRenderData(BedrockAttachmentModel model, Identifier texture,
-                                        AttachmentDisplayInstance baseDisplay,
+                                        AttachmentDisplay baseDisplay,
                                         @Nullable BedrockAttachmentModel overlayModel,
                                         @Nullable Identifier overlayTexture,
                                         @Nullable String overlayBone,
@@ -466,12 +460,12 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /// > 解析配件的有效渲染数据（含形态处理：关态几何 / 用户变体）。基础 display 缺失返回 null。
     @Nullable
     private static AttachmentRenderData resolveAttachmentRender(ItemStack attachmentStack) {
-        AttachmentDisplayInstance baseDisplay = TimelessHelperC.getAttachmentDisplay(attachmentStack).orElse(null);
+        AttachmentDisplay baseDisplay = TimelessHelperC.getAttachmentDisplay(attachmentStack).orElse(null);
         if (baseDisplay == null || baseDisplay.getModel() == null) {
             return null;
         }
         /// > 当前生效形态的几何：关态 off_display 优先，其次用户变体，最后基础 display
-        AttachmentDisplayInstance active = TimelessHelperC.getActiveDisplay(attachmentStack).orElse(null);
+        AttachmentDisplay active = TimelessHelperC.getActiveDisplay(attachmentStack).orElse(null);
         if (active == null || active.getModel() == null) {
             return new AttachmentRenderData(baseDisplay.getModel(), baseDisplay.getModelTexture(), baseDisplay,
                     null, null, null, null);
@@ -499,7 +493,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     @Override
     protected void afterRender(PoseStack poseStack, ItemDisplayContext ctx, ItemStack stack, MultiBufferSource bufferSource, int light, float partialTicks) {
         super.afterRender(poseStack, ctx, stack, bufferSource, light, partialTicks);
-        GunDisplayInstance displayInstance = resolveRenderDisplay(stack, ctx);
+        GunDisplay displayInstance = resolveRenderDisplay(stack, ctx);
         BedrockGunModel model = displayInstance == null ? null : displayInstance.getGunModel();
         if (model == null) {
             return;
@@ -614,7 +608,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     */
 
     /* FIXME rendering
-    private void cacheMuzzleOffsets(PoseStack poseStack, BedrockGunModel model, GunDisplayInstance display,
+    private void cacheMuzzleOffsets(PoseStack poseStack, BedrockGunModel model, GunDisplay display,
                                     InteractionHand hand, MuzzleReference source) {
         for (int muzzleIndex = 0; muzzleIndex < display.getMuzzleBones().size(); muzzleIndex++) {
             Matrix4f muzzleTransform = model.getGlobalTransform(display.getMuzzleBone(muzzleIndex));
@@ -634,14 +628,14 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /// > 供 AFTER_LEVEL 阶段的手电后处理使用。优先枪自身配置，其次配件树中第一个 active 枪灯；
     /// > 屏幕后处理单灯合成，多灯只取第一个。
     private void collectFirstPersonFlashlightViews(PoseStack poseStack, BedrockGunModel model, ItemStack gunStack,
-                                                   GunDisplayInstance displayInstance) {
+                                                   GunDisplay displayInstance) {
         FirstPersonPoseCache.clearFlashlight();
         IGun iGun = IGun.asGun(gunStack);
         if (iGun == null || displayInstance == null) {
             return;
         }
         /// > 枪自身灯源（受枪 NBT 效果开关门控，缺省开启）
-        GunDisplayInstance.FlashlightConfig gunLight = displayInstance.getFlashlight();
+        GunDisplay.Flashlight gunLight = displayInstance.getFlashlight();
         if (gunLight != null && ToggleHelper.getGunEffectEnabled(gunStack, "flashlight")) {
             Matrix4f boneTransform = model.getGlobalTransform(gunLight.boneName());
             if (boneTransform != null) {
@@ -656,7 +650,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
             if (attachment.isEmpty()) {
                 continue;
             }
-            AttachmentSlotDisplay slotDisplay = displayInstance.getSlot(slot.id());
+            AttachmentSlotDisplayCfg slotDisplay =displayInstance.getSlot(slot.id());
             if (slotDisplay == null || slotDisplay.posGroup() == null) {
                 continue;
             }
@@ -676,13 +670,13 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /// >
     /// > @return 是否找到并写入 active 枪灯（短路停止）
     private boolean collectFlashlightNode(Matrix4f viewBase, Matrix4f mountTransform, ItemStack attachment) {
-        AttachmentDisplayInstance baseDisplay = TimelessHelperC.getAttachmentDisplay(attachment).orElse(null);
+        AttachmentDisplay baseDisplay = TimelessHelperC.getAttachmentDisplay(attachment).orElse(null);
         if (baseDisplay == null) {
             return false;
         }
-        AttachmentDisplayInstance active = TimelessHelperC.getActiveDisplay(attachment).orElse(null);
-        AttachmentDisplayInstance effectDisplay = active != null ? active : baseDisplay;
-        GunDisplayInstance.FlashlightConfig light = effectDisplay.getFlashlight();
+        AttachmentDisplay active = TimelessHelperC.getActiveDisplay(attachment).orElse(null);
+        AttachmentDisplay effectDisplay = active != null ? active : baseDisplay;
+        GunDisplay.Flashlight light = effectDisplay.getFlashlight();
         if (light != null && effectDisplay.getModel() != null && ToggleHelper.isEnabled(attachment)) {
             Matrix4f local = effectDisplay.getModel().getGlobalTransform(light.boneName());
             if (local != null) {
@@ -699,7 +693,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
             if (subAttachment.isEmpty()) {
                 continue;
             }
-            AttachmentSlotDisplay slotDisplay = baseDisplay.getSlot(subSlot.id());
+            AttachmentSlotDisplayCfg slotDisplay = baseDisplay.getSlot(subSlot.id());
             if (slotDisplay == null || slotDisplay.posGroup() == null) {
                 continue;
             }
@@ -717,7 +711,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     }
 
     /// > 把枪灯骨骼的视图空间变换写入缓存（含第一人称 FOV 修正，与枪口缓存同源）。
-    private static void writeFlashlightCache(Matrix4f viewTransform, GunDisplayInstance.FlashlightConfig light) {
+    private static void writeFlashlightCache(Matrix4f viewTransform, GunDisplay.Flashlight light) {
         FirstPersonSpaceHelper.ViewPose viewPose = FirstPersonSpaceHelper.resolveWorldFovViewPose(viewTransform);
         FirstPersonPoseCache.setFlashlight(viewPose.position(), viewPose.forward(), light.color(), light.range());
     }
@@ -732,7 +726,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /// >
     /// > 这样镭射与当前帧 bob/sway/动画完全共用同一套矩阵，不再经过 LevelStage 缓存链路。
     private void collectFirstPersonLaserViews(PoseStack poseStack, BedrockGunModel model, ItemStack gunStack,
-                                              GunDisplayInstance displayInstance, InteractionHand hand,
+                                              GunDisplay displayInstance, InteractionHand hand,
                                               List<LaserDrawEntry> out) {
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;
@@ -753,7 +747,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
             if (attachment.isEmpty()) {
                 continue;
             }
-            AttachmentSlotDisplay slotDisplay = displayInstance.getSlot(slot.id());
+            AttachmentSlotDisplayCfg slotDisplay =displayInstance.getSlot(slot.id());
             if (slotDisplay == null || slotDisplay.posGroup() == null) {
                 continue;
             }
@@ -767,7 +761,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
         }
 
         /// > 枪自身也可以作为 laser provider（受枪 NBT 效果开关门控，缺省开启）。
-        GunDisplayInstance.LaserConfig gunLaser = displayInstance.getLaser();
+        GunDisplay.Laser gunLaser = displayInstance.getLaser();
         if (gunLaser != null && ToggleHelper.getGunEffectEnabled(gunStack, "laser")) {
             Matrix4f boneTransform = model.getGlobalTransform(gunLaser.boneName());
             if (boneTransform != null) {
@@ -785,14 +779,14 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /// > @param remaining      剩余可递归深度，兜底防止异常数据导致无限递归
     private void collectLaserNode(Matrix4f viewBase, Matrix4f mountTransform, ItemStack attachment, LocalPlayer player,
                                   List<LaserDrawEntry> out, int remaining) {
-        AttachmentDisplayInstance baseDisplay = TimelessHelperC.getAttachmentDisplay(attachment).orElse(null);
+        AttachmentDisplay baseDisplay = TimelessHelperC.getAttachmentDisplay(attachment).orElse(null);
         if (baseDisplay == null) {
             return;
         }
         /// > 当前生效形态的几何：关态 off_display 优先，其次用户变体，最后基础 display
-        AttachmentDisplayInstance active = TimelessHelperC.getActiveDisplay(attachment).orElse(null);
-        AttachmentDisplayInstance effectDisplay = active != null ? active : baseDisplay;
-        GunDisplayInstance.LaserConfig laser = effectDisplay.getLaser();
+        AttachmentDisplay active = TimelessHelperC.getActiveDisplay(attachment).orElse(null);
+        AttachmentDisplay effectDisplay = active != null ? active : baseDisplay;
+        GunDisplay.Laser laser = effectDisplay.getLaser();
         if (laser != null && effectDisplay.getModel() != null && ToggleHelper.isEnabled(attachment)) {
             Matrix4f local = effectDisplay.getModel().getGlobalTransform(laser.boneName());
             if (local != null) {
@@ -812,7 +806,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
                 continue;
             }
             /// > 子槽位结构以基础 display 为准（与渲染一致）；几何骨骼取自当前生效模型
-            AttachmentSlotDisplay slotDisplay = baseDisplay.getSlot(subSlot.id());
+            AttachmentSlotDisplayCfg slotDisplay =baseDisplay.getSlot(subSlot.id());
             if (slotDisplay == null || slotDisplay.posGroup() == null) {
                 continue;
             }
@@ -830,7 +824,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
 
     /* FIXME rendering
     /// > 按枪口循环收集第一人称能量束视图（主枪 / 下挂由 `underBarrel` 区分来源）。
-    private void collectFirstPersonLaserBeams(PoseStack poseStack, BedrockGunModel model, GunDisplayInstance display,
+    private void collectFirstPersonLaserBeams(PoseStack poseStack, BedrockGunModel model, GunDisplay display,
                                               InteractionHand hand, boolean underBarrel, List<LaserDrawEntry> out) {
         for (int muzzleIndex = 0; muzzleIndex < display.getMuzzleBones().size(); muzzleIndex++) {
             collectFirstPersonLaserBeam(poseStack, model, display, hand,
@@ -838,7 +832,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
         }
     }
 
-    private void collectLaserProvider(Matrix4f providerViewTransform, GunDisplayInstance.LaserConfig laser,
+    private void collectLaserProvider(Matrix4f providerViewTransform, GunDisplay.Laser laser,
                                       LocalPlayer player, List<LaserDrawEntry> out) {
         Minecraft mc = Minecraft.getInstance();
         float range = laser.length() > 0.0f ? laser.length() : 64.0f;
@@ -856,7 +850,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /// > 服务端权威命中点为终点（与枪体 bob/sway/动画同步）。起点骨骼取 `muzzle_flash`
     /// > （与曳光弹/枪口粒子同源）。按当前渲染手取对应束流，双持时主副手各画各的；
     /// > 其他玩家/第三人称由 `LaserBeamHandler` 走世界空间路径。
-    private void collectFirstPersonLaserBeam(PoseStack poseStack, BedrockGunModel model, GunDisplayInstance display,
+    private void collectFirstPersonLaserBeam(PoseStack poseStack, BedrockGunModel model, GunDisplay display,
                                              InteractionHand hand, MuzzleReference source, List<LaserDrawEntry> out) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) {
@@ -960,7 +954,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
             return;
         }
         FirstPersonParticleSystem system = FirstPersonRenderHandler.getParticleSystem();
-        GunDisplayInstance display = getDisplay(stack);
+        GunDisplay display = getDisplay(stack);
         String fallbackBone = "muzzle_flash";
         if (display != null && display.getMuzzleFlash() != null) {
             fallbackBone = display.getMuzzleFlash().boneName();
@@ -1022,8 +1016,8 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /// > 在视图空间的真实变换，作为弹壳的冻结起点矩阵交给 [ShellRenderer]。抛壳窗骨骼名约定为
     /// > `shell`（窗 0）/ `shell_N`（窗 N），缺失时回退枪口骨骼。
     private void spawnAndRenderShells(PoseStack poseStack, BedrockGunModel model, ItemStack stack,
-                                      GunDisplayInstance display, MultiBufferSource bufferSource, int light, InteractionHand hand) {
-        GunDisplayInstance.ShellEjectionConfig config = display.getShellEjection();
+                                      GunDisplay display, MultiBufferSource bufferSource, int light, InteractionHand hand) {
+        GunDisplay.ShellEjection config = display.getShellEjection();
         ShellRenderer shellRenderer = ShellRenderer.getInstance();
         if (config == null) {
             shellRenderer.clear();
@@ -1032,7 +1026,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
 
         /// > 解析当前弹药的弹壳模型/贴图。
         Identifier ammoId = AmmoDataHelper.getAmmoId(stack);
-        AmmoDisplayInstance ammoDisplay = ammoId == null ? null : TimelessHelperC.getAmmoDisplay(ammoId).orElse(null);
+        AmmoDisplay ammoDisplay = ammoId == null ? null : TimelessHelperC.getAmmoDisplay(ammoId).orElse(null);
         BedrockShellModel shellModel = ammoDisplay == null ? null : ammoDisplay.getShellModel();
         Identifier shellTexture = ammoDisplay == null ? null : ammoDisplay.getShellTexture();
 
@@ -1082,7 +1076,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
         }
         /// > 遍历全部槽位（含空槽）：空槽也可能装有「适配器」需要渲染（如垫高的空导轨）
         Map<Identifier, AttachmentSlot> allSlots = iGun.getAttachmentSlots(stack);
-        GunDisplayInstance displayInstance = TimelessHelperC.getGunDisplay(stack).orElse(null);
+        GunDisplay displayInstance = TimelessHelperC.getGunDisplay(stack).orElse(null);
         if (displayInstance == null) {
             return;
         }
@@ -1130,7 +1124,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /// > @param gunDisplay     宿主枪 display（原厂配件的子槽位 display 复用此处）
     private void renderAttachmentNode(ItemStack gunStack, Identifier gunDisplayId, ItemStack attachmentStack,
                                       Matrix4f mountTransform, PoseStack poseStack, MultiBufferSource bufferSource,
-                                      int light, int remaining, BedrockGunModel gunModel, GunDisplayInstance gunDisplay,
+                                      int light, int remaining, BedrockGunModel gunModel, GunDisplay gunDisplay,
                                       InteractionHand hand, boolean cacheMuzzles) {
         if (attachmentStack.isEmpty() || remaining <= 0) {
             return;
@@ -1157,7 +1151,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
             return;
         }
         BedrockAttachmentModel attachmentModel = renderData.model();
-        AttachmentDisplayInstance attachmentDisplay = renderData.baseDisplay();
+        AttachmentDisplay attachmentDisplay = renderData.baseDisplay();
 
         poseStack.pushPose();
         PoseStackTransformHelper.mulPoseAndNormal(poseStack, mountTransform);
@@ -1230,8 +1224,8 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
 
     /// > 解析当前槽位唯一有效的适配器 display。NBT 中的 index 已丢失、宿主不匹配或 target 重复时失败关闭。
     @Nullable
-    private static SlotAdapterDisplayInstance resolveValidSlotAdapterDisplay(ItemStack holderStack,
-                                                                              Identifier slotId) {
+    private static SlotAdapterDisplay resolveValidSlotAdapterDisplay(ItemStack holderStack,
+                                                                     Identifier slotId) {
         Identifier adapterId = SlotAdapterHelper.getAdapter(holderStack, slotId);
         if (adapterId == null) {
             return null;
@@ -1255,7 +1249,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /// > @return 应用适配器偏移后的子配件落点变换
     private Matrix4f applySlotAdapter(ItemStack holderStack, Identifier slotId, Matrix4f slotTransform,
                                       PoseStack poseStack, MultiBufferSource bufferSource, int light) {
-        SlotAdapterDisplayInstance adapterDisplay = resolveValidSlotAdapterDisplay(holderStack, slotId);
+        SlotAdapterDisplay adapterDisplay = resolveValidSlotAdapterDisplay(holderStack, slotId);
         if (adapterDisplay == null || adapterDisplay.getModel() == null) {
             return slotTransform;
         }
@@ -1277,7 +1271,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /// > 子配件相对宿主模型绝对定位。
     private void renderBuiltinChildren(ItemStack gunStack, Identifier gunDisplayId, ItemStack builtinStack,
                                        PoseStack poseStack, MultiBufferSource bufferSource, int light, int remaining,
-                                       BedrockGunModel gunModel, GunDisplayInstance gunDisplay, InteractionHand hand,
+                                       BedrockGunModel gunModel, GunDisplay gunDisplay, InteractionHand hand,
                                        boolean cacheMuzzles) {
         if (!(builtinStack.getItem() instanceof IAttachmentHolder holder)) {
             return;
@@ -1420,7 +1414,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
         if (player == null) {
             return null;
         }
-        GunDisplayInstance base = getDisplay(stack);
+        GunDisplay base = getDisplay(stack);
         if (base == null) {
             return null;
         }
@@ -1432,7 +1426,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
 
     /* FIXME rendering
     private void applyFirstPersonPositioningTransform(PoseStack poseStack, BedrockGunModel model, ItemStack stack, float aimingProgress,
-                                                             @Nullable GunDisplayInstance display,
+                                                             @Nullable GunDisplay display,
                                                              @Nullable LocalGunOperator.AimViewState aimViewState) {
         AIMING_DYNAMICS.target(0, aimingProgress);
         float smoothT = AIMING_DYNAMICS.get(0);
@@ -1485,7 +1479,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /// > scope_view」（静态挂点避免视点取逆与动画约束重复抵消枪体动画）。过渡中在旧 / 新视点间插值；
     /// > 无视图位（缺 display）或取不到矩阵时回退枪模型的 `iron_view`。
     private Matrix4f resolveAimViewMatrix(BedrockGunModel model, ItemStack stack,
-                                          @Nullable GunDisplayInstance display,
+                                          @Nullable GunDisplay display,
                                           LocalGunOperator.AimViewState state) {
         Matrix4f fallback = new Matrix4f(model.getGlobalTransform("iron_view"));
         if (display == null) {
@@ -1589,14 +1583,14 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
         if (focus == null || focus.isEmpty()) {
             return bindOrNull(model, "refit_view");
         }
-        GunDisplayInstance gunDisplay = TimelessHelperC.getGunDisplay(stack).orElse(null);
+        GunDisplay gunDisplay = TimelessHelperC.getGunDisplay(stack).orElse(null);
         if (gunDisplay == null || !(stack.getItem() instanceof IGun)) {
             return bindOrNull(model, "refit_view");
         }
 
         /// > 顶层段的 refit 视角骨骼名（用于兜底旋转）
-        Identifier topSlot = focus.slots().get(0);
-        AttachmentSlotDisplay topSlotDisplay = gunDisplay.getSlot(topSlot);
+        Identifier topSlot = focus.slots().getFirst();
+        AttachmentSlotDisplayCfg topSlotDisplay = gunDisplay.getSlot(topSlot);
         String topViewBone = (topSlotDisplay != null && topSlotDisplay.refitView() != null && !topSlotDisplay.refitView().isEmpty())
                 ? topSlotDisplay.refitView() : "refit_view";
 
@@ -1620,7 +1614,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
         Vector3f nestedPos = nested.mount.getTranslation(new Vector3f());
         Vector3f offset = new Vector3f();
         if (topView != null) {
-            AttachmentSlotDisplay topSd = gunDisplay.getSlot(topSlot);
+            AttachmentSlotDisplayCfg topSd = gunDisplay.getSlot(topSlot);
             Matrix4f topMount = (topSd != null && topSd.posGroup() != null)
                     ? model.getBindGlobalTransform(topSd.posGroup()) : null;
             if (topMount != null) {
@@ -1652,7 +1646,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
     /// > 沿聚焦路径累积到目标槽位的挂点变换（枪模型空间），并尝试取目标槽位所属 holder
     /// > display 声明的 refit_view 骨骼。变换规则与改装槽位投影一致。
     @Nullable
-    private static NestedView resolveNestedView(BedrockGunModel gunModel, GunDisplayInstance gunDisplay,
+    private static NestedView resolveNestedView(BedrockGunModel gunModel, GunDisplay gunDisplay,
                                                 ItemStack gunStack, AttachmentPath focus) {
         if (!(gunStack.getItem() instanceof IGun iGun)) {
             return null;
@@ -1673,7 +1667,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
 
             /// > 取该槽位挂点（在当前 holder 坐标系），以及对应的 slot display
             Matrix4f mount;
-            AttachmentSlotDisplay slotDisplay;
+            AttachmentSlotDisplayCfg slotDisplay;
             if (holderStack == gunStack) {
                 /// > 顶层：枪模型空间
                 slotDisplay = gunDisplay.getSlot(slotId);
@@ -1698,7 +1692,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
                 mount = AttachmentMountHelper.applyRailOffset(m, slot, holder.getStoredAttachment(holderStack, slot));
             } else {
                 /// > 独立配件子槽：父挂点 × 配件模型挂点
-                AttachmentDisplayInstance ad = TimelessHelperC.getAttachmentDisplay(holderStack).orElse(null);
+                AttachmentDisplay ad = TimelessHelperC.getAttachmentDisplay(holderStack).orElse(null);
                 if (ad == null || ad.getModel() == null) {
                     return null;
                 }
@@ -1723,7 +1717,7 @@ public class BedrockGunItemRenderer extends AbstractGeoItemRendererV2 implements
                         viewMatrix = bindOrNull(gunModel, slotDisplay.refitView());
                     } else {
                         /// > 视角骨骼在配件模型空间，累积父挂点
-                        AttachmentDisplayInstance ad = TimelessHelperC.getAttachmentDisplay(holderStack).orElse(null);
+                        AttachmentDisplay ad = TimelessHelperC.getAttachmentDisplay(holderStack).orElse(null);
                         if (ad != null && ad.getModel() != null) {
                             Matrix4f vb = ad.getModel().getGlobalTransform(slotDisplay.refitView());
                             if (vb != null) {

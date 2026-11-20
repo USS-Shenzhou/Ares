@@ -5,7 +5,7 @@ import com.github.mcmodderanchor.simplebedrockmodel.v1.molang.runtime.MolangExpr
 import cn.ussshenzhou.ares.gun.TimelessHelperC;
 import cn.ussshenzhou.ares.gun.gameplay.MuzzleReference;
 import cn.ussshenzhou.ares.client.animation.statemachine.GunMolangContext;
-import cn.ussshenzhou.ares.client.resource.display.GunDisplayInstance;
+import cn.ussshenzhou.ares.client.resource.display.GunDisplay;
 import cn.ussshenzhou.ares.gun.util.MountedWeaponHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 
 /// > 激光束流视觉参数求值器。
 /// >
-/// > 从射击者当前手持枪的 display（[GunDisplayInstance#getLaserBeam()]）取视觉表达式，
+/// > 从射击者当前手持枪的 display（[GunDisplay#getLaserBeam()]）取视觉表达式，
 /// > 结合束流已存活时长（`query.beam_time`）求出本帧的颜色与芯/辉光半宽，供
 /// > [LaserRenderer] 渲染。表达式共享动画状态机的 [GunMolangContext] 词汇。
 /// >
@@ -45,7 +45,7 @@ public class LaserVisualResolver {
         float glowHalfWidth = LaserRenderer.BEAM_GLOW_HALF_WIDTH;
         float roll = 0.0f;
 
-        GunDisplayInstance.LaserBeamVisual beam = getBeamVisual(shooter, hand, muzzleReference);
+        GunDisplay.LaserBeamVisual beam = getBeamVisual(shooter, hand, muzzleReference);
         if (beam == null) {
             return new LaserVisual(color, coreHalfWidth, glowHalfWidth, roll);
         }
@@ -91,7 +91,7 @@ public class LaserVisualResolver {
     }
 
     @Nullable
-    private static GunDisplayInstance.LaserBeamVisual getBeamVisual(LivingEntity shooter, InteractionHand hand,
+    private static GunDisplay.LaserBeamVisual getBeamVisual(LivingEntity shooter, InteractionHand hand,
                                                                      MuzzleReference muzzleReference) {
         try {
             ItemStack stack = shooter.getItemInHand(hand);
@@ -102,7 +102,7 @@ public class LaserVisualResolver {
                 stack = MountedWeaponHelper.findInstalledMountedWeapon(stack).orElse(ItemStack.EMPTY);
             }
             return stack.isEmpty() ? null : TimelessHelperC.getGunDisplay(stack)
-                    .map(GunDisplayInstance::getLaserBeam).orElse(null);
+                    .map(GunDisplay::getLaserBeam).orElse(null);
         } catch (RuntimeException e) {
             return null;
         }

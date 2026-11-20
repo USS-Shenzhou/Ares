@@ -4,11 +4,11 @@ import cn.ussshenzhou.ares.gun.item.IAttachment;
 import cn.ussshenzhou.ares.gun.item.IGun;
 import cn.ussshenzhou.ares.gun.item.IMountedWeapon;
 import cn.ussshenzhou.ares.client.resource.ClientAssetsManager;
-import cn.ussshenzhou.ares.client.resource.display.AmmoDisplayInstance;
-import cn.ussshenzhou.ares.client.resource.display.AttachmentDisplayInstance;
-import cn.ussshenzhou.ares.client.resource.display.CharmDisplayInstance;
-import cn.ussshenzhou.ares.client.resource.display.GunDisplayInstance;
-import cn.ussshenzhou.ares.client.resource.display.SlotAdapterDisplayInstance;
+import cn.ussshenzhou.ares.client.resource.display.AmmoDisplay;
+import cn.ussshenzhou.ares.client.resource.display.AttachmentDisplay;
+import cn.ussshenzhou.ares.client.resource.display.CharmDisplay;
+import cn.ussshenzhou.ares.client.resource.display.GunDisplay;
+import cn.ussshenzhou.ares.client.resource.display.SlotAdapterDisplay;
 import cn.ussshenzhou.ares.gun.custom.attachment.ToggleConfig;
 import cn.ussshenzhou.ares.gun.init.ModCustomItemTypes;
 import cn.ussshenzhou.ares.gun.util.ToggleHelper;
@@ -21,7 +21,7 @@ import java.util.Optional;
 /// @author TACZ, USS_Shenzhou
 public class TimelessHelperC {
     @Nonnull
-    public static Optional<GunDisplayInstance> getGunDisplay(ItemStack stack) {
+    public static Optional<GunDisplay> getGunDisplay(ItemStack stack) {
         var iGun = IGun.asGun(stack);
         if (iGun != null) {
             return ClientAssetsManager.INSTANCE.getGunDisplayWithUnderBarrelOverride(stack, iGun.getDisplayId(stack));
@@ -35,7 +35,7 @@ public class TimelessHelperC {
     }
 
     @Nonnull
-    public static Optional<GunDisplayInstance> getMountedWeaponDisplayForGun(ItemStack gunStack, ItemStack mountedWeaponStack) {
+    public static Optional<GunDisplay> getMountedWeaponDisplayForGun(ItemStack gunStack, ItemStack mountedWeaponStack) {
         IGun gun = IGun.asGun(gunStack);
         if (gun == null) {
             return Optional.empty();
@@ -51,7 +51,7 @@ public class TimelessHelperC {
     }
 
     @Nonnull
-    public static Optional<AttachmentDisplayInstance> getAttachmentDisplay(ItemStack stack) {
+    public static Optional<AttachmentDisplay> getAttachmentDisplay(ItemStack stack) {
         var iAttachment = IAttachment.asAttachment(stack);
         if (iAttachment == null) {
             return Optional.empty();
@@ -61,7 +61,7 @@ public class TimelessHelperC {
 
     /// > 取某配件当前所选变体的 display；未选变体或变体不存在返回 empty。
     @Nonnull
-    public static Optional<AttachmentDisplayInstance> getVariantDisplay(ItemStack attachment) {
+    public static Optional<AttachmentDisplay> getVariantDisplay(ItemStack attachment) {
         Identifier variantId = cn.ussshenzhou.ares.gun.util.VariantHelper.getVariant(attachment);
         if (variantId == null) {
             return Optional.empty();
@@ -79,7 +79,7 @@ public class TimelessHelperC {
     /// > 用户选择的变体 display → 空（调用方回退基础 display）。空态基础几何由
     /// > [#getAttachmentDisplay(ItemStack)] 提供。
     @Nonnull
-    public static Optional<AttachmentDisplayInstance> getActiveDisplay(ItemStack attachment) {
+    public static Optional<AttachmentDisplay> getActiveDisplay(ItemStack attachment) {
         if (IAttachment.asAttachment(attachment) == null) {
             return Optional.empty();
         }
@@ -101,7 +101,7 @@ public class TimelessHelperC {
 
     /// > 取某适配器 id 对应的 display。
     @Nonnull
-    public static Optional<SlotAdapterDisplayInstance> getSlotAdapterDisplay(Identifier adapterId) {
+    public static Optional<SlotAdapterDisplay> getSlotAdapterDisplay(Identifier adapterId) {
         if (adapterId == null) {
             return Optional.empty();
         }
@@ -114,7 +114,7 @@ public class TimelessHelperC {
 
     /// > 取某弹药 id 对应的 display（含弹壳模型）。
     @Nonnull
-    public static Optional<AmmoDisplayInstance> getAmmoDisplay(Identifier ammoId) {
+    public static Optional<AmmoDisplay> getAmmoDisplay(Identifier ammoId) {
         if (ammoId == null) {
             return Optional.empty();
         }
@@ -127,7 +127,7 @@ public class TimelessHelperC {
 
     /// > 取某挂饰 id 对应的 display（含挂饰模型 / 贴图 / 渲染变换）。
     @Nonnull
-    public static Optional<CharmDisplayInstance> getCharmDisplay(Identifier charmId) {
+    public static Optional<CharmDisplay> getCharmDisplay(Identifier charmId) {
         if (charmId == null) {
             return Optional.empty();
         }

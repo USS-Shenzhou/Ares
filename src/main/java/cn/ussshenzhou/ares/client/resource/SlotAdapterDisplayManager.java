@@ -4,8 +4,8 @@ import com.mojang.logging.LogUtils;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import cn.ussshenzhou.ares.gun.resource.GunGsonHelper;
-import cn.ussshenzhou.ares.client.resource.display.SlotAdapterDisplayInstance;
 import cn.ussshenzhou.ares.client.resource.display.SlotAdapterDisplay;
+import cn.ussshenzhou.ares.client.resource.display.SlotAdapterDisplayCfg;
 import cn.ussshenzhou.ares.gun.util.ResourceScanHelper;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -24,7 +24,7 @@ import java.util.Optional;
 public class SlotAdapterDisplayManager extends SimplePreparableReloadListener<Map<Identifier, JsonElement>> {
     public static final Marker MARKER = MarkerFactory.getMarker("SlotAdapterDisplayManager");
 
-    private Map<Identifier, SlotAdapterDisplayInstance> displayMap = Map.of();
+    private Map<Identifier, SlotAdapterDisplay> displayMap = Map.of();
 
     @Nonnull
     @Override
@@ -34,12 +34,12 @@ public class SlotAdapterDisplayManager extends SimplePreparableReloadListener<Ma
 
     @Override
     protected void apply(@Nonnull Map<Identifier, JsonElement> resources, @Nonnull ResourceManager manager, @Nonnull ProfilerFiller pProfiler) {
-        ImmutableMap.Builder<Identifier, SlotAdapterDisplayInstance> builder = ImmutableMap.builder();
+        ImmutableMap.Builder<Identifier, SlotAdapterDisplay> builder = ImmutableMap.builder();
         for (var entry : resources.entrySet()) {
             try {
                 var obj = GsonHelper.convertToJsonObject(entry.getValue(), "slot adapter display");
-                SlotAdapterDisplay pojo = GunGsonHelper.GSON.fromJson(obj, SlotAdapterDisplay.class);
-                SlotAdapterDisplayInstance data = SlotAdapterDisplayInstance.of(pojo);
+                SlotAdapterDisplayCfg cfg = GunGsonHelper.GSON.fromJson(obj, SlotAdapterDisplayCfg.class);
+                SlotAdapterDisplay data = SlotAdapterDisplay.of(cfg);
                 builder.put(entry.getKey(), data);
             } catch (Exception e) {
                 LogUtils.getLogger().error(MARKER, "Failed to load slot adapter display: {}", entry.getKey(), e);
@@ -48,11 +48,11 @@ public class SlotAdapterDisplayManager extends SimplePreparableReloadListener<Ma
         displayMap = builder.build();
     }
 
-    public Map<Identifier, SlotAdapterDisplayInstance> getDisplayMap() {
+    public Map<Identifier, SlotAdapterDisplay> getDisplayMap() {
         return displayMap;
     }
 
-    public Optional<SlotAdapterDisplayInstance> getDisplay(Identifier id) {
+    public Optional<SlotAdapterDisplay> getDisplay(Identifier id) {
         return Optional.ofNullable(displayMap.get(id));
     }
 }

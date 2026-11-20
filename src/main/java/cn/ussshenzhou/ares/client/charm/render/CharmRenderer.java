@@ -61,7 +61,7 @@ public class CharmRenderer {
     private static void renderOne(BedrockGunModel gunModel, PoseStack poseStack, MultiBufferSource buffer,
                                   int light, GunCharmData binding, float partialTick) {
         Identifier charmId = binding.charmId();
-        CharmDisplayInstance display = TimelessHelperC.getCharmDisplay(charmId).orElse(null);
+        CharmDisplay display = TimelessHelperC.getCharmDisplay(charmId).orElse(null);
         if (display == null || display.getModel() == null || display.getModelTexture() == null) {
             return;
         }
@@ -104,7 +104,7 @@ public class CharmRenderer {
     /* FIXME rendering
     /// > 分层物理渲染。坐标全部在锚点骨骼局部空间。
     private static void renderLayered(BedrockGunModel gunModel, BedrockCharmModel model, CharmModelLayout layout,
-                                      CharmDisplayInstance display, CharmData data, GunCharmData binding,
+                                      CharmDisplay display, CharmData data, GunCharmData binding,
                                       Vector3f basePosition, Vector3f localNormal, Vector3f forwardAxis,
                                       PoseStack poseStack, MultiBufferSource buffer,
                                       RenderType quadType, RenderType triangleType, int light, float partialTick) {
@@ -244,7 +244,7 @@ public class CharmRenderer {
 
     /* FIXME rendering
     /// > 非分层挂饰：整体刚性贴在锚点（兜底）。
-    private static void renderWhole(BedrockCharmModel model, CharmDisplayInstance display, Vector3f position,
+    private static void renderWhole(BedrockCharmModel model, CharmDisplay display, Vector3f position,
                                     Vector3f localNormal, Vector3f forwardAxis, PoseStack poseStack,
                                     MultiBufferSource buffer, RenderType quadType, RenderType triangleType, int light) {
         float[] tint = display.getTint();

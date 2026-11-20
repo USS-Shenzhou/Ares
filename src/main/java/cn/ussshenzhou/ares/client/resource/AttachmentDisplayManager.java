@@ -4,8 +4,8 @@ import com.mojang.logging.LogUtils;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import cn.ussshenzhou.ares.gun.resource.GunGsonHelper;
-import cn.ussshenzhou.ares.client.resource.display.AttachmentDisplayInstance;
 import cn.ussshenzhou.ares.client.resource.display.AttachmentDisplay;
+import cn.ussshenzhou.ares.client.resource.display.AttachmentDisplayCfg;
 import cn.ussshenzhou.ares.gun.util.ResourceScanHelper;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -24,7 +24,7 @@ public class AttachmentDisplayManager extends SimplePreparableReloadListener<Map
     public static final Marker MARKER = MarkerFactory.getMarker("AttachmentDisplayManager");
 
     private final String directory;
-    private Map<Identifier, AttachmentDisplayInstance> displayMap = Map.of();
+    private Map<Identifier, AttachmentDisplay> displayMap = Map.of();
 
     public AttachmentDisplayManager() {
         this("display/attachments");
@@ -44,12 +44,12 @@ public class AttachmentDisplayManager extends SimplePreparableReloadListener<Map
 
     @Override
     protected void apply(@Nonnull Map<Identifier, JsonElement> resources, @Nonnull ResourceManager manager, @Nonnull ProfilerFiller pProfiler) {
-        ImmutableMap.Builder<Identifier, AttachmentDisplayInstance> builder = ImmutableMap.builder();
+        ImmutableMap.Builder<Identifier, AttachmentDisplay> builder = ImmutableMap.builder();
         for (var entry : resources.entrySet()) {
             try {
                 var obj = GsonHelper.convertToJsonObject(entry.getValue(), "attachment display");
-                AttachmentDisplay pojo = GunGsonHelper.GSON.fromJson(obj, AttachmentDisplay.class);
-                AttachmentDisplayInstance data = AttachmentDisplayInstance.of(pojo);
+                AttachmentDisplayCfg cfg = GunGsonHelper.GSON.fromJson(obj, AttachmentDisplayCfg.class);
+                AttachmentDisplay data = AttachmentDisplay.of(cfg);
 
                 builder.put(entry.getKey(), data);
             } catch (Exception e) {
@@ -59,11 +59,11 @@ public class AttachmentDisplayManager extends SimplePreparableReloadListener<Map
         displayMap = builder.build();
     }
 
-    public Map<Identifier, AttachmentDisplayInstance> getDisplayMap() {
+    public Map<Identifier, AttachmentDisplay> getDisplayMap() {
         return displayMap;
     }
 
-    public Optional<AttachmentDisplayInstance> getDisplay(Identifier id) {
+    public Optional<AttachmentDisplay> getDisplay(Identifier id) {
         return Optional.ofNullable(displayMap.get(id));
     }
 }

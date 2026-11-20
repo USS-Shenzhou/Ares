@@ -1,6 +1,6 @@
 package cn.ussshenzhou.ares.client.util;
 
-import cn.ussshenzhou.ares.client.resource.display.AttachmentDisplayInstance;
+import cn.ussshenzhou.ares.client.resource.display.AttachmentDisplay;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import javax.annotation.Nullable;
@@ -51,7 +51,7 @@ public sealed interface AimView {
     }
 
     /// > 安装的模板缓冲瞄具。
-    record ScopeView(Identifier slotId, ItemStack stack, AttachmentDisplayInstance display) implements AimView {
+    record ScopeView(Identifier slotId, ItemStack stack, AttachmentDisplay display) implements AimView {
         @Override
         public Kind kind() {
             return Kind.SCOPE;

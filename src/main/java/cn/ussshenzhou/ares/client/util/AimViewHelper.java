@@ -1,7 +1,7 @@
 package cn.ussshenzhou.ares.client.util;
 
 import cn.ussshenzhou.ares.gun.TimelessHelperC;
-import cn.ussshenzhou.ares.client.resource.display.GunDisplayInstance;
+import cn.ussshenzhou.ares.client.resource.display.GunDisplay;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import javax.annotation.Nullable;
@@ -34,8 +34,8 @@ public class AimViewHelper {
     /// >
     /// > @param display 本次生效的 display（双持单手变体有自己的模型与骨骼名时须传入）；
     /// >                为 null 时按物品取本体 display
-    public static List<AimView> collect(ItemStack stack, @Nullable GunDisplayInstance display) {
-        GunDisplayInstance resolved = display != null ? display : TimelessHelperC.getGunDisplay(stack).orElse(null);
+    public static List<AimView> collect(ItemStack stack, @Nullable GunDisplay display) {
+        GunDisplay resolved = display != null ? display : TimelessHelperC.getGunDisplay(stack).orElse(null);
         List<SightScopeHelper.InstalledSight> sights = SightScopeHelper.collectInstalledSights(stack);
         List<AimView> views = new ArrayList<>(sights.size() + 2);
         if (sights.isEmpty() && resolved != null) {
@@ -45,7 +45,7 @@ public class AimViewHelper {
             views.add(new AimView.ScopeView(sight.slotId(), sight.stack(), sight.display()));
         }
         /// > 战术拒枪位：本体第二定位组，与瞄具视线不重叠，故可与瞄具并存。
-        GunDisplayInstance.TacticalStance stance = resolved != null ? resolved.getTacticalStance() : null;
+        GunDisplay.TacticalStance stance = resolved != null ? resolved.getTacticalStance() : null;
         if (stance != null) {
             views.add(new AimView.BodyView(AimView.Kind.TACTICAL, stance.viewBone(),
                     stance.zoom(), stance.modelFov(), stance.zoomModelFov()));
@@ -79,7 +79,7 @@ public class AimViewHelper {
         public static final ScopeWindow NONE = new ScopeWindow(null, null, false, 1f);
     }
 
-    private static AimView ironView(GunDisplayInstance display) {
+    private static AimView ironView(GunDisplay display) {
         return new AimView.BodyView(AimView.Kind.IRON, IRON_VIEW_BONE,
                 display.getIronZoom(), display.getModelFov(), display.getZoomModelFov());
     }

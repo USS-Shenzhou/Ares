@@ -18,10 +18,10 @@ import java.util.function.Function;
 /// @author TACZ, USS_Shenzhou
 public class AnimationLayer {
     private final String name;
-    private final ControllerLayerBinding binding;
+    private final ControllerLayerBindingCfg binding;
     private final GunStateMachineRuntime stateMachineRuntime;
 
-    public AnimationLayer(String name, ControllerLayerBinding binding, WeaponAnimationContext context,
+    public AnimationLayer(String name, ControllerLayerBindingCfg binding, WeaponAnimationContext context,
                           Function<String, BedrockAnimation> animationResolver,
                           Function<Identifier, AnimationMontage<MontageContext>> montageResolver,
                           AnimationEventSink eventSink) {
